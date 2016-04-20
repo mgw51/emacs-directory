@@ -1,0 +1,192 @@
+;;;; Matt's ~/.emacs
+
+;; 'window-system' can take one of the following values:
+;;   "x"    displayed using X
+;;   "pc"   displayed using msdos
+;;   "w32"  we are using win NT or 95 (possibly any other 32 bit version?)
+;;   nil    using a character-based terminal
+(when (null window-system)
+    (setq linum-format "%d "))      ; add space between line numbers and buffer text
+(setq-default indent-tabs-mode nil) ; indent with spaces only
+(global-linum-mode 1)               ; display line numbers in margin
+(column-number-mode 1)              ; display line and column number in status bar
+(setq-default c-basic-offset 2)     ; ensure that offset is two spaces and no more
+(setq make-backup-files nil)        ; do not make backup files (tilde files)
+(setq backup-directory-alist nil)
+(setq inhibit-splash-screen t)
+
+;;; Global Keybindings
+(and
+ ;; Create function cell and assign it to key chord
+ (fset 'sort-buffer-by-name
+       "\M-2\M-x Buffer-menu-sort")
+ (global-set-key (kbd "C-c 2") #'sort-buffer-by-name)) ; sort buffer by name
+(global-set-key (kbd "M-s") #'query-replace-regexp)    ; regex query replace
+(global-set-key (kbd "<f1>") #'shell-command)          ; shell command
+(global-set-key (kbd "<select>") #'move-end-of-line)   ; <end> -> end of line
+
+
+;;; Set load paths
+;; set top-level directory, and automatically add subdirectories
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(let ((default-directory "~/.emacs.d/lisp/"))
+  (normal-top-level-add-to-load-path '("."))
+  (normal-top-level-add-subdirs-to-load-path))
+
+                             
+;;; Packages
+(require 'php-mode)                ; php mode
+(progn
+  (setq py-install-directory "/emacs.d/lisp/python-mode.el-6.2.0")
+  (require 'python-mode))          ; python mode
+(require 'select-comment-by-lang)  ; select comment by language
+(require 'cpp-funcs)               ; c/c++ helper functions
+
+
+;;; Emacs 23 Init 
+(when (<= emacs-major-version 23)
+  ;; Color theme stuff
+  ;; Themes that work well in the terminal:
+  ;;   clarity
+  ;;   arjen
+  ;;   hober
+  (message "emacs 23 section")
+  (require 'color-theme)
+  (require 'color-theme-solarized)
+  (eval-after-load "color-theme"
+    '(progn
+       (color-theme-initialize)
+       (color-theme-clarity))))
+
+
+;;; Emacs 24 Init
+(when (>= emacs-major-version 24)
+  (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                           ("marmalade" . "https://marmalade-repo.org/packages/")
+                           ("melpa" . "http://melpa.org/packages/")))
+  (message "Evaluating emacs 24 section")
+  (setq package-enable-at-startup nil)
+  (package-initialize)
+  ;; iy-go-to-char
+  (and
+   (require 'iy-go-to-char)
+   (global-set-key (kbd "M-n") 'iy-go-up-to-char)
+;   (global-set-key (kbd "C-c g") 'iy-go-up-to-char)
+   (global-set-key (kbd "M-p") 'iy-go-up-to-char-backward)
+;   (global-set-key (kbd "C-c G") 'iy-go-up-to-char-backward)
+   (global-set-key (kbd "M-N") 'iy-go-up-to-or-up-to-continue)
+   (global-set-key (kbd "M-P") 'iy-go-up-to-or-up-to-continue-backward)))
+
+
+;;; Enable some commands
+(put 'narrow-to-defun  'disabled nil)  ;
+(put 'narrow-to-page   'disabled nil)  ; Narrowing
+(put 'narrow-to-region 'disabled nil)  ;
+
+
+;; ;;; Evaluate these after load
+;; ;; Turn on 'which-func-mode' minor mode for these languages
+;; (eval-after-load "which-func"
+;;                  '(setq which-func-modes '(c++-mode c-mode python-mode php-mode lisp-mode emacs-lisp-mode)))
+
+
+;;; Macros and Hooks
+;; Common C/C++ hooks. This hook will be run for many c-like languages,
+;; but these keybindings may be overridden by defining local bindings in
+;; a lower keymap for a given language. See 'https://www.masteringemacs.org/article/mastering-key-bindings-emacs'
+;; for a discussion of this topic.
+(add-hook 'c-mode-common-hook #'c-style-lang-hook-func)
+(add-hook 'c++-mode-hook #'cpp-hook-func)
+(add-hook 'python-mode-hook #'python-hook-func)
+(add-hook 'emacs-lisp-mode-hook #'lisp-settings)
+(add-hook 'lisp-mode-hook #'lisp-settings)
+(add-hook 'sh-mode-hook #'bash-hook-func)
+
+;;; Hook functions
+(defun c-style-lang-hook-func ()
+  (c-set-offset 'case-label '+) ; indent case statements in a switch block
+  (show-paren-mode t)
+  (which-function-mode)
+  (local-set-key (kbd "C-c o") #'ff-find-other-file)
+  (local-set-key (kbd "C-c c") #'insert-triplet)
+  (local-set-key (kbd "C-c d") #'debug-comment)
+  (local-set-key (kbd "C-c f") #'func-header)
+  (local-set-key (kbd "C-c n") #'get-class-name)
+  (global-set-key (kbd "C-c i") #'imenu))
+
+(defun cpp-hook-func ()
+  ;; Found this indentation info at: https://lists.gnu.org/archive/html/help-gnu-emacs/2013-03/msg00335.html
+  ;; By issuing the following command, you can see what indentation vars are set to:
+  ;;   M-x set-variable RET c-echo-syntactic-information-p RET t RET
+  (c-set-offset 'inclass '++)
+  (c-set-offset 'access-label '-))
+
+(defun lisp-settings ()
+  "Code to be evaluated when lisp major modes are enabled.  Currently, we
+enable eldoc-mode."
+  ;; This function probably does not need to be run for the slime hook, as
+  ;; these functions and others are already included in that mode.
+  (eldoc-mode)
+  (local-set-key (kbd "C-m") #'newline-and-indent)
+  (local-set-key (kbd "C-c c") #'insert-triplet))
+
+(defun python-hook-func ()
+  "Some call me... Tim."
+  (setq-default indent-tabs-mode nil)  ; use spaces, not tabs
+  (setq tab-width 4)
+  (local-set-key (kbd "C-c c") #'insert-triplet)
+  (local-set-key (kbd "C-c d") #'debug-comment)
+  (local-set-key (kbd "C-c f") #'func-header))
+
+(defun bash-hook-func ()
+  "To be run when we open a bash shell script."
+  (message "Welcome to shell script mode. Grrrrr!!")
+  (local-set-key (kbd "C-c c") #'insert-triplet)
+  (local-set-key (kbd "C-c d") #'debug-comment))
+
+
+;;; Auto added by emacs24
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#313131" "#D9A0A0" "#8CAC8C" "#FDECBC" "#99DDE0" "#E090C7" "#A0EDF0" "#DCDCCC"])
+ '(background-color "#ffffff")
+ '(background-mode light)
+ '(cursor-color "#ffff00")
+ '(custom-enabled-themes (quote (clarity-and-beauty)))
+ '(custom-safe-themes
+   (quote
+    ("4c9ba94db23a0a3dea88ee80f41d9478c151b07cb6640b33bfc38be7c2415cc4" "71ecffba18621354a1be303687f33b84788e13f40141580fa81e7840752d31bf" "108b3724e0d684027c713703f663358779cc6544075bc8fd16ae71470497304f" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "dd4db38519d2ad7eb9e2f30bc03fba61a7af49a185edfd44e020aa5345e3dca7" default)))
+ '(fci-rule-color "#2D2D2D")
+ '(foreground-color "#ffff00")
+ '(vc-annotate-background "#202020")
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#C99090")
+     (40 . "#D9A0A0")
+     (60 . "#ECBC9C")
+     (80 . "#DDCC9C")
+     (100 . "#EDDCAC")
+     (120 . "#FDECBC")
+     (140 . "#6C8C6C")
+     (160 . "#8CAC8C")
+     (180 . "#9CBF9C")
+     (200 . "#ACD2AC")
+     (220 . "#BCE5BC")
+     (240 . "#CCF8CC")
+     (260 . "#A0EDF0")
+     (280 . "#79ADB0")
+     (300 . "#89C5C8")
+     (320 . "#99DDE0")
+     (340 . "#9CC7FB")
+     (360 . "#E090C7"))))
+ '(vc-annotate-very-old-color "#E090C7"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

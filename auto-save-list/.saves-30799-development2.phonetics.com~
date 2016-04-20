@@ -1,0 +1,14 @@
+/home/mwood/git/sensacloudapi/src/Logging/DataLog.cpp
+/home/mwood/git/sensacloudapi/src/Logging/#DataLog.cpp#
+/home/mwood/git/sensacloudapi/src/Logging/DataLogQuery.cpp
+/home/mwood/git/sensacloudapi/src/Logging/#DataLogQuery.cpp#
+/home/mwood/git/sensacloudapi/src/comm/AbstractClient.cpp
+/home/mwood/git/sensacloudapi/src/comm/#AbstractClient.cpp#
+/home/mwood/git/sensacloudapi/src/comm/APICloudClient.cpp
+/home/mwood/git/sensacloudapi/src/comm/#APICloudClient.cpp#
+/home/mwood/git/sensacloudapi/src/Logging/DataLog.h
+/home/mwood/git/sensacloudapi/src/Logging/#DataLog.h#
+/home/mwood/git/sensacloudapi/src/comm/AbstractClient.h
+/home/mwood/git/sensacloudapi/src/comm/#AbstractClient.h#
+/home/mwood/git/sensacloudapi/src/Core/UpdateManager.cpp
+/home/mwood/git/sensacloudapi/src/Core/#UpdateManager.cpp#
