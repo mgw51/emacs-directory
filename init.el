@@ -35,48 +35,25 @@
 
                              
 ;;; Packages
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "https://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.org/packages/")))
 (require 'php-mode)                ; php mode
 (progn
   (setq py-install-directory "/emacs.d/lisp/python-mode.el-6.2.0")
   (require 'python-mode))          ; python mode
 (require 'select-comment-by-lang)  ; select comment by language
 (require 'cpp-funcs)               ; c/c++ helper functions
+(setq package-enable-at-startup nil)
+(package-initialize)
 
-
-;;; Emacs 23 Init 
-(when (<= emacs-major-version 23)
-  ;; Color theme stuff
-  ;; Themes that work well in the terminal:
-  ;;   clarity
-  ;;   arjen
-  ;;   hober
-  (message "emacs 23 section")
-  (require 'color-theme)
-  (require 'color-theme-solarized)
-  (eval-after-load "color-theme"
-    '(progn
-       (color-theme-initialize)
-       (color-theme-clarity))))
-
-
-;;; Emacs 24 Init
-(when (>= emacs-major-version 24)
-  (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                           ("marmalade" . "https://marmalade-repo.org/packages/")
-                           ("melpa" . "http://melpa.org/packages/")))
-  (message "Evaluating emacs 24 section")
-  (setq package-enable-at-startup nil)
-  (package-initialize)
-  ;; iy-go-to-char
-  (and
-   (require 'iy-go-to-char)
-   (global-set-key (kbd "M-n") 'iy-go-up-to-char)
-;   (global-set-key (kbd "C-c g") 'iy-go-up-to-char)
-   (global-set-key (kbd "M-p") 'iy-go-up-to-char-backward)
-;   (global-set-key (kbd "C-c G") 'iy-go-up-to-char-backward)
-   (global-set-key (kbd "M-N") 'iy-go-up-to-or-up-to-continue)
-   (global-set-key (kbd "M-P") 'iy-go-up-to-or-up-to-continue-backward)))
-
+;; iy-go-to-char
+(and
+ (require 'iy-go-to-char)
+ (global-set-key (kbd "M-n") 'iy-go-up-to-char)
+ (global-set-key (kbd "M-p") 'iy-go-up-to-char-backward)
+ (global-set-key (kbd "M-N") 'iy-go-up-to-or-up-to-continue)
+ (global-set-key (kbd "M-P") 'iy-go-up-to-or-up-to-continue-backward))
 
 ;;; Enable some commands
 (put 'narrow-to-defun  'disabled nil)  ;
