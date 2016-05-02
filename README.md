@@ -1,1 +1,1 @@
-# eamcs-directory
+# emacs-directory
