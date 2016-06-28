@@ -44,16 +44,16 @@
   (require 'python-mode))          ; python mode
 (require 'select-comment-by-lang)  ; select comment by language
 (require 'cpp-funcs)               ; c/c++ helper functions
-(setq package-enable-at-startup nil)
-(package-initialize)
+(require 'helm-config)             ; awesome buffer-based completion options
+(require 'key-chord)               ; map chord combinations to regular key-pairs pressed simultaneously
 
 ;; iy-go-to-char
 (and
  (require 'iy-go-to-char)
  (global-set-key (kbd "M-n") 'iy-go-up-to-char)
- (global-set-key (kbd "M-p") 'iy-go-up-to-char-backward)
+ (global-set-key (kbd "M-p") 'iy-go-to-char-backward)
  (global-set-key (kbd "M-N") 'iy-go-up-to-or-up-to-continue)
- (global-set-key (kbd "M-P") 'iy-go-up-to-or-up-to-continue-backward))
+ (global-set-key (kbd "M-P") 'iy-go-to-or-up-to-continue-backward))
 
 ;;; Enable some commands
 (put 'narrow-to-defun  'disabled nil)  ;
@@ -133,7 +133,7 @@ enable eldoc-mode."
  '(background-color "#ffffff")
  '(background-mode light)
  '(cursor-color "#ffff00")
- '(custom-enabled-themes (quote (clarity-and-beauty)))
+; '(custom-enabled-themes (quote (clarity-and-beauty)))
  '(custom-safe-themes
    (quote
     ("4c9ba94db23a0a3dea88ee80f41d9478c151b07cb6640b33bfc38be7c2415cc4" "71ecffba18621354a1be303687f33b84788e13f40141580fa81e7840752d31bf" "108b3724e0d684027c713703f663358779cc6544075bc8fd16ae71470497304f" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "dd4db38519d2ad7eb9e2f30bc03fba61a7af49a185edfd44e020aa5345e3dca7" default)))
