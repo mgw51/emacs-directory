@@ -14,6 +14,9 @@
 (setq make-backup-files nil)        ; do not make backup files (tilde files)
 (setq backup-directory-alist nil)
 (setq inhibit-splash-screen t)
+(progn                              ; Force tooltips to display in echo area
+  (tooltip-mode -1)
+  (setq tooltip-use-echo-area t))
 
 ;;; Global Keybindings
 (and
@@ -35,10 +38,18 @@
 
                              
 ;;; Packages
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "https://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")))
-;;; Place all Requires here
+;;; Handle package archives and also ensure all required packages are installed.
+(progn
+  (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                           ("marmalade" . "https://marmalade-repo.org/packages/")
+                           ("melpa" . "http://melpa.org/packages/")))
+  (require 'ensure-packages-installed)  ; custom function that installs missing packages listed below
+  (let ((package-list '(iy-go-to-char
+                        helm
+                        key-chord
+                        yasnippet)))
+    (ensure-packages-installed package-list)))
+;;; Place all other Requires here
 (progn
   (require 'php-mode)
   (progn
@@ -46,20 +57,21 @@
     (require 'python-mode))
   (require 'select-comment-by-lang)  ; one of my functions
   (require 'cpp-funcs)               ; my c/c++ helper functions
-  (require 'helm-config)             ; awesome buffer-based incremental completion system
-  (require 'key-chord))              ; map chord combinations to regular key-pairs pressed simultaneously
+  (require 'iy-go-to-char)
+  (and                               ; helm provides excellent incremental completion
+   (require 'helm)
+   (require 'helm-config))
+  (require 'key-chord)               ; map chord combinations to regular key-pairs pressed simultaneously
+  (require 'yasnippet))              ; snippet functionality
   ;(require 'flycheck)                ; flycheck package for syntax checking on the fly ;; REQUIRES GCC >= 4.8 ;; 
 
 
-;;; Global Key Map
+;;; Global Key Map and Bindings
 ;;; Anything that should happen across all modes (more or less)
 ;; iy-go-to-char
 (and
- (require 'iy-go-to-char)
  (global-set-key (kbd "M-n") #'iy-go-up-to-char)
- (global-set-key (kbd "M-p") #'iy-go-to-char-backward)
- (global-set-key (kbd "M-N") #'iy-go-up-to-or-up-to-continue)
- (global-set-key (kbd "M-P") #'iy-go-to-or-up-to-continue-backward))
+ (global-set-key (kbd "M-p") #'iy-go-to-char-backward))
 ;; helm
 (and
  (global-set-key (kbd "M-x") #'helm-M-x)
