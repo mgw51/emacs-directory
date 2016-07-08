@@ -18,16 +18,6 @@
   (tooltip-mode -1)
   (setq tooltip-use-echo-area t))
 
-;;; Global Keybindings
-(and
- ;; Create function cell and assign it to key chord
- (fset 'sort-buffer-by-name
-       "\M-2\M-x Buffer-menu-sort")
- (global-set-key (kbd "C-c 2") #'sort-buffer-by-name)) ; sort buffer by name
-(global-set-key (kbd "M-s") #'query-replace-regexp)    ; regex query replace
-(global-set-key (kbd "<f1>") #'shell-command)          ; shell command
-(global-set-key (kbd "<select>") #'move-end-of-line)   ; <end> -> end of line
-
 
 ;;; Set load paths
 ;; set top-level directory, and automatically add subdirectories
@@ -77,6 +67,14 @@
  (global-set-key (kbd "M-x") #'helm-M-x)
  (global-set-key (kbd "C-x C-f") #'helm-find-files)
  (helm-mode 1))  ; Start helm automatically
+;; General keybindings
+(and
+ (fset 'sort-buffer-by-name  ; Create function cell and assign it to key chord
+       "\M-2\M-x Buffer-menu-sort")
+ (global-set-key (kbd "C-c 2") #'sort-buffer-by-name)) ; sort buffer by name
+;(global-set-key (kbd "M-s") #'query-replace-regexp)    ; regex query replace
+(global-set-key (kbd "<f1>") #'shell-command)          ; shell command
+(global-set-key (kbd "<select>") #'move-end-of-line)   ; <end> -> end of line
 
 
 ;;; Enable some commands
@@ -155,6 +153,13 @@ enable eldoc-mode."
                 (append flycheck-disabled-checkers
                         '(c/c++-clang))))
 
+;; Color theme selection
+;;  This could be moved in to the auto-generated `custom-set-variables' section below,
+;;  however, since we are not using any of the new custom theme stuff in 24+, I moved
+;;  hoisted this out and put it here.
+(and
+ (color-theme-initialize)
+ (color-theme-clarity))
 
 ;;; Auto added by emacs24
 (custom-set-variables
@@ -167,7 +172,6 @@ enable eldoc-mode."
  '(background-color "#ffffff")
  '(background-mode light)
  '(cursor-color "#ffff00")
-; '(custom-enabled-themes (quote (Clarity-theme.el)))
  '(custom-safe-themes
    (quote
     ("4c9ba94db23a0a3dea88ee80f41d9478c151b07cb6640b33bfc38be7c2415cc4" "71ecffba18621354a1be303687f33b84788e13f40141580fa81e7840752d31bf" "108b3724e0d684027c713703f663358779cc6544075bc8fd16ae71470497304f" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "dd4db38519d2ad7eb9e2f30bc03fba61a7af49a185edfd44e020aa5345e3dca7" default)))
