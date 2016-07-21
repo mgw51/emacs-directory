@@ -118,7 +118,11 @@
   ;; By issuing the following command, you can see what indentation vars are set to:
   ;;   M-x set-variable RET c-echo-syntactic-information-p RET t RET
   (c-set-offset 'inclass '++)
-  (c-set-offset 'access-label '-))
+  (c-set-offset 'access-label '-)
+  ;; Add some keywords to to C++ mode
+  (font-lock-add-keywords 'c++-mode
+                          '(("nullptr" . font-lock-keyword-face)
+                            ("constexpr" . font-lock-keyword-face))))
   ; enable C++11 support
   ;  (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++11"))))
 
