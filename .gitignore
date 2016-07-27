@@ -2,3 +2,5 @@ auto-save-list/
 games/
 elpa/
 eshell/
+session.*
+tramp
