@@ -1,7 +1,7 @@
+(provide 'ensure-packages-installed)
+
 ;;;; ensure-packages-installed
 ;;;; Ensure that all packages specified are installed on the local system.
-
-(provide 'ensure-packages-installed)
 
 (defun ensure-packages-installed (package-list)
   "Ensure that all packages in PACKAGE-LIST are installed on the local system."
