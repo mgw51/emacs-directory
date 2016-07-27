@@ -1,11 +1,6 @@
 ;;;; Matt's ~/.emacs
 
-;; 'window-system' can take one of the following values:
-;;   "x"    displayed using X
-;;   "pc"   displayed using msdos
-;;   "w32"  we are using win NT or 95 (possibly any other 32 bit version?)
-;;   nil    using a character-based terminal
-(when (null window-system)
+(when (not (display-graphic-p))
     (setq linum-format "%d "))      ; add space between line numbers and buffer text
 (setq-default indent-tabs-mode nil) ; indent with spaces only
 (global-linum-mode 1)               ; display line numbers in margin
@@ -30,6 +25,8 @@
 ;;; Packages
 ;;; Handle package archives and also ensure all required packages are installed.
 (progn
+  (require 'package)     ; Pull in package.el
+  (package-initialize)   ; Initialize it
   (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                            ("marmalade" . "https://marmalade-repo.org/packages/")
                            ("melpa" . "http://melpa.org/packages/")))
@@ -37,11 +34,13 @@
   (let ((package-list '(iy-go-to-char
                         helm
                         key-chord
-                        yasnippet)))
+                        yasnippet
+                        flycheck)))
     (ensure-packages-installed package-list)))
+
 ;;; Place all other Requires here
 (progn
-  (require 'php-mode)
+  (require 'php-mode)                ; this resides in my lisp folder
   (progn
     (setq py-install-directory "/emacs.d/lisp/python-mode.el-6.2.0")
     (require 'python-mode))
@@ -52,8 +51,8 @@
    (require 'helm)
    (require 'helm-config))
   (require 'key-chord)               ; map chord combinations to regular key-pairs pressed simultaneously
-  (require 'yasnippet))              ; snippet functionality
-  ;(require 'flycheck)                ; flycheck package for syntax checking on the fly ;; REQUIRES GCC >= 4.8 ;; 
+  (require 'yasnippet)               ; snippet functionality
+  (require 'flycheck))               ; flycheck package for syntax checking on the fly
 
 
 ;;; Global Key Map and Bindings
@@ -161,9 +160,9 @@ enable eldoc-mode."
 ;;  This could be moved in to the auto-generated `custom-set-variables' section below,
 ;;  however, since we are not using any of the new custom theme stuff in 24+, I moved
 ;;  hoisted this out and put it here.
-(and
- (color-theme-initialize)
- (color-theme-clarity))
+;; (and
+;;  (color-theme-initialize)
+;;  (color-theme-clarity))
 
 ;;; Auto added by emacs24
 (custom-set-variables
