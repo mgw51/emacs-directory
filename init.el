@@ -102,6 +102,7 @@
 
 ;;; Custom Hook functions
 (defun c-style-lang-hook-func ()
+  (electric-pair-mode)
   (c-set-offset 'case-label '+) ; indent case statements in a switch block
   (show-paren-mode t)
   (which-function-mode)
