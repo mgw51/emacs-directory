@@ -37,7 +37,8 @@
                         helm
                         key-chord
                         yasnippet
-                        flycheck)))
+                        flycheck
+                        magit)))
     (ensure-packages-installed package-list)))
 
 ;;; Place all other Requires here
@@ -54,7 +55,8 @@
    (require 'helm-config))
   (require 'key-chord)               ; map chord combinations to regular key-pairs pressed simultaneously
   (require 'yasnippet)               ; snippet functionality
-  (require 'flycheck))               ; flycheck package for syntax checking on the fly
+  (require 'flycheck)                ; flycheck package for syntax checking on the fly
+  (require 'magit))
 
 
 ;;; Global Key Map and Bindings
