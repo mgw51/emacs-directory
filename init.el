@@ -110,6 +110,7 @@
   (c-set-offset 'case-label '+) ; indent case statements in a switch block
   (show-paren-mode t)
   (which-function-mode)
+  (yas-reload-all)
   (local-set-key (kbd "C-c o") #'ff-find-other-file)
   (local-set-key (kbd "C-c c") #'insert-triplet)
   (local-set-key (kbd "C-c d") #'debug-comment)
@@ -137,6 +138,7 @@ enable eldoc-mode."
   ;; This function probably does not need to be run for the slime hook, as
   ;; these functions and others are already included in that mode.
   (eldoc-mode)
+  (yas-reload-all)
   (local-set-key (kbd "C-m") #'newline-and-indent)
   (local-set-key (kbd "C-c c") #'insert-triplet))
 
@@ -144,6 +146,7 @@ enable eldoc-mode."
   "Some call me... Tim."
   (setq-default indent-tabs-mode nil)  ; use spaces, not tabs
   (setq tab-width 4)
+  (yas-reload-all)
   (local-set-key (kbd "C-c c") #'insert-triplet)
   (local-set-key (kbd "C-c d") #'debug-comment)
   (local-set-key (kbd "C-c f") #'func-header))
@@ -151,6 +154,7 @@ enable eldoc-mode."
 (defun bash-hook-func ()
   "To be run when we open a bash shell script."
   (message "Welcome to shell script mode. Grrrrr!!")
+  (yas-reload-all)
   (local-set-key (kbd "C-c c") #'insert-triplet)
   (local-set-key (kbd "C-c d") #'debug-comment))
 
