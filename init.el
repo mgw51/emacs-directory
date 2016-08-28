@@ -13,8 +13,11 @@
   (tooltip-mode t)
   (setq tooltip-use-echo-area t))
 (setq visible-bell t)               ; Flash mode-bar instead of ringing system bell
+
+;;; Turn off the following modes...
 (tool-bar-mode -1)
 (menu-bar-mode -1)
+(scroll-bar-mode -1)
 
 ;;; Set load paths
 ;; set top-level directory, and automatically add subdirectories
