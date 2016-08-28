@@ -81,6 +81,7 @@
 ;(global-set-key (kbd "M-s") #'query-replace-regexp)    ; regex query replace
 (global-set-key (kbd "<f1>") #'shell-command)          ; shell command
 (global-set-key (kbd "<select>") #'move-end-of-line)   ; <end> -> end of line
+(global-set-key (kbd "C-c C-g") #'magit-status)        ; Invoke magit-status screen, from which all magit commands are available
 
 
 ;;; Enable some commands
