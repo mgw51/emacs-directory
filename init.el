@@ -111,6 +111,8 @@
 ;;; Custom Hook functions
 (defun c-style-lang-hook-func ()
   (electric-pair-mode)
+  (superword-mode t)  ; treat underscore-separated words as a single word : true
+  (subword-mode -1)   ; treat camelCase words as separate words: false     
   (c-set-offset 'case-label '+) ; indent case statements in a switch block
   (show-paren-mode t)
   (which-function-mode)
