@@ -19,6 +19,9 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 
+;;; ERC: Send IRC notices to my minibuffer
+(setq erc-echo-notices-in-minibuffer-flag t)
+
 ;;; Set load paths
 ;; set top-level directory, and automatically add subdirectories
 (add-to-list 'load-path "~/.emacs.d/lisp/")
