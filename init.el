@@ -70,6 +70,12 @@
  (global-set-key (kbd "M-x") #'helm-M-x)
  (global-set-key (kbd "C-x C-f") #'helm-find-files)
  (helm-mode 1))  ; Start helm automatically
+;; key chord
+(and
+ (key-chord-mode 1)
+ (key-chord-define c++-mode-map "{}" "{\n\n}\C-p\t")
+ (key-chord-define-global "df" #'iy-go-up-to-char)
+ (key-chord-define-global "cv" #'iy-go-to-char-backward))
 ;; General keybindings
 (and
  (fset 'sort-buffer-by-name  ; Create function cell and assign it to key chord
