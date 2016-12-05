@@ -13,8 +13,14 @@
   (tooltip-mode t)
   (setq tooltip-use-echo-area t))
 (setq visible-bell t)               ; Flash mode-bar instead of ringing system bell
+
+;;; Turn off the following modes...
 (tool-bar-mode -1)
 (menu-bar-mode -1)
+(scroll-bar-mode -1)
+
+;;; ERC: Send IRC notices to my minibuffer
+(setq erc-echo-notices-in-minibuffer-flag t)
 
 ;;; Set load paths
 ;; set top-level directory, and automatically add subdirectories
@@ -84,6 +90,7 @@
 ;(global-set-key (kbd "M-s") #'query-replace-regexp)    ; regex query replace
 (global-set-key (kbd "<f1>") #'shell-command)          ; shell command
 (global-set-key (kbd "<select>") #'move-end-of-line)   ; <end> -> end of line
+(global-set-key (kbd "C-c C-g") #'magit-status)        ; Invoke magit-status screen, from which all magit commands are available
 
 
 ;;; Enable some commands
@@ -113,6 +120,8 @@
 ;;; Custom Hook functions
 (defun c-style-lang-hook-func ()
   (electric-pair-mode)
+  (superword-mode t)  ; treat underscore-separated words as a single word : true
+  (subword-mode -1)   ; treat camelCase words as separate words: false     
   (c-set-offset 'case-label '+) ; indent case statements in a switch block
   (show-paren-mode t)
   (which-function-mode)
