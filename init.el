@@ -29,7 +29,15 @@
   (normal-top-level-add-to-load-path '("."))
   (normal-top-level-add-subdirs-to-load-path))
 
-                             
+;;; Create settings for slime
+(progn
+  ;; Default lisp (not elisp) for use with slime
+  (setq inferior-lisp-program "/usr/bin/sbcl")
+  ;; slime-fancy loads pretty much everything
+  (setq slime-contribs '(slime-fancy))
+  (setq slime-lisp-implementations  ; We created and saved a core file for faster load times.
+        '((sbcl ("sbcl" "--core" "lisp/sbcl/sbcl.core-for-slime")))))
+
 ;;; Packages
 ;;; Handle package archives and also ensure all required packages are installed.
 (progn
