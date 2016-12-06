@@ -6,10 +6,8 @@
 ;;;; is also great for c.
 ;;;;
 
-(provide 'cpp-funcs)
-
 (defun func-header ()
-  "this function prints a standard header for a c++ function,
+  "This function prints a standard header for a c++ function,
    which consists of: a triplet, first line contains a line of
    stars, second line is function name, third line is empty."
   (interactive)
@@ -48,42 +46,46 @@
   (insert (first (split-string (buffer-name) "\\."))))
 
 
-(defun create-basic-makefile (target language)
-  "Create a basic Makefile template which uses most common flags.  This is geared toward gcc 4.6"
-  (interactive
-   "sMakefile target: 
-sLanguage (C or CPP): ")  ; 's' prefix causes the input to be bound to function args
-  (defvar compiler)
-  (defvar compiler-flags)
-  (defvar file-suffix)
-  (let ((buf (generate-new-buffer "Makefile")))
-    (with-current-buffer buf
-      (funcall #'makefile-mode)
-      (if (string= (downcase language) "c")
+(defun create-basic-makefile (target lang)
+  "Create a basic Makefile template which uses most common flags."
+  (interactive "sExecutable name: 
+sLanguage (c or c++): ")
+  (if (not (or
+            (string= (downcase lang) "c")
+            (string= (downcase lang) "c++")
+            (string= (downcase lang) "cpp")))
+      (message "Unrecognized language: %s" lang)
+
+    (with-temp-file "Makefile"  ; eval body and write the buffer to file when done
+      (let ((compiler nil)
+            (compiler-flags nil)
+            (file-suff nil))
+        (if (string= (downcase lang) "c")
+            (progn
+              (setq compiler "$(CC)")
+              (setq compiler-flags "$(CFLAGS)")
+              (setq file-suff ".c")
+              (insert "CC = gcc\n"
+                      "CFLAGS = -Wall -c -g\n"))
           (progn
-            (setq compiler "$(CC)")
-            (setq compiler-flags "$(CFLAGS)")
-            (setq file-suffix ".c")
-            (insert "CC = gcc\n"
-                    "CFLAGS = -Wall -c -g\n"))
-        (progn
-          (setq compiler "$(CXX)")
-          (setq compiler-flags "$(CXXFLAGS)")
-          (setq file-suffix ".cpp")
-          (insert "CXX = g++ -std=c++0x\n"
-                  "CXXFLAGS = -Wall -Wextra -pedantic -c -g\n")))
-      (insert "LDFLAGS = \n"          
-              "target = " target "\n\n"
+            (setq compiler "$(CXX)")
+            (setq compiler-flags "$(CXXFLAGS)")
+            (setq file-suff ".c++")
+            (insert "CXX = g++ -std=c++11\n"
+                    "CXXFLAGS = -Wall -Wextra -pedantic -c -g\n")))
+        (insert "LDFLAGS = \n"
+                "target = " target "\n\n"
 
-              "all: $(target)\n\n"
+                "all: $(target)\n\n"
 
-              ".PHONY: clean\n"
-              "clean:\n"
-              "\t$(RM) *.o $(target)\n"
+                ".PHONY: clean\n"
+                "clean:\n"
+                "\t$(RM) *.o $(target)\n\n"
 
-              "\n$(target): *.o\n"
-              "\t" compiler " -o$@ $^ $(LDFLAGS)"
+                "$(target): *.o\n"
+                "\t" compiler " -o$@ $^ $(LDFLAGS)\n\n"
 
-              "\n\n%.o: %" file-suffix "\n"
-              "\t" compiler " " compiler-flags " $<"))
-    (write-file "Makefile")))
+                "%.o: %" file-suff "\n"
+                "\t" compiler " " compiler-flags " $<\n")))))
+
+(provide 'cpp-funcs)
