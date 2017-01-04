@@ -45,47 +45,45 @@
   (indent-according-to-mode)
   (insert (first (split-string (buffer-name) "\\."))))
 
-
 (defun create-basic-makefile (target lang)
   "Create a basic Makefile template which uses most common flags."
-  (interactive "sExecutable name: 
-sLanguage (c or c++): ")
+  (interactive "sExecutable name: \nsLanguage (c, c++, or cpp): ")
   (if (not (or
             (string= (downcase lang) "c")
             (string= (downcase lang) "c++")
             (string= (downcase lang) "cpp")))
       (message "Unrecognized language: %s" lang)
-
-    (with-temp-file "Makefile"  ; eval body and write the buffer to file when done
-      (let ((compiler nil)
-            (compiler-flags nil)
-            (file-suff nil))
-        (if (string= (downcase lang) "c")
+    (save-excursion
+      (with-temp-file "Makefile"
+        (let ((compiler)
+              (compiler-flags)
+              (file-suff))
+          (if (string= (downcase lang) "c")
+              (progn
+                (setq compiler "$(CC)")
+                (setq compiler-flags "$(CFLAGS)")
+                (setq file-suff ".c")
+                (insert "CC = gcc\n"
+                        "CFLAGS = -Wall -c -g\n"))
             (progn
-              (setq compiler "$(CC)")
-              (setq compiler-flags "$(CFLAGS)")
-              (setq file-suff ".c")
-              (insert "CC = gcc\n"
-                      "CFLAGS = -Wall -c -g\n"))
-          (progn
-            (setq compiler "$(CXX)")
-            (setq compiler-flags "$(CXXFLAGS)")
-            (setq file-suff ".c++")
-            (insert "CXX = g++ -std=c++11\n"
-                    "CXXFLAGS = -Wall -Wextra -pedantic -c -g\n")))
-        (insert "LDFLAGS = \n"
-                "target = " target "\n\n"
-
-                "all: $(target)\n\n"
-
-                ".PHONY: clean\n"
-                "clean:\n"
-                "\t$(RM) *.o $(target)\n\n"
-
-                "$(target): *.o\n"
-                "\t" compiler " -o$@ $^ $(LDFLAGS)\n\n"
-
-                "%.o: %" file-suff "\n"
-                "\t" compiler " " compiler-flags " $<\n")))))
+              (setq compiler "$(CXX)")
+              (setq compiler-flags "$(CXXFLAGS)")
+              (setq file-suff ".c++")
+              (insert "CXX = g++ -std=c++11\n"
+                      "CXXFLAGS = -Wall -Wextra -pedantic -c -g\n")))
+          (insert "LDFLAGS = \n"
+                  "target = " target "\n\n"
+                  
+                  "all: $(target)\n\n"
+                  
+                  ".PHONY: clean\n"
+                  "clean:\n"
+                  "\t$(RM) *.o $(target)\n\n"
+                  
+                  "$(target): *.o\n"
+                  "\t" compiler " -o$@ $^ $(LDFLAGS)\n\n"
+                  
+                  "%.o: %" file-suff "\n"
+                  "\t" compiler " " compiler-flags " $<\n"))))))
 
 (provide 'cpp-funcs)
