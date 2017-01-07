@@ -75,10 +75,6 @@
 
 ;;; Global Key Map and Bindings
 ;;; Anything that should happen across all modes (more or less)
-;; iy-go-to-char
-(and
- (global-set-key (kbd "M-n") #'iy-go-up-to-char)
- (global-set-key (kbd "M-p") #'iy-go-to-char-backward))
 ;; helm
 (and
  (global-set-key (kbd "M-x") #'helm-M-x)
@@ -209,7 +205,7 @@ enable eldoc-mode."
  '(cursor-color "#ffff00")
  '(custom-safe-themes
    (quote
-    ("4c9ba94db23a0a3dea88ee80f41d9478c151b07cb6640b33bfc38be7c2415cc4" "71ecffba18621354a1be303687f33b84788e13f40141580fa81e7840752d31bf" "108b3724e0d684027c713703f663358779cc6544075bc8fd16ae71470497304f" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "dd4db38519d2ad7eb9e2f30bc03fba61a7af49a185edfd44e020aa5345e3dca7" default)))
+    ("14f0fbf6f7851bfa60bf1f30347003e2348bf7a1005570fd758133c87dafe08f" "4c9ba94db23a0a3dea88ee80f41d9478c151b07cb6640b33bfc38be7c2415cc4" "71ecffba18621354a1be303687f33b84788e13f40141580fa81e7840752d31bf" "108b3724e0d684027c713703f663358779cc6544075bc8fd16ae71470497304f" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "dd4db38519d2ad7eb9e2f30bc03fba61a7af49a185edfd44e020aa5345e3dca7" default)))
  '(fci-rule-color "#2D2D2D")
  '(foreground-color "#ffff00")
  '(vc-annotate-background "#202020")
