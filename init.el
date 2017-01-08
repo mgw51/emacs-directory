@@ -95,7 +95,8 @@
 (global-set-key (kbd "<f1>") #'shell-command)          ; shell command
 (global-set-key (kbd "<select>") #'move-end-of-line)   ; <end> -> end of line
 (global-set-key (kbd "C-c C-g") #'magit-status)        ; Invoke magit-status screen, from which all magit commands are available
-
+;; ibuffer (better than the default buffer screen)
+(global-set-key (kbd "C-x C-b") #'ibuffer)
 
 ;;; Enable some commands
 (put 'narrow-to-defun  'disabled nil)  ;
