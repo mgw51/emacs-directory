@@ -70,7 +70,8 @@
   (require 'key-chord)               ; map chord combinations to regular key-pairs pressed simultaneously
   (require 'yasnippet)               ; snippet functionality
   (require 'flycheck)                ; flycheck package for syntax checking on the fly
-  (require 'magit))
+  (require 'magit)
+  (require 'doxygen))                ; that's my own helper library
 
 
 ;;; Global Key Map and Bindings
