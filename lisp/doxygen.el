@@ -1,8 +1,10 @@
-;;;; File: doxygen.el
-;;;; matt wood
+;;;; file:     doxygen.el
+;;;; author:   matt wood
+;;;; desc:     Provide some basic commands for use with doxygen.
 ;;;;
-;;;; Implements some very basic helper functions used to generate
-;;;; doxygen markup.
+;;;; TODO:
+;;;;     1.  Detect language of current buffer at major mode load time? (C++, C, D, Java, etc)
+;;;;     
 
 (provide 'doxygen)
 
