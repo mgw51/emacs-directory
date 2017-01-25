@@ -8,47 +8,9 @@
 
 (provide 'doxygen)
 
-;;; Global variables  ! These don't appear to work:  backslashes are interpretted, not printed, and multiple backslashes don't work !
+;;; "Public" Functions
 ;;;
-(defvar *function* (concat
-                    "// ****************************************************************************************************\n"
-                    "//  Name:    \n"
-                    "//\n"
-                    "/// \brief   \n"
-                    "///\n"
-                    "///          \n"
-                    "///\n"
-                    "/// \\\\\pre     \n"
-                    "///\n"
-                    "/// \\\\\post    \n"
-                    "///\n"
-                    "/// \\\\\return  \n"
-                    "///\n")
-  "Describes the function documentation template.")
-
-(defvar *class* (concat
-                 "// ****************************************************************************************************\n"
-                 "/// \\class   \n"
-                 "///\n"
-                 "/// \\brief   \n"
-                 "///\n"
-                 "///          \n"
-                 "///\n")
-  "Describes the class documentation template.")
-
-(defvar *struct* (concat
-                  "// ****************************************************************************************************\n"
-                  "/// \\struct  \n"
-                  "///\n"
-                  "/// \\brief   \n"
-                  "///\n"
-                  "///          \n"
-                  "///\n")
-  "Describes the struct documentation template.")
-                    
-;;; Functions
-;;;
-(defun doxygen-function (&optional number-args)
+(defun doxygen-function-template (&optional number-args)
   "Insert doxygen function documentation template at point."
   (interactive "*P")  ; `*' for error on readonly buffer
   (if (null number-args)
@@ -79,13 +41,48 @@
   (forward-line)
   (end-of-line))
 
-(defun build--arg-string (num)
-  (when (and (not (null num))
-         (> num 0))
-    (concat
-     (build-string num "/// \\arg     \n")
-     "///\n")))
+(defun doxygen-class-template ()
+  "Insert doxygen class documentatoin template at point."
+  (interactive "*")
+  (beginning-of-line)
+  (save-excursion
+    (let ((start (point))
+          end)
+      (insert (concat
+               "// ****************************************************************************************************\n"
+               "/// \\class    \n"
+               "///\n"
+               "/// \\brief    \n"
+               "///\n"
+               "///            \n"
+               "///\n"))
+      (setq end (point))
+      (indent-region start end)))
+  (forward-line)
+  (end-of-line))
 
+(defun doxygen-struct-template ()
+  "Insert doxygen struct documentation template at point."
+  (interactive "*")
+  (beginning-of-line)
+  (save-excursion
+    (let ((start (point))
+          end)
+      (insert (concat
+               "// ****************************************************************************************************\n"
+               "/// \\struct   \n"
+               "///\n"
+               "/// \\brief    \n"
+               "///\n"
+               "///            \n"
+               "///\n"))
+      (setq end (point))
+      (indent-region start end)))
+  (forward-line)
+  (end-of-line))
+
+;;; Helper functions
+;;;
 (defun build-string (num arg)
   "Build a string that repeats the ARGument NUMber times."
   (if (eq num 0)
@@ -93,3 +90,11 @@
     (concat
      arg
      (build-string (1- num) arg))))
+
+(defun build--arg-string (num)
+  (when (and (not (null num))
+         (> num 0))
+    (concat
+     (build-string num "/// \\arg     \n")
+     "///\n")))
+
