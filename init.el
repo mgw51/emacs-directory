@@ -11,6 +11,15 @@
   (normal-top-level-add-to-load-path '("."))
   (normal-top-level-add-subdirs-to-load-path))
 
+(when (string= system-type "windows-nt")
+  (add-to-list 'exec-path "C:\Program Files\PuTTY")
+  (add-to-list 'load-path
+               (expand-file-name "C:\Program Files\emacs-24_5\share\emacs\24.5\lisp\net\tramp.elc"))
+  (require 'tramp)
+  (setf tramp-default-user "mwood"
+        tramp-default-host "dev2.sensaphone.net"
+        tramp-default-method "plink"))
+
 ;;; Packages
 (progn
   (require 'package)     ; Pull in package.el
@@ -41,6 +50,8 @@
                       magit)
                     t)
   (funcall 'require cool-thing))
+
+
 
 ;;;;;;;;;;;;;;;; Personal Settings
 ;;; General Settings
