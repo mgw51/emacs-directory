@@ -20,6 +20,7 @@
   (require 'ensure-packages-installed)  ; custom function that installs missing packages listed below
   (let ((package-list '(iy-go-to-char
                         helm
+                        python
                         key-chord
                         yasnippet
                         flycheck
@@ -37,8 +38,7 @@
                       key-chord              ; map chord combinations to regular key-pairs pressed simultaneously
                       yasnippet              ; snippet functionality
                       flycheck               ; flycheck package for syntax checking on the fly
-                      magit
-                      slime)                 ; clisp mode and repl
+                      magit)
                     t)
   (funcall 'require cool-thing))
 
@@ -58,7 +58,7 @@
 (dolist (mode '(tool-bar-mode menu-bar-mode scroll-bar-mode))
   (funcall mode -1))
 (if (display-graphic-p)
-    (eval-after-load (load-theme 'abyss t))  ; GUI theme
+    (load-theme 'abyss t)  ; GUI theme
   (and
    (setf linum-format "%d ")                 ; Terminal settings
    (message "terminal")))
