@@ -29,7 +29,7 @@
   (require 'ensure-packages-installed)  ; custom function that installs missing packages listed below
   (let ((package-list '(iy-go-to-char
                         helm
-                        python
+                        python-mode
                         key-chord
                         yasnippet
                         flycheck
@@ -62,7 +62,7 @@
 (setf make-backup-files nil         ; do not make backup files (tilde files)
       backup-directory-alist nil    ; we don't need a backup directory
       inhibit-splash-screen t
-;      visible-bell t ; Flash mode-bar instead of ringing system bell
+      visible-bell t ; Flash mode-bar instead of ringing system bell
       erc-echo-notices-in-minibuffer-flag t  ; ERC: Send IRC notices to minibuffer
       inferior-lisp-program "/usr/bin/sbcl"  ; Slime: Default lisp
       slime-contribs '(slime-fancy))  ; Slime: slime-fancy loads pretty much everything
@@ -85,7 +85,7 @@
 ;; key chord
 (and
  (key-chord-mode 1)
- (key-chord-define c++-mode-map "pq" "{\n\n}\C-p\t")
+ (key-chord-define-global "pq" "{\n\n}\C-p\t")
  (key-chord-define-global "fj" #'iy-go-up-to-char)
  (key-chord-define-global "fk" #'iy-go-to-char-backward))
 
