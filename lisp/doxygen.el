@@ -23,18 +23,18 @@
           end)
       (insert (concat
                "// ****************************************************************************************************\n"
-               "//  Name:    \n"
-               "//\n"
-               "/// \\brief   \n"
+               "/// @name    \n"
                "///\n"
-               "///           \n"
+               "/// @brief   \n"
+               "///\n"
+               "///          \n"
                "///\n"
                (build--arg-string number-args)
-               "/// \\pre     \n"
+               "/// @pre     \n"
                "///\n"
-               "/// \\post    \n"
+               "/// @post    \n"
                "///\n"
-               "/// \\return  \n"
+               "/// @return  \n"
                "///\n"))
       (setq end (point))
       (indent-region start end)))
@@ -50,11 +50,11 @@
           end)
       (insert (concat
                "// ****************************************************************************************************\n"
-               "/// \\class    \n"
+               "/// @class    \n"
                "///\n"
-               "/// \\brief    \n"
+               "/// @brief    \n"
                "///\n"
-               "///            \n"
+               "///           \n"
                "///\n"))
       (setq end (point))
       (indent-region start end)))
@@ -70,16 +70,29 @@
           end)
       (insert (concat
                "// ****************************************************************************************************\n"
-               "/// \\struct   \n"
+               "/// @struct   \n"
                "///\n"
-               "/// \\brief    \n"
+               "/// @brief    \n"
                "///\n"
-               "///            \n"
+               "///           \n"
                "///\n"))
       (setq end (point))
       (indent-region start end)))
   (forward-line)
   (end-of-line))
+
+(defun doxygen-create-group (start end)
+  ""
+  (interactive "*r")
+  (save-excursion
+    (goto-char start)
+    (back-to-indentation)
+    (insert "///@{")
+    (newline-and-indent)
+    (goto-char end)
+    (end-of-line)
+    (insert "\n///@}")
+    (c-indent-line-or-region)))
 
 ;;; Helper functions
 ;;;
@@ -95,6 +108,6 @@
   (when (and (not (null num))
          (> num 0))
     (concat
-     (build-string num "/// \\arg     \n")
+     (build-string num "/// @param   \n")
      "///\n")))
 
