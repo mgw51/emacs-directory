@@ -58,7 +58,8 @@
                       key-chord              ; map chord combinations to regular key-pairs pressed simultaneously
                       yasnippet              ; snippet functionality
                       flycheck               ; flycheck package for syntax checking on the fly
-                      magit)
+                      magit
+                      doxygen)               ; my own simple doxygen template insert library
                     t)
   (funcall 'require cool-thing))
 
