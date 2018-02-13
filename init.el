@@ -26,6 +26,9 @@
     (setf tramp-default-user "mwood"
           tramp-default-method "ssh")))
 
+;;; Ensure the Emacs server is running
+(unless (server-running-p)
+  (server-start))
 
 ;;; Packages
 (progn
