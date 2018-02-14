@@ -6,8 +6,8 @@
 ;;;;     1.  Detect language of current buffer at major mode load time? (C++, C, D, Java, etc)
 ;;;;     
 
-(provide 'doxygen)
 
+;;; Code:
 ;;; "Public" Functions
 ;;;
 (defun doxygen-function-template (&optional number-args)
@@ -111,3 +111,5 @@
      (build-string num "/// @param   \n")
      "///\n")))
 
+(provide 'doxygen)
+;;; doxygen.el ends here
