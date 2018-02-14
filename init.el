@@ -5,6 +5,29 @@
 
 ;;; Code:
 
+
+(defun load-my-theme (&optional frame)
+  "Choose which theme to load based on type of frame that has been created.
+The optional argument FRAME allows this function to work with the
+`after-make-frame-functions' hook.  This hook must be used so that a daemonized
+Emacs server will delegate the call to `load-my-theme' properly."
+  (let ((window-theme 'abyss)
+        (term-theme 'wombat))
+    (if (display-graphic-p)
+        (progn
+          (when (custom-theme-enabled-p term-theme)
+            (disable-theme term-theme))
+          (if (member window-theme custom-known-themes)
+              (enable-theme window-theme)
+            (load-theme window-theme t)))
+      (progn
+        (when (custom-theme-enabled-p window-theme)
+          (disable-theme window-theme))
+        (if (member term-theme custom-known-themes)
+            (enable-theme term-theme)
+          (load-theme term-theme t))))))
+
+
 ;;;;;;;;;;;;;;;; Core System Settings
 ;;; Set load paths
 (let ((default-directory "~/.emacs.d/lisp/"))  ; Shadow dynamic variable for next commands
@@ -83,12 +106,16 @@
       slime-contribs '(slime-fancy))  ; Slime: slime-fancy loads pretty much everything
 (dolist (mode '(tool-bar-mode menu-bar-mode scroll-bar-mode))
   (funcall mode -1))
-(if (display-graphic-p)
-    (load-theme 'abyss t)  ; GUI theme
-  (and
-   (setf linum-format "%d ")                 ; Terminal settings
-   (message "terminal")))
 (add-hook 'after-init-hook #'global-flycheck-mode)  ; Enable flycheck-mode (probably want to add this to hook functions
+
+
+;; Loading themes: Must be performed differently depending on whether this
+;; is a daemonized server or a stand-alone instance.  For more info, see:
+;;   `https://stackoverflow.com/questions/18904529/after-emacs-deamon-i-can-not-see-new-theme-in-emacsclient-frame-it-works-fr'
+(if (daemonp)
+    (add-hook 'after-make-frame-functions #'load-my-theme)
+  (load-my-theme))
+
 
 ;;; Global Key Map and Bindings
 ;; Anything that should happen across all modes (more or less)
@@ -251,3 +278,5 @@ enable eldoc-mode."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+;;; init.el ends here
+
