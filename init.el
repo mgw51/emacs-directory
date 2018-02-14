@@ -139,8 +139,8 @@
 ;;; Custom Hook Functions
 (defun c-style-lang-hook-func ()
   "Run these commands for all c-like languages."
-  (superword-mode t)  ; treat underscore-separated words as a single word : true
-  (subword-mode -1)   ; treat camelCase words as separate words: false
+  (superword-mode -1)  ; treat underscore-separated words as a single word?
+  (subword-mode t)     ; treat camelCase words as separate words?
   (c-set-offset 'case-label '+) ; indent case statements in a switch block
   (show-paren-mode t)
   (which-function-mode)
