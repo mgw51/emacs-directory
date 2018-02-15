@@ -5,55 +5,30 @@
 
 ;;; Code:
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Core Emacs Functionality
 
-(defun load-my-theme (&optional frame)
-  "Choose which theme to load based on type of frame that has been created.
-The optional argument FRAME allows this function to work with the
-`after-make-frame-functions' hook.  This hook must be used so that a daemonized
-Emacs server will delegate the call to `load-my-theme' properly."
-  (let ((window-theme 'abyss)
-        (term-theme 'wombat))
-    (if (display-graphic-p)
-        (progn
-          (when (custom-theme-enabled-p term-theme)
-            (disable-theme term-theme))
-          (if (member window-theme custom-known-themes)
-              (enable-theme window-theme)
-            (load-theme window-theme t)))
-      (progn
-        (when (custom-theme-enabled-p window-theme)
-          (disable-theme window-theme))
-        (if (member term-theme custom-known-themes)
-            (enable-theme term-theme)
-          (load-theme term-theme t))))))
+(setf make-backup-files nil       ; don't make backups
+      backup-directory-alist nil) ; clear list of backup directories
 
+(let ((default-directory "~/.emacs.d/lisp/"))    ; temporarily redefine the default directory for normal-top-level-add-to-load-path below.
+  (normal-top-level-add-to-load-path '("."))     ; add current directory to load path
+  (normal-top-level-add-subdirs-to-load-path))   ; recursively add subdirectories to load path
 
-;;;;;;;;;;;;;;;; Core System Settings
-;;; Set load paths
-(let ((default-directory "~/.emacs.d/lisp/"))  ; Shadow dynamic variable for next commands
-  (normal-top-level-add-to-load-path '("."))
-  (normal-top-level-add-subdirs-to-load-path))
+;; Load my lisp files
+(load-library "my-work-utils.el")
 
-(if (string= system-type "windows-nt")
-    ;; Windows config
-    (progn
-      (add-to-list 'exec-path "C:\Program Files\PuTTY")
-      (add-to-list 'load-path
-                   (expand-file-name "C:\Program Files\emacs-24_5\share\emacs\24.5\lisp\net\tramp.elc"))
-      (require 'tramp)
-      (setf tramp-default-user "mwood"
-            tramp-default-host "dev2.sensaphone.net"
-            tramp-default-method "plink"))
-  ;; Linux config
-  (progn
-    (setf tramp-default-user "mwood"
-          tramp-default-method "ssh")))
+;; Create an SQL scratch buffer
+(create-sql-buffer)
 
 ;;; Ensure the Emacs server is running
 (unless (server-running-p)
   (server-start))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Customizations
 
 ;;; Packages
+;;; Handle package archives and also ensure all required packages are installed.
 (progn
   (require 'package)     ; Pull in package.el
   (package-initialize)   ; Initialize it
@@ -88,73 +63,97 @@ Emacs server will delegate the call to `load-my-theme' properly."
                       doxygen)               ; my own simple doxygen template insert library
                     t)
   (funcall 'require cool-thing))
+;;; User Interface
 
+;; Turn ON some UI elements
+(dolist (mode '(global-linum-mode     ; display line numbers in margin
+                column-number-mode))  ; display line and column number in status bar
+  (funcall mode 1))
 
+;; Turn OFF some UI elements
+(dolist (mode '(tool-bar-mode
+                menu-bar-mode
+                horizontal-scroll-bar-mode
+                tooltip-mode))
+  (when (fboundp mode)
+    (funcall mode -1)))
 
-;;;;;;;;;;;;;;;; Personal Settings
-;;; General Settings
+;; Enable some commands
+(put 'narrow-to-defun  'disabled nil)  ;
+(put 'narrow-to-page   'disabled nil)  ; Narrowing
+(put 'narrow-to-region 'disabled nil)  ;
+
+(when (not (display-graphic-p))
+    (setf linum-format "%d "))      ; add space between line numbers and buffer text
 (setq-default indent-tabs-mode nil) ; indent with spaces only
-(global-linum-mode 1)               ; display line numbers in margin
-(column-number-mode 1)              ; display line and column number in status bar
 (setq-default c-basic-offset 2)     ; ensure that offset is two spaces and no more
 (setf make-backup-files nil         ; do not make backup files (tilde files)
       backup-directory-alist nil    ; we don't need a backup directory
       inhibit-splash-screen t
-      visible-bell t ; Flash mode-bar instead of ringing system bell
-      erc-echo-notices-in-minibuffer-flag t  ; ERC: Send IRC notices to minibuffer
       inferior-lisp-program "/usr/bin/sbcl"  ; Slime: Default lisp
-      slime-contribs '(slime-fancy))  ; Slime: slime-fancy loads pretty much everything
-(dolist (mode '(tool-bar-mode menu-bar-mode scroll-bar-mode))
-  (funcall mode -1))
-(add-hook 'after-init-hook #'global-flycheck-mode)  ; Enable flycheck-mode (probably want to add this to hook functions
-
+      slime-contribs '(slime-fancy)  ; Slime: slime-fancy loads pretty much everything
+      visible-bell t)               ; Flash mode-bar instead of ringing system bell
 
 ;; Loading themes: Must be performed differently depending on whether this
 ;; is a daemonized server or a stand-alone instance.  For more info, see:
 ;;   `https://stackoverflow.com/questions/18904529/after-emacs-deamon-i-can-not-see-new-theme-in-emacsclient-frame-it-works-fr'
-(if (daemonp)
-    (add-hook 'after-make-frame-functions #'load-my-theme)
-  (load-my-theme))
+;; (if (daemonp)
+;;     (add-hook 'after-make-frame-functions #'load-my-theme)
+;;   (load-my-theme))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Directory Local Variables
 
+(when (string= system-name "development2")
+  (dir-locals-set-class-variables
+   'sensacloud-api
+   '((c++-mode . ((flycheck-c/c++-gcc-executable . "/usr/bin/gcc-6")
+                  (flycheck-gcc-include-path . ("/home/mwood/git/sensacloudapi/src/include/"))))))
+  (dir-locals-set-class-variables
+   'catch-test
+   '((c++-mode . ((flycheck-c/c++-gcc-executable . "/usr/bin/gcc-6")
+                  (flycheck-gcc-include-path . ("/home/mwood/git/unit-testing-trial-with-Catch/include/"))
+                                        ;                (flycheck-gcc-args . ())
+                  (flycheck-gcc-language-standard . "-std=c++11")
+                  (flycheck-gcc-pedantic . t)
+                  (flycheck-gcc-warnings . ("-Wall" "-Wextra"))))))
+  (dir-locals-set-directory-class "/home/mwood/git/sensacloudapi/" 'sensacloud-api)
+  (dir-locals-set-directory-class "/home/mwood/git/unit-testing-trial-with-Catch/" 'catch-test))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Global Key Map and Bindings
-;; Anything that should happen across all modes (more or less)
+;;; Anything that should happen across all modes (more or less)
+
 ;; helm
 (and
  (global-set-key (kbd "M-x") #'helm-M-x)
  (global-set-key (kbd "C-x C-f") #'helm-find-files)
  (helm-mode 1))  ; Start helm automatically
 ;; key chord
+;; 'key-chord-define-local function is used in mode hooks below.  These are global definitions here.
 (and
  (key-chord-mode 1)
- (key-chord-define-global "pq" "{\n\n}\C-p\t")
  (key-chord-define-global "fj" #'iy-go-up-to-char)
  (key-chord-define-global "fk" #'iy-go-to-char-backward))
-
-;;; General keybindings
+;; General keybindings
 (and
  (fset 'sort-buffer-by-name  ; Create function cell and assign it to key chord
        "\M-2\M-x Buffer-menu-sort")
  (global-set-key (kbd "C-c 2") #'sort-buffer-by-name)) ; sort buffer by name
-;(global-set-key (kbd "M-s") #'query-replace-regexp)    ; regex query replace
 (global-set-key (kbd "<f1>") #'shell-command)          ; shell command
 (global-set-key (kbd "<select>") #'move-end-of-line)   ; <end> -> end of line
 (global-set-key (kbd "C-c C-g") #'magit-status)        ; Invoke magit-status screen, from which all magit commands are available
-;; ibuffer (better than the default buffer screen)
-(global-set-key (kbd "C-x C-b") #'ibuffer)
+(global-set-key (kbd "C-x C-b") #'ibuffer)  ; Use ibuffer instead of default buffer list
 
-;;; Enable some commands
-(put 'narrow-to-defun  'disabled nil)  ;
-(put 'narrow-to-page   'disabled nil)  ; Narrowing
-(put 'narrow-to-region 'disabled nil)  ;
-
-;;;;;;;;;;;;;;;; Hooks and Hook Functions
-;;; Hooks
-;;
+;;; Macros and Hooks
 ;; Common C/C++ hooks. This hook will be run for many c-like languages,
 ;; but these keybindings may be overridden by defining local bindings in
 ;; a lower keymap for a given language. See 'https://www.masteringemacs.org/article/mastering-key-bindings-emacs'
 ;; for a discussion of this topic.
+;;
+;; TODO - Since my list of hook functions is always growing, I would like to move the hooks and hook functions
+;;        into a list and then use something like mapcar to apply the add-hook function to everything in the list.
+;;
 (add-hook 'c-mode-common-hook #'c-style-lang-hook-func)
 (add-hook 'c++-mode-hook #'cpp-hook-func)
 (add-hook 'python-mode-hook #'python-hook-func)
@@ -162,25 +161,38 @@ Emacs server will delegate the call to `load-my-theme' properly."
 (add-hook 'lisp-mode-hook #'lisp-settings)
 (add-hook 'sh-mode-hook #'bash-hook-func)
 (add-hook 'projectile-mode-hook #'projectile-hook-func)
+(add-hook 'text-mode-hook #'text-hook-func)
+(add-hook 'org-mode-hook #'org-hook-func)
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
-;;; Custom Hook Functions
+(defun my-insert-date-time ()
+  (interactive)
+  (insert (format-time-string "%m-%d-%Y %H:%M:%S")))
+
+(defun my-insert-date ()
+  (interactive)
+  (insert (format-time-string "%A, %b %d, %Y")))
+
+;;; Custom Hook functions
 (defun c-style-lang-hook-func ()
   "Run these commands for all c-like languages."
   (superword-mode -1)  ; treat underscore-separated words as a single word?
   (subword-mode t)     ; treat camelCase words as separate words?
+  (key-chord-define-local "pq" "{\n\n}\C-p\t")
   (c-set-offset 'case-label '+) ; indent case statements in a switch block
   (show-paren-mode t)
   (which-function-mode)
   (yas-reload-all)
+  (yas-minor-mode)
+  (flycheck-mode)
   (local-set-key (kbd "C-c o") #'ff-find-other-file)
   (local-set-key (kbd "C-c c") #'insert-triplet)
   (local-set-key (kbd "C-c d") #'debug-comment)
   (local-set-key (kbd "C-c f") #'func-header)
   (local-set-key (kbd "C-c n") #'get-class-name)
-  (global-set-key (kbd "C-c i") #'imenu))
+  (local-set-key (kbd "C-c i") #'imenu))
 
 (defun cpp-hook-func ()
-  "Run these commands specifically for c++-mode."
   ;; Found this indentation info at: https://lists.gnu.org/archive/html/help-gnu-emacs/2013-03/msg00335.html
   ;; By issuing the following command, you can see what indentation vars are set to:
   ;;   M-x set-variable RET c-echo-syntactic-information-p RET t RET
@@ -189,19 +201,17 @@ Emacs server will delegate the call to `load-my-theme' properly."
   ;; Add some keywords to to C++ mode
   (font-lock-add-keywords 'c++-mode
                           '(("nullptr" . font-lock-keyword-face)
-                            ("constexpr" . font-lock-keyword-face)))
-  ; enable C++11 support
-  (add-hook 'c++-mode-hook (lambda () (setf flycheck-gcc-language-standard "c++14"))))
-
+                            ("constexpr" . font-lock-keyword-face))))
 
 (defun lisp-settings ()
-  "Evaluate this code when Lisp major modes are enabled.  Currently, we
+  "Code to be evaluated when lisp major modes are enabled.  Currently, we
 enable eldoc-mode."
   ;; This function probably does not need to be run for the slime hook, as
   ;; these functions and others are already included in that mode.
   (eldoc-mode)
   (yas-reload-all)
   (show-paren-mode t)
+  (yas-minor-mode)
   (local-set-key (kbd "C-m") #'newline-and-indent)
   (local-set-key (kbd "C-c c") #'insert-triplet))
 
@@ -210,7 +220,7 @@ enable eldoc-mode."
   (setq-default indent-tabs-mode nil)  ; use spaces, not tabs
   (setf tab-width 4)
   (yas-reload-all)
-  (show-paren-mode t)
+  (yas-minor-mode)
   (local-set-key (kbd "C-c c") #'insert-triplet)
   (local-set-key (kbd "C-c d") #'debug-comment)
   (local-set-key (kbd "C-c f") #'func-header))
@@ -220,17 +230,25 @@ enable eldoc-mode."
   (message "Welcome to shell script mode. Grrrrr!!")
   (yas-reload-all)
   (show-paren-mode t)
+  (yas-minor-mode)
   (local-set-key (kbd "C-c c") #'insert-triplet)
   (local-set-key (kbd "C-c d") #'debug-comment))
 
-(defun flycheck-hook-func()
-  ; recommends use of gcc over clang on this page:  http://wiki.opencog.org/w/Flycheck_help#Configuration
-  (setq-default flycheck-disabled-checkers
-                (append flycheck-disabled-checkers
-                        '(c/c++-clang))))
+(defun text-hook-func()
+  "These settings will be applied to anything using text-mode.  Org-mode is
+based on text-mode, so these settings affect that as well."
+  (local-set-key (kbd "C-c c d") #'my-insert-date-time)
+  (local-set-key (kbd "C-c c t") #'my-insert-date)
+  (auto-fill-mode t)
+  (setf fill-column 95)
+  (yas-minor-mode))
 
-(defun projectile-hook-func()
-  (local-set-key (kbd "C-c C-x f") #'helm-projectile-find-file-dwim))
+(defun org-hook-func()
+  "These are orgmode-specific settings."
+  (setf org-log-done 'time))  ; timestamp when TODO item marked as DONE
+
+(defun json-hook-func()
+  (flycheck-mode))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
