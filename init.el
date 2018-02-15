@@ -22,7 +22,9 @@
 (create-sql-buffer)
 
 ;;; Ensure the Emacs server is running
-(unless (fboundp 'server-running-p)
+(unless (and
+         (fboundp 'server-running-p)
+         (server-running-p))
   (server-start))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
