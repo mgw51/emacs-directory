@@ -68,22 +68,26 @@
             (progn
               (setq compiler "$(CXX)")
               (setq compiler-flags "$(CXXFLAGS)")
-              (setq file-suff ".c++")
-              (insert "CXX = g++ -std=c++11\n"
+              (setq file-suff ".cpp")
+              (insert "CXX = g++ -std=c++17\n"
                       "CXXFLAGS = -Wall -Wextra -pedantic -c -g\n")))
-          (insert "LDFLAGS = \n"
+          (insert "LDFLAGS = \n\n"
+
+                  "SRC=$(wildcard *" file-suff ")\n"
+                  "OBJ=$(SRC:" file-suff "=.o)\n"
                   "target = " target "\n\n"
                   
+                  ".PHONY: all\n"
                   "all: $(target)\n\n"
                   
                   ".PHONY: clean\n"
                   "clean:\n"
-                  "\t$(RM) *.o $(target)\n\n"
+                  "\t$(RM) $(OBJ) $(target)\n\n"
                   
-                  "$(target): *.o\n"
-                  "\t" compiler " -o$@ $^ $(LDFLAGS)\n\n"
+                  "$(target): $(OBJ)\n"
+                  "\t" compiler " -o$@ $< $(LDFLAGS)\n\n"
                   
-                  "%.o: %" file-suff "\n"
+                  "%.o: $(SRC)\n"
                   "\t" compiler " " compiler-flags " $<\n"))))))
 
 (provide 'cpp-funcs)
