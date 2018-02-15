@@ -96,8 +96,8 @@
       inhibit-splash-screen t
       inferior-lisp-program "/usr/bin/sbcl"  ; Slime: Default lisp
       slime-contribs '(slime-fancy)  ; Slime: slime-fancy loads pretty much everything
-      visible-bell t                ; Flash mode-bar instead of ringing system bell
-      enable-remote-dir-locals t)   ; Allow emacs to search remote directory trees for .dir-locals.el files.
+      visible-bell t)               ; Flash mode-bar instead of ringing system bell
+;      enable-remote-dir-locals t)   ; Allow emacs to search remote directory trees for .dir-locals.el files.
 
 ;; Loading themes: Must be performed differently depending on whether this
 ;; is a daemonized server or a stand-alone instance.  For more info, see:
