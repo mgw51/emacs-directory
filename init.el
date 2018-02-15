@@ -22,8 +22,9 @@
 (create-sql-buffer)
 
 ;;; Ensure the Emacs server is running
-(unless (server-running-p)
+(unless (fboundp 'server-running-p)
   (server-start))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Customizations
 
@@ -78,11 +79,12 @@
   (when (fboundp mode)
     (funcall mode -1)))
 
-;; Enable some commands
+;;; Enable some commands
 (put 'narrow-to-defun  'disabled nil)  ;
 (put 'narrow-to-page   'disabled nil)  ; Narrowing
 (put 'narrow-to-region 'disabled nil)  ;
 
+;;; General Customizations
 (when (not (display-graphic-p))
     (setf linum-format "%d "))      ; add space between line numbers and buffer text
 (setq-default indent-tabs-mode nil) ; indent with spaces only
@@ -92,7 +94,8 @@
       inhibit-splash-screen t
       inferior-lisp-program "/usr/bin/sbcl"  ; Slime: Default lisp
       slime-contribs '(slime-fancy)  ; Slime: slime-fancy loads pretty much everything
-      visible-bell t)               ; Flash mode-bar instead of ringing system bell
+      visible-bell t                ; Flash mode-bar instead of ringing system bell
+      enable-remote-dir-locals t)   ; Allow emacs to search remote directory trees for .dir-locals.el files.
 
 ;; Loading themes: Must be performed differently depending on whether this
 ;; is a daemonized server or a stand-alone instance.  For more info, see:
@@ -100,25 +103,6 @@
 ;; (if (daemonp)
 ;;     (add-hook 'after-make-frame-functions #'load-my-theme)
 ;;   (load-my-theme))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Directory Local Variables
-
-(when (string= system-name "development2")
-  (dir-locals-set-class-variables
-   'sensacloud-api
-   '((c++-mode . ((flycheck-c/c++-gcc-executable . "/usr/bin/gcc-6")
-                  (flycheck-gcc-include-path . ("/home/mwood/git/sensacloudapi/src/include/"))))))
-  (dir-locals-set-class-variables
-   'catch-test
-   '((c++-mode . ((flycheck-c/c++-gcc-executable . "/usr/bin/gcc-6")
-                  (flycheck-gcc-include-path . ("/home/mwood/git/unit-testing-trial-with-Catch/include/"))
-                                        ;                (flycheck-gcc-args . ())
-                  (flycheck-gcc-language-standard . "-std=c++11")
-                  (flycheck-gcc-pedantic . t)
-                  (flycheck-gcc-warnings . ("-Wall" "-Wextra"))))))
-  (dir-locals-set-directory-class "/home/mwood/git/sensacloudapi/" 'sensacloud-api)
-  (dir-locals-set-directory-class "/home/mwood/git/unit-testing-trial-with-Catch/" 'catch-test))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Global Key Map and Bindings
