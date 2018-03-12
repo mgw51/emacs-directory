@@ -151,9 +151,9 @@
 (add-hook 'org-mode-hook #'org-hook-func)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
-(defun my-insert-date-time ()
+(defun my-insert-time ()
   (interactive)
-  (insert (format-time-string "%m-%d-%Y %H:%M:%S")))
+  (insert (format-time-string "%H:%M:%S")))
 
 (defun my-insert-date ()
   (interactive)
@@ -223,8 +223,8 @@ enable eldoc-mode."
 (defun text-hook-func()
   "These settings will be applied to anything using text-mode.  Org-mode is
 based on text-mode, so these settings affect that as well."
-  (local-set-key (kbd "C-c c d") #'my-insert-date-time)
-  (local-set-key (kbd "C-c c t") #'my-insert-date)
+  (local-set-key (kbd "C-c c t") #'my-insert-time)
+  (local-set-key (kbd "C-c c d") #'my-insert-date)
   (auto-fill-mode t)
   (setf fill-column 95)
   (yas-minor-mode))
