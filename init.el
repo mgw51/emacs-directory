@@ -21,12 +21,6 @@
 ;; Create an SQL scratch buffer
 (create-sql-buffer)
 
-;;; Ensure the Emacs server is running
-(unless (and
-         (fboundp 'server-running-p)
-         (server-running-p))
-  (server-start))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Customizations
 
