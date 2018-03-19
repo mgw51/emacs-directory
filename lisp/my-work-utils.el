@@ -1,5 +1,15 @@
-;;;; file: my-work-utils.el
-;;;; Desc: Contains some utility and helper functions useful at work.
+;;;; my-work-utils.el --- Some useful functions
+;;;; Commentary:
+;;;;    Contains some utility and helper functions useful at work.
+;;;; Code:
+
+(defun my-insert-time ()
+  (interactive)
+  (insert (format-time-string "%H:%M:%S")))
+
+(defun my-insert-date ()
+  (interactive)
+  (insert (format-time-string "%A, %b %d, %Y")))
 
 (defun guid-clean (start end)
   "Replace colons (:) with hyphens (-), and set the region to upper case."
@@ -19,5 +29,8 @@
                 (get-buffer-create "*sql*"))
                (sql-mode)
                (linum-mode -1)
-               (set-display-table-slot standard-display-table 'wrap ?\ )  ; Sets line-wrap character to space ( ) instead of backslash (\)
+               (set-display-table-slot standard-display-table 'wrap ?\ )  ; Sets line-wrap character to space ( ) instead of backslash (\): makes life easier with terminal
                (insert "--\n-- Use this buffer for SQL snippets\n--\n\n")))))
+
+(provide 'my-work-utils)
+;;; my-work-utils.el ends here
