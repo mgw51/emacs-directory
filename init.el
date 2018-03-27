@@ -21,6 +21,8 @@
 ;; Create an SQL scratch buffer
 (create-sql-buffer)
 
+(setf vc-handled-backends nil)  ; Eliminates "Argument Error" issues with built-in vc package.
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Customizations
 
