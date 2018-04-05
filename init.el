@@ -46,8 +46,7 @@
     (ensure-packages-installed package-list)))
 
 ;;; Load libraries and packages.
-(dolist (cool-thing '(php-mode               ; this resides in my lisp folder
-                      python-mode
+(dolist (cool-thing '(python-mode
                       select-comment-by-lang ; one of my functions
                       cpp-funcs              ; my c/c++ helper functions
                       iy-go-to-char
