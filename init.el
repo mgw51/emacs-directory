@@ -21,12 +21,6 @@
 ;; Create an SQL scratch buffer
 (create-sql-buffer)
 
-;;; Ensure the Emacs server is running
-(unless (and
-         (fboundp 'server-running-p)
-         (server-running-p))
-  (server-start))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Customizations
 
@@ -52,8 +46,7 @@
     (ensure-packages-installed package-list)))
 
 ;;; Load libraries and packages.
-(dolist (cool-thing '(php-mode               ; this resides in my lisp folder
-                      python-mode
+(dolist (cool-thing '(python-mode
                       select-comment-by-lang ; one of my functions
                       cpp-funcs              ; my c/c++ helper functions
                       iy-go-to-char
