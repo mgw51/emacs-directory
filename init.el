@@ -231,7 +231,8 @@ based on text-mode, so these settings affect that as well."
 
 (defun org-hook-func()
   "These are orgmode-specific settings."
-  (setf org-log-done 'time))  ; timestamp when TODO item marked as DONE
+  (setf org-log-done 'time    ; timestamp when TODO item marked as DONE
+        org-latex-remove-logfiles nil))
 
 (defun json-hook-func()
   (flycheck-mode))
@@ -254,6 +255,41 @@ based on text-mode, so these settings affect that as well."
    (quote
     (docker-tramp dockerfile-mode yaml-mode abyss-theme magit flycheck yasnippet key-chord python-mode helm iy-go-to-char)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
+ '(safe-local-variable-values
+   (quote
+    ((eval let*
+           ((project-root
+             (file-truename
+              (locate-dominating-file default-directory ".dir-locals.el")))
+            (warnings
+             (quote
+              ("all" "extra" "shadow" "non-virtual-dtor")))
+            (include-list
+             (list
+              (concat project-root "include")
+              (concat project-root "build/googletest-src/googlemock/include")
+              (concat project-root "build/googletest-src/googletest/include")
+              (concat project-root "test"))))
+           (set
+            (make-local-variable
+             (quote flycheck-clang-include-path))
+            include-list)
+           (set
+            (make-local-variable
+             (quote flycheck-clang-warnings))
+            warnings)
+           (set
+            (make-local-variable
+             (quote flycheck-gcc-include-path))
+            include-list)
+           (set
+            (make-local-variable
+             (quote flycheck-gcc-warnings))
+            warnings)
+           (set
+            (make-local-variable
+             (quote flycheck-cppcheck-include-path))
+            include-list)))))
  '(vc-annotate-background "#202020")
  '(vc-annotate-color-map
    (quote

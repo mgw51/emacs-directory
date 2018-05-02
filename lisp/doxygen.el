@@ -11,7 +11,8 @@
 ;;; "Public" Functions
 ;;;
 (defun doxygen-function-template (&optional number-args)
-  "Insert doxygen function documentation template at point."
+  "Insert doxygen function documentation template at point.
+If NUMBER-ARGS is specified, insert that number of param fields into the template."
   (interactive "*P")  ; `*' for error on readonly buffer
   (if (null number-args)
       (setq number-args 0)  ; provice a default value if an argument was not passed
@@ -105,6 +106,7 @@
      (build-string (1- num) arg))))
 
 (defun build--arg-string (num)
+  "Build a string containing NUM number of doxygen 'param' fields."
   (when (and (not (null num))
          (> num 0))
     (concat

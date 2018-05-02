@@ -1,15 +1,13 @@
-;;;; cpp-funcs.el
-;;;; Written: 8/2015
-;;;; By:      Matt
-;;;;
-;;;; Some useful functions, mostly for cpp, although the include-guard func
-;;;; is also great for c.
-;;;;
+;;;; cpp-funcs.el --- Provide some functions useful when programming in C++ and C
+;;;; Commentary:
+;;;;   Some useful functions, mostly for cpp, although the include-guard func
+;;;;   is also great for c.
+;;;; Code:
 
 (defun func-header ()
-  "This function prints a standard header for a c++ function,
-   which consists of: a triplet, first line contains a line of
-   stars, second line is function name, third line is empty."
+  "This function prints a standard header for a c++ function.
+The header consists of: three comment lines; first line contains a line of
+stars, second line is function name, third line is empty."
   (interactive)
   (save-excursion
     (set-mark (point))
@@ -28,7 +26,7 @@
   (setf header-name (split-string (buffer-name) "\\."))
   (when (string-match "^\\(h\\|hpp\\)$" (cadr header-name))
     (defvar guard-name)
-    (setf guard-name (concat "_" (upcase (first header-name))
+    (setf guard-name (concat "_" (upcase (car header-name))
 			     "_" (upcase (car (last header-name)))
 			     "_" (substring (secure-hash 'sha1 (number-to-string (float-time))) 0 8)
 			     "_"))
@@ -39,14 +37,16 @@
 
 
 (defun get-class-name ()
-  "Extract the class name from the filename.  Takes everything before the file extension and uses
- that as the class name."
+  "Extract the class name from the filename.
+Takes everything before the file extension and uses that as the class name."
   (interactive)
   (indent-according-to-mode)
-  (insert (first (split-string (buffer-name) "\\."))))
+  (insert (car (split-string (buffer-name) "\\."))))
 
 (defun create-basic-makefile (target lang)
-  "Create a basic Makefile template which uses most common flags."
+  "Create a basic Makefile and use the most common flags.
+TARGET is the binary output name, LANG is the programming language used,
+since the source files can be either C or C++."
   (interactive "sExecutable name: \nsLanguage (c, c++, or cpp): ")
   (if (not (or
             (string= (downcase lang) "c")
@@ -91,3 +91,4 @@
                   "\t" compiler " " compiler-flags " $<\n"))))))
 
 (provide 'cpp-funcs)
+;;; cpp-funcs.el ends here
