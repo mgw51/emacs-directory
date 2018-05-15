@@ -73,8 +73,6 @@ since the source files can be either C or C++."
                       "CXXFLAGS = -Wall -Wextra -pedantic -c -g\n")))
           (insert "LDFLAGS = \n\n"
 
-                  "SRC=$(wildcard *" file-suff ")\n"
-                  "OBJ=$(SRC:" file-suff "=.o)\n"
                   "target = " target "\n\n"
                   
                   ".PHONY: all\n"
@@ -82,13 +80,13 @@ since the source files can be either C or C++."
                   
                   ".PHONY: clean\n"
                   "clean:\n"
-                  "\t$(RM) $(OBJ) $(target)\n\n"
+                  "\t$(RM) *.o $(target)\n\n"
                   
-                  "$(target): $(OBJ)\n"
-                  "\t" compiler " -o$@ $< $(LDFLAGS)\n\n"
+                  "$(target): *.o\n"
+                  "\t" compiler " -o$@ $^ $(LDFLAGS)\n\n"
                   
-                  "%.o: $(SRC)\n"
-                  "\t" compiler " " compiler-flags " $<\n"))))))
+                  "%.o: %" file-suff "\n"
+                  "\t" compiler " " compiler-flags " $^\n"))))))
 
 (provide 'cpp-funcs)
 ;;; cpp-funcs.el ends here
