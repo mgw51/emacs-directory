@@ -15,14 +15,6 @@
   (normal-top-level-add-to-load-path '("."))     ; add current directory to load path
   (normal-top-level-add-subdirs-to-load-path))   ; recursively add subdirectories to load path
 
-;; Load my lisp files
-(load-library "my-work-utils.el")
-
-;; Create an SQL scratch buffer
-(create-sql-buffer)
-
-(setf vc-handled-backends nil)  ; Eliminates "Argument Error" issues with built-in vc package.
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Customizations
 
@@ -40,6 +32,7 @@
                         key-chord
                         yasnippet
                         flycheck
+                        flycheck-rtags
                         magit
 			abyss-theme
                         dockerfile-mode
@@ -57,10 +50,18 @@
                       key-chord              ; map chord combinations to regular key-pairs pressed simultaneously
                       yasnippet              ; snippet functionality
                       flycheck               ; flycheck package for syntax checking on the fly
+                      flycheck-rtags
                       magit
-                      doxygen)               ; my own simple doxygen template insert library
+                      doxygen                ; my own simple doxygen template insert library
+                      my-work-utils)         ; utilities file
                     t)
   (funcall 'require cool-thing))
+(if (locate-library "rtags")
+    (progn
+      (require 'rtags)
+      (setf rtags-path "/usr/local/bin")
+      (rtags-enable-standard-keybindings)))
+
 ;;; User Interface
 
 ;; Turn ON some UI elements
@@ -82,6 +83,8 @@
 (put 'narrow-to-region 'disabled nil)  ;
 
 ;;; General Customizations
+;; Create an SQL scratch buffer
+(create-sql-buffer)
 (when (not (display-graphic-p))
     (setf linum-format "%d "))      ; add space between line numbers and buffer text
 (setq-default indent-tabs-mode nil) ; indent with spaces only
@@ -90,8 +93,9 @@
       backup-directory-alist nil    ; we don't need a backup directory
       inhibit-splash-screen t
       inferior-lisp-program "/usr/bin/sbcl"  ; Slime: Default lisp
-      slime-contribs '(slime-fancy)  ; Slime: slime-fancy loads pretty much everything
-      visible-bell t)               ; Flash mode-bar instead of ringing system bell
+      slime-contribs '(slime-fancy) ; Slime: slime-fancy loads pretty much everything
+      visible-bell t                ; Flash mode-bar instead of ringing system bell
+      vc-handled-backends nil)      ; Eliminates "Argument Error" issues with built-in vc package.
 ;      enable-remote-dir-locals t)   ; Allow emacs to search remote directory trees for .dir-locals.el files.
 
 ;; Loading themes: Must be performed differently depending on whether this
@@ -145,6 +149,7 @@
 (add-hook 'text-mode-hook #'text-hook-func)
 (add-hook 'org-mode-hook #'org-hook-func)
 (add-hook 'after-init-hook #'global-flycheck-mode)
+(add-hook 'find-file-hook 'my-find-proper-mode)  ; finds proper major mode for *.h files.
 
 (defun my-insert-time ()
   (interactive)
@@ -166,6 +171,7 @@
   (yas-reload-all)
   (yas-minor-mode)
   (flycheck-mode)
+  (rtags-start-process-unless-running)
   (local-set-key (kbd "C-c o") #'ff-find-other-file)
   (local-set-key (kbd "C-c c") #'insert-triplet)
   (local-set-key (kbd "C-c d") #'debug-comment)
