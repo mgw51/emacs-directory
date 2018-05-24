@@ -40,8 +40,8 @@
     (if (use-region-p)
       ;; Use the active region
       (let ((blob (buffer-substring begin end))
-            (db-string (concat "\\1 " char " [DEBUG]\\2")))
-        (setf blob (replace-regexp-in-string "\\(^.*[[:alnum:]].*\\)\\(\n\\)" db-string blob))
+            (db-string (concat "\\1  " char " [DEBUG]\\2")))
+        (setf blob (replace-regexp-in-string "\\(^.*[[:graph:]].*\\)\\(\n\\)" db-string blob))
         (save-excursion
           (delete-region begin end)
           (goto-char begin)
