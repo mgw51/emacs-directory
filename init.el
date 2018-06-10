@@ -268,6 +268,98 @@ based on text-mode, so these settings affect that as well."
             (include-list
              (list
               (concat project-root "include")
+              (concat project-root "catch"))))
+           (set
+            (make-local-variable
+             (quote flycheck-clang-include-path))
+            include-list)
+           (set
+            (make-local-variable
+             (quote flycheck-clang-warnings))
+            warnings)
+           (set
+            (make-local-variable
+             (quote flycheck-gcc-include-path))
+            include-list)
+           (set
+            (make-local-variable
+             (quote flycheck-gcc-warnings))
+            warnings)
+           (set
+            (make-local-variable
+             (quote flycheck-cppcheck-include-path))
+            include-list))
+     (eval let*
+           ((project-root
+             (file-truename
+              (locate-dominating-file default-directory ".dir-locals.el")))
+            (warnings
+             (quote
+              ("all" "extra" "shadow" "non-virtual-dtor")))
+            (include-list
+             (list
+              (concat project-root "include"))))
+           (set
+            (make-local-variable
+             (quote flycheck-clang-include-path))
+            include-list)
+           (set
+            (make-local-variable
+             (quote flycheck-clang-warnings))
+            warnings)
+           (set
+            (make-local-variable
+             (quote flycheck-gcc-include-path))
+            include-list)
+           (set
+            (make-local-variable
+             (quote flycheck-gcc-warnings))
+            warnings)
+           (set
+            (make-local-variable
+             (quote flycheck-cppcheck-include-path))
+            include-list))
+     (eval let*
+           ((project-root
+             (file-truename
+              (locate-dominating-file default-directory ".dir-locals.el")))
+            (warnings
+             (quote
+              ("all" "extra" "shadow" "non-virtual-dtor")))
+            (include-list
+             (list
+              (concat project-root "include")
+              (concat project-root "test"))))
+           (set
+            (make-local-variable
+             (quote flycheck-clang-include-path))
+            include-list)
+           (set
+            (make-local-variable
+             (quote flycheck-clang-warnings))
+            warnings)
+           (set
+            (make-local-variable
+             (quote flycheck-gcc-include-path))
+            include-list)
+           (set
+            (make-local-variable
+             (quote flycheck-gcc-warnings))
+            warnings)
+           (set
+            (make-local-variable
+             (quote flycheck-cppcheck-include-path))
+            include-list))
+     (eval let*
+           ((project-root
+             (file-truename
+              (locate-dominating-file default-directory ".dir-locals.el")))
+            (warnings
+             (quote
+              ("all" "extra" "shadow" "non-virtual-dtor")))
+            (include-list
+             (list
+              (concat project-root "include")
               (concat project-root "build/googletest-src/googlemock/include")
               (concat project-root "build/googletest-src/googletest/include")
               (concat project-root "test"))))
