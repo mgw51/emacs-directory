@@ -238,7 +238,7 @@ based on text-mode, so these settings affect that as well."
 (defun json-hook-func()
   (flycheck-mode))
 
-(setf custom-file (concat default-directory "init-custom.el"))
+(setf custom-file (concat default-directory "lisp/init-custom.el"))
 (load custom-file)
 
 ;;; init.el ends here
