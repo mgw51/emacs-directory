@@ -31,6 +31,7 @@
         (forward-line 1)        
         (end-of-line))))
 
+
 (defun debug-comment (&optional begin end)
   "If a region is selected, insert a debug comment at the end of every line.  Only works if the entire
  line is part of the region.  If no region is active, insert a single debug comment at the end of the
@@ -51,6 +52,20 @@
 	(end-of-line)
 	(insert "  " char " [DEBUG]")
 	(forward-line 1)))))
+
+
+(defun remove-debug (start end)
+  "Remove debug comments from region START to END"
+  (interactive"*r")
+  (save-excursion
+    (if (not (use-region-p))
+        (setf start (point-min)
+              end (point-max)))
+    (let ((region-text (replace-regexp-in-string "^.*// \\[DEBUG\\].*\n" "" (buffer-substring start end))))
+      (delete-region start end)
+      (goto-char start)
+      (insert region-text))))
+      
 
 ;; Declare and fill the hash table.
 (setf *lang-suffixes* (make-hash-table :test 'equal))
