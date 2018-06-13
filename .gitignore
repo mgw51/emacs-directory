@@ -7,4 +7,5 @@ tramp
 recentf
 url/
 TAGS*
-server/
+server/init-custom.el
+lisp/init-custom.el
