@@ -239,6 +239,16 @@ based on text-mode, so these settings affect that as well."
   (flycheck-mode))
 
 (setf custom-file (concat default-directory "lisp/init-custom.el"))
+(unless (file-exists-p custom-file)
+  (with-temp-file custom-file
+    (insert ";;; init-custom.el --- Dedicated file into which Emacs packages may freely write configuration data.\n"
+            ";;;\n"
+            ";;; Commentary:\n"
+            ";;;   Provide this file to prevent packages from writing their config data into my `init.el' file.\n"
+            ";;; Code:\n"
+            ";;;\n\n\n"
+
+            ";;; init-custom.el ends here.\n")))
 (load custom-file)
 
 ;;; init.el ends here
