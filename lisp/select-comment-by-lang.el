@@ -61,10 +61,9 @@
     (if (not (use-region-p))
         (setf start (point-min)
               end (point-max)))
-    (let ((region-text (replace-regexp-in-string "^.*// \\[DEBUG\\].*\n" "" (buffer-substring start end))))
-      (delete-region start end)
-      (goto-char start)
-      (insert region-text))))
+    (goto-char start)
+    (while (re-search-forward "^.*// \\[DEBUG\\].*\n" end t)
+      (replace-match ""))))
       
 
 ;; Declare and fill the hash table.
