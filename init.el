@@ -238,7 +238,7 @@ based on text-mode, so these settings affect that as well."
 (defun json-hook-func()
   (flycheck-mode))
 
-(setf custom-file (concat default-directory "lisp/init-custom.el"))
+(setf custom-file "~/.emacs.d/lisp/init-custom.el")
 (unless (file-exists-p custom-file)
   (with-temp-file custom-file
     (insert ";;; init-custom.el --- Dedicated file into which Emacs packages may freely write configuration data.\n"
