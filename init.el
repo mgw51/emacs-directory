@@ -191,8 +191,7 @@
                             ("constexpr" . font-lock-keyword-face))))
 
 (defun lisp-settings ()
-  "Code to be evaluated when lisp major modes are enabled.  Currently, we
-enable eldoc-mode."
+  "Code to be evaluated when Lisp major modes are enabled."
   ;; This function probably does not need to be run for the slime hook, as
   ;; these functions and others are already included in that mode.
   (eldoc-mode)

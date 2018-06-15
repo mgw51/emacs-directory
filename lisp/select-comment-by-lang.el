@@ -1,18 +1,20 @@
-;;;; select-comment-by-lang.el
-;;;; Written: 8/2015
-;;;; By:      Matt
-;;;;
-;;;; This file selects the appropriate type of comment character to
-;;;; use based on the language extension of the buffer.  For instance,
-;;;; '#' will be used for bash-like languages, python, and perl.
-;;;;
-;;;; TODO: If there is no extension in the filename from which to choose
-;;;;       a language, fall back on the major mode of the buffer.
-;;;;
-;;;; TODO: Tweak debug-comment to work better with region selection.
-;;;;       Sometimes there is no newline char at the end of a line
-;;;;       and a debug comment is not added.
-(provide 'select-comment-by-lang)
+;;; select-comment-by-lang.el --- Guess which comment character to use based on programming language.
+;;;
+;;; Commentary:
+;;;
+;;; This file selects the appropriate type of comment character to
+;;; use based on the language extension of the buffer.  For instance,
+;;; '#' will be used for bash-like languages, python, and perl.
+;;;
+;;; TODO: If there is no extension in the filename from which to choose
+;;;       a language, fall back on the major mode of the buffer.
+;;;
+;;; TODO: Tweak debug-comment to work better with region selection.
+;;;       Sometimes there is no newline char at the end of a line
+;;;       and a debug comment is not added.
+;;; Originally written in 8/2015
+;;;
+;;; Code:
 
 (defun get--buffer-suffix ()
   "If there is a file extension, strip the '.' and return the extension."
@@ -67,17 +69,21 @@
       
 
 ;; Declare and fill the hash table.
-(setf *lang-suffixes* (make-hash-table :test 'equal))
-(puthash "py" "#" *lang-suffixes*)
-(puthash "sh" "#" *lang-suffixes*)
-(puthash "bash" "#" *lang-suffixes*)
-(puthash "pl" "#" *lang-suffixes*)
-(puthash "perl" "#" *lang-suffixes*)
-(puthash "cpp" "//" *lang-suffixes*)
-(puthash "hpp" "//" *lang-suffixes*)
-(puthash "c" "//" *lang-suffixes*)
-(puthash "h" "//" *lang-suffixes*)
-(puthash "lisp" ";" *lang-suffixes*)
-(puthash "el" ";" *lang-suffixes*)
-(puthash "elisp" ";" *lang-suffixes*)
-(puthash "emacs" ";" *lang-suffixes*)
+(and (defvar *lang-suffixes* (make-hash-table :test 'equal)
+       "This hash table maps common programming language file extensions with that languages' associated comment character(s).")
+     (puthash "py" "#" *lang-suffixes*)
+     (puthash "sh" "#" *lang-suffixes*)
+     (puthash "bash" "#" *lang-suffixes*)
+     (puthash "pl" "#" *lang-suffixes*)
+     (puthash "perl" "#" *lang-suffixes*)
+     (puthash "cpp" "//" *lang-suffixes*)
+     (puthash "hpp" "//" *lang-suffixes*)
+     (puthash "c" "//" *lang-suffixes*)
+     (puthash "h" "//" *lang-suffixes*)
+     (puthash "lisp" ";" *lang-suffixes*)
+     (puthash "el" ";" *lang-suffixes*)
+     (puthash "elisp" ";" *lang-suffixes*)
+     (puthash "emacs" ";" *lang-suffixes*))
+
+(provide 'select-comment-by-lang)
+;;; select-comment-by-lang.el ends here
