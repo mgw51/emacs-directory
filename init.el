@@ -152,10 +152,12 @@
 (add-hook 'find-file-hook 'my-find-proper-mode)  ; finds proper major mode for *.h files.
 
 (defun my-insert-time ()
+  "Insert at point the current time in 'HH:MM:SS' format."
   (interactive)
   (insert (format-time-string "%H:%M:%S")))
 
 (defun my-insert-date ()
+  "Insert at point the current date in 'DoW, Month Day, Year' format."
   (interactive)
   (insert (format-time-string "%A, %b %d, %Y")))
 
@@ -180,7 +182,8 @@
   (local-set-key (kbd "C-c i") #'imenu))
 
 (defun cpp-hook-func ()
-  ;; Found this indentation info at: https://lists.gnu.org/archive/html/help-gnu-emacs/2013-03/msg00335.html
+  "Do some cpp things."
+  ;; Found this info at: https://lists.gnu.org/archive/html/help-gnu-emacs/2013-03/msg00335.html
   ;; By issuing the following command, you can see what indentation vars are set to:
   ;;   M-x set-variable RET c-echo-syntactic-information-p RET t RET
   (c-set-offset 'inclass '++)
@@ -232,7 +235,7 @@ based on text-mode, so these settings affect that as well."
 (defun org-hook-func()
   "These are orgmode-specific settings."
   (setf org-log-done 'time    ; timestamp when TODO item marked as DONE
-        org-latex-remove-logfiles nil))
+        org-latex-remove-logfiles t))
 
 (defun json-hook-func()
   (flycheck-mode))
