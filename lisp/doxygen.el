@@ -1,12 +1,11 @@
-;;;; file:     doxygen.el
-;;;; author:   matt wood
-;;;; desc:     Provide some basic commands for use with doxygen.
-;;;;
-;;;; TODO:
-;;;;     1.  Detect language of current buffer at major mode load time? (C++, C, D, Java, etc)
-;;;;     
-
-
+;;; doxygen.el --- Provide some basic commands for use with doxygen.
+;;;
+;;; Commentary:
+;;;
+;;; TODO:
+;;;     1.  Detect language of current buffer at major mode load time? (C++, C, D, Java, etc)
+;;;     2.  Write function to convert Sensaphone function docs to Doxygen docs.
+;;;
 ;;; Code:
 ;;; "Public" Functions
 ;;;
@@ -97,8 +96,8 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
 
 ;;; Helper functions
 ;;;
-(defun build-string (num arg)
-  "Build a string that repeats the ARGument NUMber times."
+(defun build-string (arg num)
+  "Build a string that repeats ARG NUM times."
   (if (eq num 0)
       nil
     (concat
@@ -110,7 +109,7 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
   (when (and (not (null num))
          (> num 0))
     (concat
-     (build-string num "/// @param   \n")
+     (build-string "/// @param   \n" num)
      "///\n")))
 
 (provide 'doxygen)
