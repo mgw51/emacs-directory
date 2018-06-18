@@ -37,7 +37,8 @@
 			abyss-theme
                         dockerfile-mode
                         docker-tramp
-                        yaml-mode)))
+                        yaml-mode
+                        company-mode)))
     (ensure-packages-installed package-list)))
 
 ;;; Load libraries and packages.
@@ -53,7 +54,8 @@
                       flycheck-rtags
                       magit
                       doxygen                ; my own simple doxygen template insert library
-                      my-work-utils)         ; utilities file
+                      my-work-utils          ; utilities file
+                      company-mode)
                     t)
   (funcall 'require cool-thing))
 (if (locate-library "rtags")
