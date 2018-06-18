@@ -258,7 +258,7 @@ based on text-mode, so these settings affect that as well."
 
 ;; Load rig-specific config files
 (when (file-directory-p "~/.emacs.d/lisp/config")
-  (dolist (file (directory-files "~/.emacs.d/lisp/config")
+  (dolist (file (directory-files "~/.emacs.d/lisp/config" 'full-path)
                 (message "Finished loading custom config files"))
     (unless (file-directory-p file)
       (load file))))
