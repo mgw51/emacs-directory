@@ -38,7 +38,7 @@
                         dockerfile-mode
                         docker-tramp
                         yaml-mode
-                        company-mode)))
+                        company)))
     (ensure-packages-installed package-list)))
 
 ;;; Load libraries and packages.
@@ -55,7 +55,7 @@
                       magit
                       doxygen                ; my own simple doxygen template insert library
                       my-work-utils          ; utilities file
-                      company-mode)
+                      company)
                     t)
   (funcall 'require cool-thing))
 (if (locate-library "rtags")
