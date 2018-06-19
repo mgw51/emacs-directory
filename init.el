@@ -34,6 +34,7 @@
                         flycheck
                         flycheck-rtags
                         magit
+                        zerodark-theme
 			abyss-theme
                         dockerfile-mode
                         docker-tramp
