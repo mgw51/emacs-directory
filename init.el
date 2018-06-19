@@ -71,6 +71,7 @@
 (dolist (mode '(tool-bar-mode
                 menu-bar-mode
                 horizontal-scroll-bar-mode
+                scroll-bar-mode
                 tooltip-mode))
   (when (fboundp mode)
     (funcall mode -1)))
