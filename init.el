@@ -58,11 +58,6 @@
                       company)
                     t)
   (funcall 'require cool-thing))
-(if (locate-library "rtags")
-    (progn
-      (require 'rtags)
-      (setf rtags-path "/usr/local/bin")
-      (rtags-enable-standard-keybindings)))
 
 ;;; User Interface
 
