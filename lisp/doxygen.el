@@ -90,8 +90,10 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
     (insert "///@{")
     (newline-and-indent)
     (goto-char end)
-    (end-of-line)
-    (insert "\n///@}")
+    (end-of-line 2)
+    (electric-newline-and-maybe-indent)
+    (insert "///@}")
+    (setf end (point))
     (c-indent-line-or-region)))
 
 ;;; Helper functions
