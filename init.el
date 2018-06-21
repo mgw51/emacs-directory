@@ -32,10 +32,10 @@
                         key-chord
                         yasnippet
                         flycheck
-                        flycheck-rtags
                         magit
                         zerodark-theme
 			abyss-theme
+                        solarized-theme
                         dockerfile-mode
                         docker-tramp
                         yaml-mode
@@ -52,7 +52,6 @@
                       key-chord              ; map chord combinations to regular key-pairs pressed simultaneously
                       yasnippet              ; snippet functionality
                       flycheck               ; flycheck package for syntax checking on the fly
-                      flycheck-rtags
                       magit
                       doxygen                ; my own simple doxygen template insert library
                       my-work-utils          ; utilities file
