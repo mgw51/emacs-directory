@@ -63,7 +63,8 @@
 
 ;; Turn ON some UI elements
 (dolist (mode '(global-linum-mode     ; display line numbers in margin
-                column-number-mode))  ; display line and column number in status bar
+                column-number-mode    ; display line and column number in status bar
+                show-paren-mode))     ; this should be on all the time
   (funcall mode 1))
 
 ;; Turn OFF some UI elements
@@ -81,8 +82,7 @@
 (put 'narrow-to-region 'disabled nil)  ;
 
 ;;; General Customizations
-;; Create an SQL scratch buffer
-(create-sql-buffer)
+(create-sql-buffer)                 ; create an SQL scratch buffer
 (when (not (display-graphic-p))
     (setf linum-format "%d "))      ; add space between line numbers and buffer text
 (setq-default indent-tabs-mode nil) ; indent with spaces only
@@ -93,7 +93,9 @@
       inferior-lisp-program "/usr/bin/sbcl"  ; Slime: Default lisp
       slime-contribs '(slime-fancy) ; Slime: slime-fancy loads pretty much everything
       visible-bell t                ; Flash mode-bar instead of ringing system bell
-      vc-handled-backends nil)      ; Eliminates "Argument Error" issues with built-in vc package.
+      vc-handled-backends nil       ; Eliminates "Argument Error" issues with built-in vc package.
+      abbrev-file-name "~/.emacs.d/abbrev_defs"
+      save-abbrevs 'silent)         ; Abbrev-mode settings
 ;      enable-remote-dir-locals t)   ; Allow emacs to search remote directory trees for .dir-locals.el files.
 
 ;; Loading themes: Must be performed differently depending on whether this
@@ -166,7 +168,6 @@
   (subword-mode t)     ; treat camelCase words as separate words?
   (key-chord-define-local "pq" "{\n\n}\C-p\t")
   (c-set-offset 'case-label '+) ; indent case statements in a switch block
-  (show-paren-mode t)
   (which-function-mode)
   (yas-reload-all)
   (yas-minor-mode)

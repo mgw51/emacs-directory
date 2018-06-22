@@ -1,0 +1,6 @@
+# key: quote
+# name: Create an org-mode quote block.
+# --
+#+BEGIN_QUOTE
+$0
+#+END_QUOTE
