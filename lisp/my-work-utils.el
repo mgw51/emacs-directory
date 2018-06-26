@@ -88,5 +88,30 @@ case we call `helm-projectile-find-file' instead."
   (let ((enable-local-variables :all))
     (hack-dir-local-variables-non-file-buffer)))
 
+
+(defun insert-curly-braces (start end)
+  "Enclose the region beginning at START and extending through END
+within curly braces.  The braces will be the sole glyph placed on
+their respctive lines above and below the region."
+  (interactive "*r")
+  (if (region-active-p)
+      (let ((text (buffer-substring start end)))
+        (goto-char start)
+        (delete-region start end)
+        (insert "{\n" text "}\n")
+        (indent-region start (point))
+        (end-of-line 0))
+    (let ((start (point))
+          (end)
+          (jump-location))
+      (insert "{\n")
+      (setq jump-location (point))
+      (insert "\n}\n")
+      (setq end (point))
+      (goto-char jump-location)
+      (indent-region start end)
+      (funcall indent-line-function))))
+  
+
 (provide 'my-work-utils)
 ;;; my-work-utils.el ends here
