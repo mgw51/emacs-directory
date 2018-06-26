@@ -25,6 +25,14 @@
   (package-initialize)   ; Initialize it
   (setf package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 			   ("melpa-stable" . "https://stable.melpa.org/packages/")))
+
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+  (eval-when-compile
+    (add-to-list 'load-path "/home/mwood/.emacs.d/elpa/")
+    (require 'use-package))
+  
   (require 'ensure-packages-installed)  ; custom function that installs missing packages listed below
   (let ((package-list '(iy-go-to-char
                         helm
