@@ -104,7 +104,7 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
       nil
     (concat
      arg
-     (build-string (1- num) arg))))
+     (build-string arg (1- num)))))
 
 (defun build--arg-string (num)
   "Build a string containing NUM number of doxygen 'param' fields."
