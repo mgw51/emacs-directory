@@ -90,9 +90,12 @@ case we call `helm-projectile-find-file' instead."
 
 
 (defun insert-curly-braces (start end)
-  "Enclose the region beginning at START and extending through END
-within curly braces.  The braces will be the sole glyph placed on
-their respctive lines above and below the region."
+  "Enclose the region defined by START and END within curly braces.
+The braces will be the sole glyph placed on their respctive lines
+above and below the region.  If the region is not active, simply
+open three lines, place the braces each on their own line and place
+the cursor on the line between.  In both cases, indent according to
+current major-mode."
   (interactive "*r")
   (if (region-active-p)
       (let ((text (buffer-substring start end)))
