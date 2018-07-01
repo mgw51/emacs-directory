@@ -9,6 +9,7 @@
 ;;; Code:
 ;;; "Public" Functions
 ;;;
+
 (defun doxygen-function-template (&optional number-args)
   "Insert doxygen function documentation template at point.
 If NUMBER-ARGS is specified, insert that number of param fields into the template."
@@ -41,6 +42,7 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
   (forward-line)
   (end-of-line))
 
+
 (defun doxygen-class-template ()
   "Insert doxygen class documentatoin template at point."
   (interactive "*")
@@ -60,6 +62,7 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
       (indent-region start end)))
   (forward-line)
   (end-of-line))
+
 
 (defun doxygen-struct-template ()
   "Insert doxygen struct documentation template at point."
@@ -81,6 +84,7 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
   (forward-line)
   (end-of-line))
 
+
 (defun doxygen-create-group (start end)
   ""
   (interactive "*r")
@@ -96,6 +100,21 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
     (setf end (point))
     (c-indent-line-or-region)))
 
+
+(defun doxygen-forward-block ()
+  "Jump forward by one doxygen comment block."
+  (interactive)
+  (push-mark)
+  )
+
+
+(defun doxygen-backward-block ()
+  "Jump backward by one doxygen comment block."
+  (interactive)
+  (push-mark)
+  )
+
+
 ;;; Helper functions
 ;;;
 (defun build-string (arg num)
@@ -106,13 +125,42 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
      arg
      (build-string arg (1- num)))))
 
+
 (defun build--arg-string (num)
   "Build a string containing NUM number of doxygen 'param' fields."
   (when (and (not (null num))
-         (> num 0))
+             (> num 0))
     (concat
      (build-string "/// @param   \n" num)
      "///\n")))
 
-(provide 'doxygen)
+
+;;;###autoload
+(define-minor-mode doxygen-mode
+  "Toggle doxygen minor mode.
+Doxygen minor mode provides convenience functions for several common
+documentation tasks such as creating function templates, class and struct
+templates.
+
+To view keybindings for `doxygen-mode', view help for the mode, `C-h m'.
+Or type the prefix keys and summon help: `C-c C-d C-h'"
+  :init-value nil
+  :lighter " doxy"
+  :keymap
+  (let ((doxy-map (make-sparse-keymap)))
+    (define-key doxy-map (kbd "C-c C-d") nil)  ; prefix
+    (define-key doxy-map (kbd "C-c C-d f") #'doxygen-function-template)
+    (define-key doxy-map (kbd "C-c C-d s") #'doxygen-struct-template)
+    (define-key doxy-map (kbd "C-c C-d c") #'doxygen-class-template)
+    (define-key doxy-map (kbd "C-c C-d g") #'doxygen-create-group)
+    (define-key doxy-map (kbd "C-c C-d n") #'doxygen-forward-block)
+    (define-key doxy-map (kbd "C-c C-d p") #'doxygen-backward-block)
+    doxy-map))
+
+
+;;;###autoload
+(add-hook 'c-mode-common-hook 'doxygen-mode)
+
+
+(provide 'doxygen-mode)
 ;;; doxygen.el ends here
