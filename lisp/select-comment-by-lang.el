@@ -57,15 +57,17 @@
 
 
 (defun remove-debug (start end)
-  "Remove debug comments from region START to END"
+  "Remove debug comments from region START to END."
   (interactive"*r")
   (save-excursion
-    (if (not (use-region-p))
+    (save-restriction
+      (when (not (use-region-p))
         (setf start (point-min)
               end (point-max)))
-    (goto-char start)
-    (while (re-search-forward "^.*// \\[DEBUG\\].*\n" end t)
-      (replace-match ""))))
+      (goto-char start)
+      (narrow-to-region start end)
+      (while (re-search-forward "^.*// \\[DEBUG\\].*\n" end t)
+        (replace-match "")))))
       
 
 ;; Declare and fill the hash table.
