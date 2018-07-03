@@ -12,7 +12,7 @@
 
 (defun doxygen-function-template (&optional number-args)
   "Insert doxygen function documentation template at point.
-If NUMBER-ARGS is specified, insert that number of param fields into the template."
+If NUMBER-ARGS is specified, insert that number of param fields into the templatne."
   (interactive "*P")  ; `*' for error on readonly buffer
   (if (null number-args)
       (setq number-args 0)  ; provice a default value if an argument was not passed
@@ -148,13 +148,12 @@ Or type the prefix keys and summon help: `C-c C-d C-h'"
   :lighter " doxy"
   :keymap
   (let ((doxy-map (make-sparse-keymap)))
-    (define-key doxy-map (kbd "C-c C-d") nil)  ; prefix
-    (define-key doxy-map (kbd "C-c C-d f") #'doxygen-function-template)
-    (define-key doxy-map (kbd "C-c C-d s") #'doxygen-struct-template)
-    (define-key doxy-map (kbd "C-c C-d c") #'doxygen-class-template)
-    (define-key doxy-map (kbd "C-c C-d g") #'doxygen-create-group)
-    (define-key doxy-map (kbd "C-c C-d n") #'doxygen-forward-block)
-    (define-key doxy-map (kbd "C-c C-d p") #'doxygen-backward-block)
+    (define-key doxy-map (kbd "C-c C-w f") #'doxygen-function-template)
+    (define-key doxy-map (kbd "C-c C-w s") #'doxygen-struct-template)
+    (define-key doxy-map (kbd "C-c C-w c") #'doxygen-class-template)
+    (define-key doxy-map (kbd "C-c C-w g") #'doxygen-create-group)
+    (define-key doxy-map (kbd "C-c C-w n") #'doxygen-forward-block)
+    (define-key doxy-map (kbd "C-c C-w p") #'doxygen-backward-block)
     doxy-map))
 
 
