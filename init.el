@@ -36,9 +36,16 @@
 ;;;
 (use-package select-comment-by-lang
   ; Load for various programming languages
-  :config)
+  :config
+  (add-hook 'c-mode-common-hook (lambda()
+                                  (local-set-key (kbd "C-c c") #'insert-triplet)
+                                  (local-set-key (kbd "C-c d") #'debug-comment))))
 
-(use-package doxygen-mode)
+(use-package cpp-funcs
+  :config
+  (add-hook 'c-mode-common-hook (lambda()
+                                  (local-set-key (kbd "C-c f") #'func-header)
+                                  (local-set-key (kbd "C-c n") #'get-class-name))))
 
 (use-package my-work-utils
   ; Things like timestamps and other nice-to-haves
@@ -58,13 +65,14 @@
   (key-chord-mode 1)
   (key-chord-define-global "fj" #'iy-go-up-to-char)
   (key-chord-define-global "fk" #'iy-go-to-char-backward)
-  (add-hook 'cc-mode-hook (lambda()
-                            (key-chord-define-local "pq" "{\n\n}\C-p\t")))
+  (add-hook 'c-mode-common-hook (lambda()
+                                  (key-chord-define-local "pq" #'insert-curly-braces)))
   (add-hook 'sh-mode-hook (lambda()
-                            (key-chord-define-local "pq" "{\n\n}\C-p\t"))))
+                            (key-chord-define-local "pq" #'insert-curly-braces))))
   
 (use-package helm
   :ensure t
+  :demand t
   :pin melpa-stable
   :bind (("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files))
@@ -120,9 +128,15 @@
   ; This theme is terminal-safe
   :ensure t
   :pin melpa-stable)
-(use-package solarized-theme)
-(use-package abyss-theme)
+;; (use-package solarized-theme)
+;; (use-package abyss-theme)
 
+
+(use-package doxygen-mode
+  :demand t
+  :commands
+  doxygen-function-template doxygen-struct-template doxygen-class-template
+  doxygen-create-group doxygen-backward-block doxygen-forward-block)
 
 ;;; Toggle UI Elements
 ;;;
@@ -212,7 +226,6 @@
   "Run these commands for all c-like languages."
   (superword-mode -1)  ; treat underscore-separated words as a single word?
   (subword-mode t)     ; treat camelCase words as separate words?
-  (key-chord-define-local "pq" "{\n\n}\C-p\t")
   (c-set-offset 'case-label '+) ; indent case statements in a switch block
   (which-function-mode)
 ;  (yas-reload-all)
@@ -221,10 +234,6 @@
   (when (fboundp 'rtags-mode)
     (rtags-start-process-unless-running))
   (local-set-key (kbd "C-c o") #'ff-find-other-file)
-  (local-set-key (kbd "C-c c") #'insert-triplet)
-  (local-set-key (kbd "C-c d") #'debug-comment)
-  (local-set-key (kbd "C-c f") #'func-header)
-  (local-set-key (kbd "C-c n") #'get-class-name)
   (local-set-key (kbd "C-c i") #'imenu))
 
 (defun cpp-hook-func ()
