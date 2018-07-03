@@ -20,6 +20,7 @@
   "If there is a file extension, strip the '.' and return the extension."
   (car (last (split-string (buffer-name) "\\."))))
 
+;;;###autoload
 (defun insert-triplet ()
   "Insert comment-triplet appropriate to language in which we are writing."
   (interactive)
@@ -34,6 +35,7 @@
         (end-of-line))))
 
 
+;;;###autoload
 (defun debug-comment (&optional begin end)
   "If a region is selected, insert a debug comment at the end of every line.  Only works if the entire
  line is part of the region.  If no region is active, insert a single debug comment at the end of the
@@ -56,6 +58,7 @@
 	(forward-line 1)))))
 
 
+;;;###autoload
 (defun remove-debug (start end)
   "Remove debug comments from region START to END."
   (interactive"*r")
