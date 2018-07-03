@@ -24,73 +24,126 @@
   (require 'package)     ; Pull in package.el
   (package-initialize)   ; Initialize it
   (setf package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-			   ("melpa-stable" . "https://stable.melpa.org/packages/")))
+			   ("melpa-stable" . "https://stable.melpa.org/packages/"))))
 
-  (unless (package-installed-p 'use-package)
+(eval-when-compile
+  (when (not (package-installed-p 'use-package))
     (package-refresh-contents)
     (package-install 'use-package))
-  (eval-when-compile
-    (add-to-list 'load-path "/home/mwood/.emacs.d/elpa/")
-    (require 'use-package))
+  (require 'use-package))
+
+;;; Personal libraries
+;;;
+(use-package select-comment-by-lang
+  ; Load for various programming languages
+  :config)
+
+(use-package doxygen-mode)
+
+(use-package my-work-utils
+  ; Things like timestamps and other nice-to-haves
+  :config
+  (create-sql-buffer))
+
+;;; Installed packages
+;;;
+(use-package iy-go-to-char
+  :ensure t
+  :pin melpa-stable
+  :commands iy-go-up-to-char iy-go-to-char-backward)
+
+(use-package key-chord
+  :ensure t
+  :config
+  (key-chord-mode 1)
+  (key-chord-define-global "fj" #'iy-go-up-to-char)
+  (key-chord-define-global "fk" #'iy-go-to-char-backward)
+  (add-hook 'cc-mode-hook (lambda()
+                            (key-chord-define-local "pq" "{\n\n}\C-p\t")))
+  (add-hook 'sh-mode-hook (lambda()
+                            (key-chord-define-local "pq" "{\n\n}\C-p\t"))))
   
-  (require 'ensure-packages-installed)  ; custom function that installs missing packages listed below
-  (let ((package-list '(iy-go-to-char
-                        helm
-                        python-mode
-                        key-chord
-                        yasnippet
-                        flycheck
-                        magit
-                        zerodark-theme
-			abyss-theme
-                        solarized-theme
-                        dockerfile-mode
-                        docker-tramp
-                        yaml-mode
-                        company)))
-    (ensure-packages-installed package-list)))
+(use-package helm
+  :ensure t
+  :pin melpa-stable
+  :bind (("M-x" . helm-M-x)
+         ("C-x C-f" . helm-find-files))
+  :config
+  (use-package helm-config)
+  (helm-mode 1))
 
-;;; Load libraries and packages.
-(dolist (cool-thing '(python-mode
-                      select-comment-by-lang ; one of my functions
-                      cpp-funcs              ; my c/c++ helper functions
-                      iy-go-to-char
-                      helm                   ; helm provides excellent incremental completion
-                      helm-config
-                      key-chord              ; map chord combinations to regular key-pairs pressed simultaneously
-                      yasnippet              ; snippet functionality
-                      flycheck               ; flycheck package for syntax checking on the fly
-                      magit
-                      doxygen                ; my own simple doxygen template insert library
-                      my-work-utils          ; utilities file
-                      company)
-                    t)
-  (funcall 'require cool-thing))
+(use-package yasnippet
+  :ensure t
+  :pin melpa-stable)
 
-;;; User Interface
+(use-package flycheck
+  :ensure t
+  :pin melpa-stable)
 
-;; Turn ON some UI elements
-(dolist (mode '(global-linum-mode     ; display line numbers in margin
-                column-number-mode    ; display line and column number in status bar
-                show-paren-mode))     ; this should be on all the time
-  (funcall mode 1))
+(use-package magit
+  :ensure t
+  :pin melpa-stable
+  :config
+  ;; Invoke magit-status screen
+  (global-set-key (kbd "C-c C-g") #'magit-status))
 
-;; Turn OFF some UI elements
-(dolist (mode '(tool-bar-mode
-                menu-bar-mode
-                horizontal-scroll-bar-mode
-                scroll-bar-mode
-                tooltip-mode))
-  (when (fboundp mode)
-    (funcall mode -1)))
+(use-package python-mode)
+
+(use-package dockerfile-mode
+  :ensure t
+  :pin melpa-stable)
+
+(use-package docker-tramp
+  :ensure t
+  :pin melpa-stable)
+
+(use-package yaml-mode
+  :ensure t
+  :pin melpa-stable)
+
+(use-package company
+  :ensure t
+  :pin melpa-stable)
+
+;;; Built-ins
+;;;
+(use-package smartparens-mode
+  :config
+  (let ((set-bindings (lambda()
+                        (sp-base-key-bindings 'sp))))
+    (add-hook emacs-lisp-mode-hook #'set-bindings)
+    (add-hook lisp-mode-hook #'set-bindings)))
+
+;;; Themes
+;;;
+(use-package zerodark-theme
+  ; This theme is terminal-safe
+  :ensure t
+  :pin melpa-stable)
+(use-package solarized-theme)
+(use-package abyss-theme)
+
+
+;;; Toggle UI Elements
+;;;
+(dolist (mode-value '((global-linum-mode . 1)  ; display line numbers in margin
+                      (column-number-mode . 1) ; display line and col num in mode line
+                      (show-paren-mode . 1)    ; this should be on all the time
+                      (tool-bar-mode . -1)
+                      (menu-bar-mode . -1)
+                      (horizontal-scroll-bar-mode . -1)
+                      (scroll-bar-mode . -1)
+                      (tooltip-mode . -1)))
+  (when (fboundp (car mode-value))
+    (funcall (car mode-value) (cdr mode-value))))
 
 ;;; Enable some commands
+;;;
 (put 'narrow-to-defun  'disabled nil)  ;
 (put 'narrow-to-page   'disabled nil)  ; Narrowing
 (put 'narrow-to-region 'disabled nil)  ;
 
 ;;; General Customizations
-(create-sql-buffer)                 ; create an SQL scratch buffer
 (when (not (display-graphic-p))
     (setf linum-format "%d "))      ; add space between line numbers and buffer text
 (setq-default indent-tabs-mode nil) ; indent with spaces only
@@ -117,25 +170,10 @@
 ;;; Global Key Map and Bindings
 ;;; Anything that should happen across all modes (more or less)
 
-;; helm
-(and
- (global-set-key (kbd "M-x") #'helm-M-x)
- (global-set-key (kbd "C-x C-f") #'helm-find-files)
- (helm-mode 1))  ; Start helm automatically
-;; key chord
-;; 'key-chord-define-local function is used in mode hooks below.  These are global definitions here.
-(and
- (key-chord-mode 1)
- (key-chord-define-global "fj" #'iy-go-up-to-char)
- (key-chord-define-global "fk" #'iy-go-to-char-backward))
 ;; General keybindings
-(and
- (fset 'sort-buffer-by-name  ; Create function cell and assign it to key chord
-       "\M-2\M-x Buffer-menu-sort")
- (global-set-key (kbd "C-c 2") #'sort-buffer-by-name)) ; sort buffer by name
 (global-set-key (kbd "<f1>") #'shell-command)          ; shell command
 (global-set-key (kbd "<select>") #'move-end-of-line)   ; <end> -> end of line
-(global-set-key (kbd "C-c C-g") #'magit-status)        ; Invoke magit-status screen, from which all magit commands are available
+
 (global-set-key (kbd "C-x C-b") #'ibuffer)  ; Use ibuffer instead of default buffer list
 
 ;;; Macros and Hooks
@@ -177,10 +215,11 @@
   (key-chord-define-local "pq" "{\n\n}\C-p\t")
   (c-set-offset 'case-label '+) ; indent case statements in a switch block
   (which-function-mode)
-  (yas-reload-all)
+;  (yas-reload-all)
   (yas-minor-mode)
   (flycheck-mode)
-  (rtags-start-process-unless-running)
+  (when (fboundp 'rtags-mode)
+    (rtags-start-process-unless-running))
   (local-set-key (kbd "C-c o") #'ff-find-other-file)
   (local-set-key (kbd "C-c c") #'insert-triplet)
   (local-set-key (kbd "C-c d") #'debug-comment)
@@ -205,17 +244,16 @@
   ;; This function probably does not need to be run for the slime hook, as
   ;; these functions and others are already included in that mode.
   (eldoc-mode)
-  (yas-reload-all)
+;  (yas-reload-all)
   (show-paren-mode t)
   (yas-minor-mode)
-  (local-set-key (kbd "C-m") #'newline-and-indent)
-  (local-set-key (kbd "C-c c") #'insert-triplet))
+  (local-set-key (kbd "C-m") #'newline-and-indent))
 
 (defun python-hook-func ()
   "Some call me... Tim."
   (setq-default indent-tabs-mode nil)  ; use spaces, not tabs
   (setf tab-width 4)
-  (yas-reload-all)
+;  (yas-reload-all)
   (yas-minor-mode)
   (local-set-key (kbd "C-c c") #'insert-triplet)
   (local-set-key (kbd "C-c d") #'debug-comment)
@@ -224,7 +262,7 @@
 (defun bash-hook-func ()
   "To be run when we open a bash shell script."
   (message "Welcome to shell script mode. Grrrrr!!")
-  (yas-reload-all)
+;  (yas-reload-all)
   (show-paren-mode t)
   (yas-minor-mode)
   (local-set-key (kbd "C-c c") #'insert-triplet)
