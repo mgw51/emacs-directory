@@ -24,7 +24,8 @@
   (require 'package)     ; Pull in package.el
   (package-initialize)   ; Initialize it
   (setf package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-			   ("melpa-stable" . "https://stable.melpa.org/packages/"))))
+			   ("melpa-stable" . "https://stable.melpa.org/packages/")
+                           ("melpa" . "https://melpa.org/packages/"))))
 
 (eval-when-compile
   (when (not (package-installed-p 'use-package))
@@ -112,6 +113,11 @@
 (use-package company
   :ensure t
   :pin melpa-stable)
+
+(use-package restclient
+  :ensure t
+  :pin melpa)
+
 
 ;;; Built-ins
 ;;;
