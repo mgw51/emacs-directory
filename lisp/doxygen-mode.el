@@ -9,6 +9,7 @@
 ;;; Code:
 ;;; "Public" Functions
 ;;;
+(require 'cl)
 
 (defun doxygen-function-template (&optional number-args)
   "Insert doxygen function documentation template at point.
@@ -88,18 +89,39 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
 (defun doxygen-create-group (start end)
   ""
   (interactive "*r")
-  (save-excursion
-    (goto-char start)
-    (back-to-indentation)
-    (insert "///@{")
-    (newline-and-indent)
-    (goto-char end)
-    (end-of-line 2)
-    (electric-newline-and-maybe-indent)
-    (insert "///@}")
-    (setf end (point))
-    (c-indent-line-or-region)))
+  (let ((locations))
+    (save-excursion
+      (save-restriction
+        (if (use-region-p)
+            (setq locations (doxygen--create-group-region start end))
+          (setq locations (doxygen--create-group-point)))))
+    (destructuring-bind (insertion-point new-start new-end) locations
+      (goto-char insertion-point)
+      (indent-region new-start new-end))))
 
+
+(defun doxygen--create-group-point ()
+  (doxygen--group-text-insert nil))
+
+
+(defun doxygen--create-group-region (start end)
+  (narrow-to-region start end)
+  (let* ((text (delete-and-extract-region start end))
+         (insert-point (doxygen--group-text-insert text)))
+    (list insert-point start end)))
+
+
+(defun doxygen--group-text-insert (text-string)
+  (let ((start (point)))
+    (insert "/// @name   ")
+    (let ((insertion-point (point)))
+      (insert "\n/// @brief  \n///\n///@{\n")
+      (if text-string
+          (insert text-string)
+        (insert "\n"))
+      (insert "///@}")
+      (list insertion-point start (point)))))
+  
 
 (defun doxygen-forward-block ()
   "Jump forward by one doxygen comment block."
