@@ -114,11 +114,6 @@
   :ensure t
   :pin melpa-stable)
 
-(use-package restclient
-  :ensure t
-  :pin melpa)
-
-
 ;;; Built-ins
 ;;;
 (use-package smartparens-mode
