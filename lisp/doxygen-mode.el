@@ -9,7 +9,6 @@
 ;;; Code:
 ;;; "Public" Functions
 ;;;
-(require 'cl)
 
 (defun doxygen-function-template (&optional number-args)
   "Insert doxygen function documentation template at point.
@@ -87,28 +86,23 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
 
 
 (defun doxygen-create-group (start end)
-  ""
+  "Create a doxygen group prefaced with 'name' and 'brief' tags.
+
+When invoked on a region defined by START and END, wrap the region in the group tag.
+If the region is not active, simply open a group at point."
   (interactive "*r")
-  (let ((locations))
-    (save-excursion
-      (save-restriction
-        (if (use-region-p)
-            (setq locations (doxygen--create-group-region start end))
-          (setq locations (doxygen--create-group-point)))))
-    (destructuring-bind (insertion-point new-start new-end) locations
+  (let ((insertion-point)
+        (new-start)
+        (new-end))
+    (destructuring-bind (insertion-point new-start new-end)
+        (save-excursion
+          (if (use-region-p)
+              (save-restriction
+                (narrow-to-region start end)
+                (doxygen--group-text-insert (delete-and-extract-region start end)))
+            (doxygen--group-text-insert nil)))
       (goto-char insertion-point)
       (indent-region new-start new-end))))
-
-
-(defun doxygen--create-group-point ()
-  (doxygen--group-text-insert nil))
-
-
-(defun doxygen--create-group-region (start end)
-  (narrow-to-region start end)
-  (let* ((text (delete-and-extract-region start end))
-         (insert-point (doxygen--group-text-insert text)))
-    (list insert-point start end)))
 
 
 (defun doxygen--group-text-insert (text-string)
