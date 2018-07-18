@@ -38,13 +38,14 @@ not appear in helm's completion list."
 
 
 (require 'find-file)
+
 (defun my-find-proper-mode()
   "Flycheck does not seem to be smart enough to detect when a header file
 ending in '.h' is a c++ or c header file.   This function is a workaround
 for this problem.  I found it on SO: `https://stackoverflow.com/a/1016389/1456187'."
   (interactive)
   ;; only run this on '.h' files
-  (when (string-match "\\.h\\'" (buffer-file-name))
+  (when (string= "h" (file-name-extension (buffer-file-name)))
     (save-window-excursion
       (save-excursion
         (let* ((alist (append auto-mode-alist nil))  ;; use whatever auto-mode-alist has
