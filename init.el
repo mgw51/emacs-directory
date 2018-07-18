@@ -123,6 +123,11 @@
     (add-hook emacs-lisp-mode-hook #'set-bindings)
     (add-hook lisp-mode-hook #'set-bindings)))
 
+(use-package winner-mode
+  :demand t
+  :config
+  (winner-mode 1))
+
 ;;; Themes
 ;;;
 (use-package zerodark-theme
@@ -236,6 +241,7 @@
     (rtags-start-process-unless-running))
   (local-set-key (kbd "C-c o") #'ff-find-other-file)
   (local-set-key (kbd "C-c i") #'imenu))
+
 
 (defun cpp-hook-func ()
   "Do some cpp things."
