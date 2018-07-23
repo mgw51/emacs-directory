@@ -57,7 +57,6 @@
 ;;;
 (use-package iy-go-to-char
   :ensure t
-  :pin melpa-stable
   :commands iy-go-up-to-char iy-go-to-char-backward)
 
 (use-package key-chord
@@ -123,11 +122,6 @@
     (add-hook emacs-lisp-mode-hook #'set-bindings)
     (add-hook lisp-mode-hook #'set-bindings)))
 
-(use-package winner-mode
-  :demand t
-  :config
-  (winner-mode 1))
-
 ;;; Themes
 ;;;
 (use-package zerodark-theme
@@ -162,6 +156,7 @@
 (put 'narrow-to-defun  'disabled nil)  ;
 (put 'narrow-to-page   'disabled nil)  ; Narrowing
 (put 'narrow-to-region 'disabled nil)  ;
+(winner-mode 1)
 
 ;;; General Customizations
 (when (not (display-graphic-p))
