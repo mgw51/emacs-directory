@@ -95,7 +95,9 @@
   ;; Invoke magit-status screen
   (global-set-key (kbd "C-c C-g") #'magit-status))
 
-(use-package python-mode)
+(use-package python-mode
+  :ensure t
+  :pin melpa-stable)
 
 (use-package dockerfile-mode
   :ensure t
@@ -115,7 +117,8 @@
 
 ;;; Built-ins
 ;;;
-(use-package smartparens-mode
+(use-package smartparens
+  :ensure t
   :config
   (let ((set-bindings (lambda()
                         (sp-base-key-bindings 'sp))))
