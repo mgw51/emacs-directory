@@ -51,7 +51,8 @@
 (use-package my-work-utils
   ; Things like timestamps and other nice-to-haves
   :config
-  (create-sql-buffer))
+  (create-sql-buffer)
+  (global-set-key [f2] 'mw-toggle-selective-display))
 
 ;;; Installed packages
 ;;;

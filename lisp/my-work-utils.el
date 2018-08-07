@@ -119,5 +119,14 @@ current `major-mode'."
       (funcall indent-line-function))))
   
 
+(defun mw-toggle-selective-display (level)
+  "Wrap `set-selective-display' to allow us to toggle text 'folding'.
+If the optional prefix is set, then set the folding level to LEVEL, otherwise
+set LEVEL to 1."
+  (interactive "P")
+  (set-selective-display
+   (if selective-display nil (or level 1))))
+
+
 (provide 'my-work-utils)
 ;;; my-work-utils.el ends here
