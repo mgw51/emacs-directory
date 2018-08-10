@@ -1,10 +1,22 @@
-;;;; my-work-utils.el  --- Useful functions
+;;;; mw-utils.el  --- Useful functions
 ;;; Commentary:
-;;;    Contains some utility and helper functions useful at work.
+;;;    Contains some utility and helper functions useful at work and elsewhere.
 ;;; Code:
 ;;;
 
-(defun guid-clean (start end)
+(defun mw-insert-time ()
+  "Insert at point the current time in 'HH:MM:SS' format."
+  (interactive)
+  (insert (format-time-string "%H:%M:%S")))
+
+
+(defun mw-insert-date ()
+  "Insert at point the current date in 'DoW, Month Day, Year' format."
+  (interactive)
+  (insert (format-time-string "%A, %b %d, %Y")))
+
+
+(defun mw-guid-clean (start end)
   "Replace colons (:) with hyphens (-), and set the region to upper case.
 If a region is selected, operate on text between START and END."
   (interactive "r")
@@ -15,7 +27,7 @@ If a region is selected, operate on text between START and END."
     (upcase-region start end)))
 
 
-(defun create-sql-buffer ()
+(defun mw-create-sql-buffer ()
   "Create a scratch SQL buffer with some basic settings enabled."
   (interactive)
   (save-excursion
@@ -28,7 +40,7 @@ If a region is selected, operate on text between START and END."
                (insert "--\n-- Use this buffer for SQL snippets\n--\n\n")))))
 
 
-(defun load-cpp-mode ()
+(defun mw-load-cpp-mode ()
     "Cause `c++-mode' to be enabled in the current buffer.
 This is a work-around because helm does not appear to like enabling
 c++-mode using the `helm-Mx' function.  The `c++-mode' option does
@@ -39,7 +51,7 @@ not appear in helm's completion list."
 
 (require 'find-file)
 
-(defun my-find-proper-mode()
+(defun mw-find-proper-mode()
   "Flycheck does not seem to be smart enough to detect when a header file
 ending in '.h' is a c++ or c header file.   This function is a workaround
 for this problem.  I found it on SO: `https://stackoverflow.com/a/1016389/1456187'."
@@ -62,7 +74,7 @@ for this problem.  I found it on SO: `https://stackoverflow.com/a/1016389/145618
           (when mode (funcall mode)))))))
 
 
-(defun my-find-file (prefix)
+(defun mw-find-file (prefix)
     "Delegate the `find-file' request to the appropriate function.
 Call `helm-find-files' unless PREFIX arg is present, in which
 case we call `helm-projectile-find-file' instead."
@@ -83,14 +95,14 @@ case we call `helm-projectile-find-file' instead."
                              #'find-file))))
 
 
-(defun reload-dir-locals ()
+(defun mw-reload-dir-locals ()
   "Reload dir-locals.el for the current buffer."
   (interactive)
   (let ((enable-local-variables :all))
     (hack-dir-local-variables-non-file-buffer)))
 
 
-(defun insert-curly-braces (start end)
+(defun mw-insert-curly-braces (start end)
   "Enclose the region defined by START and END within curly braces.
 
 The braces will be the sole glyph placed on their respctive lines
@@ -128,5 +140,5 @@ set LEVEL to 1."
    (if selective-display nil (or level 1))))
 
 
-(provide 'my-work-utils)
-;;; my-work-utils.el ends here
+(provide 'mw-utils)
+;;; mw-utils.el ends here

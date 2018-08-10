@@ -48,10 +48,10 @@
                                   (local-set-key (kbd "C-c f") #'func-header)
                                   (local-set-key (kbd "C-c n") #'get-class-name))))
 
-(use-package my-work-utils
+(use-package mw-utils
   ; Things like timestamps and other nice-to-haves
   :config
-  (create-sql-buffer)
+  (mw-create-sql-buffer)
   (global-set-key [f2] 'mw-toggle-selective-display))
 
 ;;; Installed packages
@@ -67,9 +67,9 @@
   (key-chord-define-global "fj" #'iy-go-up-to-char)
   (key-chord-define-global "fk" #'iy-go-to-char-backward)
   (add-hook 'c-mode-common-hook (lambda()
-                                  (key-chord-define-local "pq" #'insert-curly-braces)))
+                                  (key-chord-define-local "pq" #'mw-insert-curly-braces)))
   (add-hook 'sh-mode-hook (lambda()
-                            (key-chord-define-local "pq" #'insert-curly-braces))))
+                            (key-chord-define-local "pq" #'mw-insert-curly-braces))))
   
 (use-package helm
   :ensure t
@@ -215,16 +215,6 @@
 (add-hook 'org-mode-hook #'org-hook-func)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (add-hook 'find-file-hook 'my-find-proper-mode)  ; finds proper major mode for *.h files.
-
-(defun my-insert-time ()
-  "Insert at point the current time in 'HH:MM:SS' format."
-  (interactive)
-  (insert (format-time-string "%H:%M:%S")))
-
-(defun my-insert-date ()
-  "Insert at point the current date in 'DoW, Month Day, Year' format."
-  (interactive)
-  (insert (format-time-string "%A, %b %d, %Y")))
 
 ;;; Custom Hook functions
 (defun c-style-lang-hook-func ()
