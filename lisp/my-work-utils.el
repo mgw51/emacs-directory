@@ -112,7 +112,7 @@ current `major-mode'."
           (jump-location))
       (insert "{\n")
       (setq jump-location (point))
-      (insert "\n}\n")
+      (insert "\n}")
       (setq end (point))
       (goto-char jump-location)
       (indent-region start end)
