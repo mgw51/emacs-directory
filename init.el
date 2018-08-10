@@ -214,7 +214,7 @@
 (add-hook 'text-mode-hook #'text-hook-func)
 (add-hook 'org-mode-hook #'org-hook-func)
 (add-hook 'after-init-hook #'global-flycheck-mode)
-(add-hook 'find-file-hook 'my-find-proper-mode)  ; finds proper major mode for *.h files.
+(add-hook 'find-file-hook 'mw-find-proper-mode)  ; finds proper major mode for *.h files.
 
 ;;; Custom Hook functions
 (defun c-style-lang-hook-func ()
@@ -277,8 +277,8 @@
 (defun text-hook-func()
   "These settings will be applied to anything using text-mode.  Org-mode is
 based on text-mode, so these settings affect that as well."
-  (local-set-key (kbd "C-c c t") #'my-insert-time)
-  (local-set-key (kbd "C-c c d") #'my-insert-date)
+  (local-set-key (kbd "C-c c t") #'mw-insert-time)
+  (local-set-key (kbd "C-c c d") #'mw-insert-date)
   (auto-fill-mode t)
   (setf fill-column 95)
   (yas-minor-mode))

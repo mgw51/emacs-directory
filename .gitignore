@@ -9,3 +9,6 @@ url/
 TAGS*
 lisp/init-custom.el
 
+bookmarks
+irony/
+lisp/config/
