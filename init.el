@@ -118,19 +118,20 @@
 
 ;;; Built-ins
 ;;;
-(use-package smartparens
-  :ensure t
-  :config
-  (let ((set-bindings (lambda()
-                        (sp-base-key-bindings 'sp))))
-    (add-hook emacs-lisp-mode-hook #'set-bindings)
-    (add-hook lisp-mode-hook #'set-bindings)))
+;; (use-package smartparens
+;;   :ensure t
+;;   :config
+;;   (let ((set-bindings (lambda()
+;;                         (sp-base-key-bindings 'sp))))
+;;     (add-hook emacs-lisp-mode-hook #'set-bindings)
+;;     (add-hook lisp-mode-hook #'set-bindings)))
 
 ;;; Themes
 ;;;
 (use-package zerodark-theme
   ; This theme is terminal-safe
   :ensure t
+  :demand t
   :pin melpa-stable)
 ;; (use-package solarized-theme)
 ;; (use-package abyss-theme)
@@ -250,7 +251,9 @@
   ;; Add some keywords to to C++ mode
   (font-lock-add-keywords 'c++-mode
                           '(("nullptr" . font-lock-keyword-face)
-                            ("constexpr" . font-lock-keyword-face))))
+                            ("constexpr" . font-lock-keyword-face)
+                            ("\<\(TBD\)" 1 font-lock-warning-face prepend)
+                            ("\<\(TODO\)" 1 font-lock-warning-face prepend))))
 
 (defun lisp-settings ()
   "Code to be evaluated when Lisp major modes are enabled."
