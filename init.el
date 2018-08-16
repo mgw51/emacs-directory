@@ -52,7 +52,9 @@
   ; Things like timestamps and other nice-to-haves
   :config
   (mw-create-sql-buffer)
-  (global-set-key [f2] 'mw-toggle-selective-display))
+  (global-set-key [f2] 'mw-toggle-selective-display)
+  (define-key text-mode-map (kbd "C-c w t") #'mw-insert-time)
+  (define-key text-mode-map (kbd "C-c w d") #'mw-insert-date))
 
 ;;; Installed packages
 ;;;
@@ -277,8 +279,6 @@
 (defun text-hook-func()
   "These settings will be applied to anything using text-mode.  Org-mode is
 based on text-mode, so these settings affect that as well."
-  (local-set-key (kbd "C-c c t") #'mw-insert-time)
-  (local-set-key (kbd "C-c c d") #'mw-insert-date)
   (auto-fill-mode t)
   (setf fill-column 95)
   (yas-minor-mode))
