@@ -16,9 +16,29 @@
 ;;;
 ;;; Code:
 
+;; Declare and fill the hash table.
+(and (defvar *lang-suffixes* (make-hash-table :test 'equal)
+       "This hash table maps common programming language file extensions with that language's associated comment character(s).")
+     (puthash "py" "#" *lang-suffixes*)
+     (puthash "sh" "#" *lang-suffixes*)
+     (puthash "bash" "#" *lang-suffixes*)
+     (puthash "pl" "#" *lang-suffixes*)
+     (puthash "perl" "#" *lang-suffixes*)
+     (puthash "cpp" "//" *lang-suffixes*)
+     (puthash "hpp" "//" *lang-suffixes*)
+     (puthash "c" "//" *lang-suffixes*)
+     (puthash "h" "//" *lang-suffixes*)
+     (puthash "lisp" ";" *lang-suffixes*)
+     (puthash "el" ";" *lang-suffixes*)
+     (puthash "elisp" ";" *lang-suffixes*)
+     (puthash "emacs" ";" *lang-suffixes*)
+     (puthash "sql" "--" *lang-suffixes*))
+
+
 (defun get--buffer-suffix ()
   "If there is a file extension, strip the '.' and return the extension."
   (car (last (split-string (buffer-name) "\\."))))
+
 
 ;;;###autoload
 (defun insert-triplet ()
@@ -31,15 +51,18 @@
           (activate-mark)
           (insert char ?\u000a char " " ?\u000a char)
           (indent-for-tab-command))
-        (forward-line 1)        
+        (forward-line 1)
         (end-of-line))))
 
 
 ;;;###autoload
-(defun debug-comment (begin end)
-  "If a region is selected, insert a debug comment at the end of every line.  Only works if the entire
- line is part of the region.  If no region is active, insert a single debug comment at the end of the
- current line."
+(defun debug-comment (&optional begin end)
+  "Insert debug comment at end of line.
+If a region is selected, insert a debug comment at the end of
+every line within the region defined by BEGIN through END.  This
+only works if the entire line is part of the region.  If no
+region is active, insert a single debug comment at the end of the
+current line."
   (interactive "r")
   (let ((char (gethash (get--buffer-suffix) *lang-suffixes*)))
     (if (use-region-p)
@@ -74,24 +97,7 @@
       (narrow-to-region start end)
       (while (re-search-forward "^.*// \\[DEBUG\\].*\n" end t)
         (replace-match "")))))
-      
 
-;; Declare and fill the hash table.
-(and (defvar *lang-suffixes* (make-hash-table :test 'equal)
-       "This hash table maps common programming language file extensions with that languages' associated comment character(s).")
-     (puthash "py" "#" *lang-suffixes*)
-     (puthash "sh" "#" *lang-suffixes*)
-     (puthash "bash" "#" *lang-suffixes*)
-     (puthash "pl" "#" *lang-suffixes*)
-     (puthash "perl" "#" *lang-suffixes*)
-     (puthash "cpp" "//" *lang-suffixes*)
-     (puthash "hpp" "//" *lang-suffixes*)
-     (puthash "c" "//" *lang-suffixes*)
-     (puthash "h" "//" *lang-suffixes*)
-     (puthash "lisp" ";" *lang-suffixes*)
-     (puthash "el" ";" *lang-suffixes*)
-     (puthash "elisp" ";" *lang-suffixes*)
-     (puthash "emacs" ";" *lang-suffixes*))
 
 (provide 'select-comment-by-lang)
 ;;; select-comment-by-lang.el ends here
