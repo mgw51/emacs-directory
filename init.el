@@ -227,8 +227,8 @@
   (which-function-mode)
 ;  (yas-reload-all)
   (yas-minor-mode)
-  (when (fboundp 'rtags-mode)
-    (rtags-start-process-unless-running))
+  ;; (when (fboundp 'rtags-mode)
+  ;;   (rtags-start-process-unless-running))
   (local-set-key (kbd "C-c o") #'ff-find-other-file)
   (local-set-key (kbd "C-c i") #'imenu))
 
