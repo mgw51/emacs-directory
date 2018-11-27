@@ -230,7 +230,8 @@
   ;; (when (fboundp 'rtags-mode)
   ;;   (rtags-start-process-unless-running))
   (local-set-key (kbd "C-c o") #'ff-find-other-file)
-  (local-set-key (kbd "C-c i") #'imenu))
+  (local-set-key (kbd "C-c i") #'imenu)
+  (font-lock-add-keywords nil '(("\\<\\(TBD\\|TODO\\|FIXME\\)" 1 font-lock-warning-face prepend))))
 
 
 (defun cpp-hook-func ()
@@ -243,9 +244,7 @@
   ;; Add some keywords to to C++ mode
   (font-lock-add-keywords 'c++-mode
                           '(("nullptr" . font-lock-keyword-face)
-                            ("constexpr" . font-lock-keyword-face)
-                            ("\<\(TBD\)" 1 font-lock-warning-face prepend)
-                            ("\<\(TODO\)" 1 font-lock-warning-face prepend))))
+                            ("constexpr" . font-lock-keyword-face))))
 
 (defun lisp-settings ()
   "Code to be evaluated when Lisp major modes are enabled."
