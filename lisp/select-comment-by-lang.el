@@ -36,7 +36,7 @@
 
 
 ;;;###autoload
-(defun debug-comment (&optional begin end)
+(defun debug-comment (begin end)
   "If a region is selected, insert a debug comment at the end of every line.  Only works if the entire
  line is part of the region.  If no region is active, insert a single debug comment at the end of the
  current line."
@@ -59,9 +59,12 @@
 
 
 ;;;###autoload
-(defun remove-debug (start end)
+(defun remove-debug (&optional start end)
   "Remove debug comments from region START to END."
-  (interactive"*r")
+  (interactive
+   (if (use-region-p) (list (region-beginning) (region-end))
+     (list (point-min) (point-max))))
+  (push-mark)
   (save-excursion
     (save-restriction
       (when (not (use-region-p))
