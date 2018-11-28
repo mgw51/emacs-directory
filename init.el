@@ -118,6 +118,10 @@
   :ensure t
   :pin melpa-stable)
 
+(use-package buttercup
+  :ensure t
+  :pin melpa-stable)
+
 ;;; Built-ins
 ;;;
 ;; (use-package smartparens
