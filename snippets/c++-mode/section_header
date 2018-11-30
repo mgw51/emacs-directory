@@ -1,0 +1,7 @@
+# key: secth
+# name: section_header
+# --
+//                                                ${1:$(make-string (string-width yas-text) ?\-)}
+//                                                ${1:Heading Name}
+//                                                ${1:$(make-string (string-width yas-text) ?\-)}
+$0
