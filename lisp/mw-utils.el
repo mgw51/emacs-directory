@@ -46,7 +46,7 @@ This is a work-around because helm does not appear to like enabling
 c++-mode using the `helm-Mx' function.  The `c++-mode' option does
 not appear in helm's completion list."
     (interactive)
-    (execute-extended-command t "c++-mode"))
+    (command-execute 'c++-mode))
 
 
 (require 'find-file)
