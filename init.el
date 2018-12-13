@@ -118,9 +118,9 @@
   :ensure t
   :pin "melpa-stable")
 
-(use-package sr-speedbar
-  :config
-  (setq speedbar-use-images nil))
+;; (use-package sr-speedbar
+;;   :config
+;;   (setq speedbar-use-images nil))
 
 (use-package buttercup
   :ensure t
