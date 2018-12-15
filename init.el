@@ -1,4 +1,4 @@
-;;; init.el -- My emacs init file.
+eeeeeeeeeeeeeeeeeeeeeeeeep;;; init.el -- My emacs init file.
 ;;; Commentary:
 ;;;     Some things.
 ;;;
@@ -71,7 +71,9 @@
   (add-hook 'c-mode-common-hook (lambda()
                                   (key-chord-define-local "pq" #'mw-insert-curly-braces)))
   (add-hook 'sh-mode-hook (lambda()
-                            (key-chord-define-local "pq" #'mw-insert-curly-braces))))
+                            (key-chord-define-local "pq" #'mw-insert-curly-braces)))
+  (add-hook 'cperl-mode (lambda ()
+                          (key-chord-define-local "pq" #'mw-insert-curly-braces))))
   
 (use-package helm
   :ensure t
@@ -115,6 +117,14 @@
   :pin melpa-stable)
 
 (use-package company
+  :ensure t
+  :pin melpa-stable)
+
+(use-package slime
+  :ensure t
+  :pin melpa-stable)
+
+(use-package slime-company
   :ensure t
   :pin melpa-stable)
 
@@ -212,6 +222,7 @@
 (add-hook 'python-mode-hook #'python-hook-func)
 (add-hook 'emacs-lisp-mode-hook #'lisp-settings)
 (add-hook 'lisp-mode-hook #'lisp-settings)
+(add-hook 'perl-mode-hook #'perl-settings)
 (add-hook 'sh-mode-hook #'bash-hook-func)
 (add-hook 'text-mode-hook #'text-hook-func)
 (add-hook 'org-mode-hook #'org-hook-func)
@@ -256,6 +267,13 @@
   (show-paren-mode t)
   (yas-minor-mode)
   (local-set-key (kbd "C-m") #'newline-and-indent))
+
+
+(defun perl-settings()
+  "Evaluate this stuff after perl mode has been started."
+  (setf tab-width 4)
+  (yas-minor-mode)
+  (local-set-key (kbd "C-c c") #'insert-triplet))
 
 (defun python-hook-func ()
   "Some call me... Tim."
