@@ -1,4 +1,4 @@
-eeeeeeeeeeeeeeeeeeeeeeeeep;;; init.el -- My emacs init file.
+;;; init.el -- My emacs init file.
 ;;; Commentary:
 ;;;     Some things.
 ;;;
