@@ -130,11 +130,14 @@
 
 (use-package slime
   :ensure t
-  :pin melpa-stable)
+  :pin melpa-stable
+  :config
+  (setf inferior-lisp-program (executable-find "sbcl")
+        slime-contribs '(slime-fancy)))
 
-(use-package slime-company
-  :ensure t
-  :pin melpa-stable)
+;; (use-package slime-company
+;;   :ensure t
+;;   :pin melpa-stable)
 
 ;;; Built-ins
 ;;;
@@ -191,8 +194,6 @@
 (setf make-backup-files nil         ; do not make backup files (tilde files)
       backup-directory-alist nil    ; we don't need a backup directory
       inhibit-splash-screen t
-      inferior-lisp-program "/usr/bin/sbcl"  ; Slime: Default lisp
-      slime-contribs '(slime-fancy) ; Slime: slime-fancy loads pretty much everything
       visible-bell t                ; Flash mode-bar instead of ringing system bell
       vc-handled-backends nil       ; Eliminates "Argument Error" issues with built-in vc package.
       abbrev-file-name "~/.emacs.d/abbrev_defs"
@@ -274,7 +275,9 @@
 ;  (yas-reload-all)
   (show-paren-mode t)
   (yas-minor-mode)
-  (local-set-key (kbd "C-m") #'newline-and-indent))
+  (local-set-key (kbd "C-m") #'newline-and-indent)
+  (slime-mode)
+  (company-mode))
 
 
 (defun perl-settings()
