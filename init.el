@@ -80,7 +80,8 @@
   :demand t
   :pin "melpa-stable"
   :bind (("M-x" . helm-M-x)
-         ("C-x C-f" . helm-find-files))
+         ("C-x C-f" . helm-find-files)
+         ("C-x c M-g M-g" . helm-grep-do-git-grep))
   :config
   (use-package helm-config)
   (helm-mode 1))
@@ -119,6 +120,14 @@
 (use-package company
   :ensure t
   :pin "melpa-stable")
+
+(use-package shell-pop
+  :ensure t
+  :pin "melpa-stable"
+  :bind (("C-c s" . shell-pop))
+  :config
+  (setf shell-pop-window-position "bottom"
+        shell-pop-window-size 20))
 
 ;; (use-package sr-speedbar
 ;;   :config
