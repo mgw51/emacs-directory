@@ -72,13 +72,8 @@
                                   (key-chord-define-local "pq" #'mw-insert-curly-braces)))
   (add-hook 'sh-mode-hook (lambda()
                             (key-chord-define-local "pq" #'mw-insert-curly-braces)))
-<<<<<<< HEAD
-  (add-hook 'cperl-mode (lambda ()
-                          (key-chord-define-local "pq" #'mw-insert-curly-braces))))
-=======
   (add-hook 'cperl-mode-hook (lambda()
                               (key-chord-define-local "pq" #'mw-insert-curly-braces))))
->>>>>>> Added some perl stuffs.
   
 (use-package helm
   :ensure t
@@ -243,13 +238,9 @@
 (add-hook 'text-mode-hook #'text-hook-func)
 (add-hook 'org-mode-hook #'org-hook-func)
 (add-hook 'after-init-hook #'global-flycheck-mode)
-<<<<<<< HEAD
-(add-hook 'find-file-hook 'mw-find-proper-mode)  ; finds proper major mode for *.h files.
 (add-hook 'sql-mode-hook #'sql-hook-func)
-=======
 (add-hook 'find-file-hook #'mw-find-proper-mode)  ; finds proper major mode for *.h files.
 (add-hook 'cperl-mode-hook #'cperl-hook-func)
->>>>>>> Added some perl stuffs.
 
 ;;; Custom Hook functions
 (defun c-style-lang-hook-func ()
