@@ -22,10 +22,10 @@
 ;;; Handle package archives and also ensure all required packages are installed.
 (progn
   (require 'package)     ; Pull in package.el
-  (package-initialize)   ; Initialize it
   (setf package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 			   ("melpa-stable" . "https://stable.melpa.org/packages/")
-                           ("melpa" . "https://melpa.org/packages/"))))
+                           ("melpa" . "https://melpa.org/packages/")))
+  (package-initialize))  ; Initialize it
 
 (eval-when-compile
   (when (not (package-installed-p 'use-package))
@@ -92,7 +92,9 @@
 
 (use-package flycheck
   :ensure t
-  :pin "melpa-stable")
+  :pin "melpa-stable"
+  :config
+  (use-package flycheck-pycheckers))
 
 (use-package magit
   :ensure t
