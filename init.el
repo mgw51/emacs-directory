@@ -92,9 +92,10 @@
 
 (use-package flycheck
   :ensure t
-  :pin "melpa-stable"
-  :config
-  (use-package flycheck-pycheckers))
+  :pin "melpa-stable")
+
+(use-package flycheck-pycheckers
+  :ensure t)
 
 (use-package magit
   :ensure t
