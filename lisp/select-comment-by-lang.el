@@ -41,7 +41,7 @@
 
 
 ;;;###autoload
-(defun insert-triplet ()
+(defun mw-insert-triplet ()
   "Insert comment-triplet appropriate to language in which we are writing."
   (interactive)
   (let ((char (gethash (get--buffer-suffix) *lang-suffixes*)))
@@ -56,7 +56,7 @@
 
 
 ;;;###autoload
-(defun debug-comment (&optional begin end)
+(defun mw-debug-comment (&optional begin end)
   "Insert debug comment at end of line.
 If a region is selected, insert a debug comment at the end of
 every line within the region defined by BEGIN through END.  This
@@ -82,7 +82,7 @@ current line."
 
 
 ;;;###autoload
-(defun remove-debug (&optional start end)
+(defun mw-remove-debug (&optional start end)
   "Remove debug comments from region START to END."
   (interactive
    (if (use-region-p) (list (region-beginning) (region-end))

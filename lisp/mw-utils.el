@@ -110,8 +110,10 @@ above and below the region.  If the region is not active, simply
 open three lines, place the braces each on their own line and place
 the cursor on the line between.  In both cases, indent according to
 current `major-mode'."
-  (interactive "*r")
-  (push-mark)
+  (interactive
+   (if (region-active-p)
+       (list (region-beginning) (region-end))
+     (list (point) (point))))
   (if (region-active-p)
       (let ((text (buffer-substring start end)))
         (goto-char start)
@@ -138,6 +140,23 @@ set LEVEL to 1."
   (interactive "P")
   (set-selective-display
    (if selective-display nil (or level 1))))
+
+
+(defun mw-find-next-todo (prefix)
+  "Find the next TODO or TODO-like comment in current buffer.
+If PREFIX is negative, search backward from point."
+  (interactive "p")
+  (push-mark)
+  (search-forward-regexp "TODO\\|TBD\\|FIXME" nil 'no-error prefix))
+
+
+(defun mw-large-file-precautions ()
+  "If a file is over a certain size, take some precautions to make it easier to view it."
+  (when (> (buffer-size) (* 1024 1024 1024))
+    (buffer-disable-undo)
+    (linum-mode -1)
+    (fundamental-mode)))
+(add-hook 'find-file-hook 'mw-large-file-precautions)
 
 
 (provide 'mw-utils)
