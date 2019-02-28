@@ -58,6 +58,11 @@
 
 ;;; Installed packages
 ;;;
+(use-package rainbow-delimiters
+  :ensure t
+  :pin melpa-stable
+  :hook (prog-mode . rainbow-delimiters-mode))
+
 (use-package iy-go-to-char
   :ensure t
   :commands iy-go-up-to-char iy-go-to-char-backward)
