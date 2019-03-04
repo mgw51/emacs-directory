@@ -134,7 +134,7 @@
 (use-package python-mode
   :ensure t
   :pin "melpa-stable"
-  :delight " 🥧")
+  :delight "🥧")
 
 (use-package dockerfile-mode
   :ensure t
