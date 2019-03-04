@@ -58,6 +58,19 @@
 
 ;;; Installed packages
 ;;;
+(use-package projectile
+  :ensure t
+  :pin melpa-stable
+  :bind-keymap ("C-c p" . projectile-command-map)
+  :hook (prog-mode . projectile-mode)
+  :custom
+  (projectile-mode-line '(:eval (projectile-project-name)))
+  (projectile-completion-system 'helm)
+  (projectile-cache-file (concat (expand-file-name user-emacs-directory) "projectile/projectile.cache"))
+  (projectile-enable-caching t)
+  :delight '(:eval (concat " [" (projectile-project-name) "]")))
+
+  
 (use-package clang-rename)
 
 (use-package rainbow-delimiters
@@ -91,17 +104,18 @@
          ("C-x c M-g M-g" . helm-grep-do-git-grep))
   :config
   (use-package helm-config)
-  (helm-mode 1))
+  (helm-mode 1)
+  :delight " Ƕ")
 
 (use-package yasnippet
   :ensure t
-  :pin "melpa-stable")
+  :pin "melpa-stable"
+  :delight " ƴ")
 
 (use-package yasnippet-snippets
   :ensure t
   :pin "melpa-stable"
   :after yasnippet)
-  
 
 (use-package flycheck
   :ensure t
@@ -119,7 +133,8 @@
 
 (use-package python-mode
   :ensure t
-  :pin "melpa-stable")
+  :pin "melpa-stable"
+  :delight " 🥧")
 
 (use-package dockerfile-mode
   :ensure t
@@ -135,7 +150,8 @@
 
 (use-package company
   :ensure t
-  :pin "melpa-stable")
+  :pin "melpa-stable"
+  :delight " Comp")
 
 (use-package shell-pop
   :ensure t
@@ -305,7 +321,6 @@
   (show-paren-mode t)
   (yas-minor-mode)
   (local-set-key (kbd "C-m") #'newline-and-indent)
-  (slime-mode)
   (company-mode))
 
 
