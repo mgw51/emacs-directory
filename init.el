@@ -58,6 +58,8 @@
 
 ;;; Installed packages
 ;;;
+(use-package clang-rename)
+
 (use-package rainbow-delimiters
   :ensure t
   :pin melpa-stable
@@ -94,6 +96,12 @@
 (use-package yasnippet
   :ensure t
   :pin "melpa-stable")
+
+(use-package yasnippet-snippets
+  :ensure t
+  :pin "melpa-stable"
+  :after yasnippet)
+  
 
 (use-package flycheck
   :ensure t
