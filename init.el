@@ -68,10 +68,12 @@
   (projectile-completion-system 'helm)
   (projectile-cache-file (concat (expand-file-name user-emacs-directory) "projectile/projectile.cache"))
   (projectile-enable-caching t)
-  :delight '(:eval (concat " [" (projectile-project-name) "]")))
+  :delight '(:eval (concat " " " [" (projectile-project-name) "]")))
 
   
-(use-package clang-rename)
+(use-package clang-rename
+  :if (featurep 'clang-rename))
+
 
 (use-package rainbow-delimiters
   :ensure t
@@ -170,15 +172,17 @@
   :pin "melpa-stable")
 
 (use-package slime
+  :if (executable-find "sbcl")
   :ensure t
   :pin melpa-stable
   :config
   (setf inferior-lisp-program (executable-find "sbcl")
         slime-contribs '(slime-fancy)))
 
-;; (use-package slime-company
-;;   :ensure t
-;;   :pin melpa-stable)
+(use-package slime-company
+  :after 'slime
+  :ensure t
+  :pin melpa-stable)
 
 ;;; Built-ins
 ;;;
@@ -200,7 +204,6 @@
 ;; (use-package solarized-theme)
 ;; (use-package abyss-theme)
 
-
 (use-package doxygen-mode
   :demand t
   :commands
@@ -218,7 +221,8 @@
                       (menu-bar-mode . -1)
                       (horizontal-scroll-bar-mode . -1)
                       (scroll-bar-mode . -1)
-                      (tooltip-mode . -1)))
+                      (tooltip-mode . -1)
+                      (winner-mode . 1)))
   (when (fboundp (car mode-value))
     (funcall (car mode-value) (cdr mode-value))))
 
@@ -227,7 +231,6 @@
 (put 'narrow-to-defun  'disabled nil)  ;
 (put 'narrow-to-page   'disabled nil)  ; Narrowing
 (put 'narrow-to-region 'disabled nil)  ;
-(winner-mode 1)
 
 ;;; General Customizations
 (when (not (display-graphic-p))
