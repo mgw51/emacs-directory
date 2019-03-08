@@ -85,7 +85,8 @@ current line."
 (defun mw-remove-debug (&optional start end)
   "Remove debug comments from region START to END."
   (interactive
-   (if (use-region-p) (list (region-beginning) (region-end))
+   (if (use-region-p)
+       (list (region-beginning) (region-end))
      (list (point-min) (point-max))))
   (push-mark)
   (save-excursion
