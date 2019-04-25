@@ -70,10 +70,25 @@
   (projectile-enable-caching t)
   :delight '(:eval (concat " " " [" (projectile-project-name) "]")))
 
-  
+(use-package cmake-mode
+  :ensure t
+  :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
+
+(use-package cmake-font-lock
+  :after (cmake-mode)
+  :hook (cmake-mode . cmake-font-lock-activate))
+
+;; (use-package cmake-ide
+;;   :after projectile
+;;   :init (cmake-ide-setup)
+;;   :defines (cmake-ide-rc-executable cmake-ide-rdm-executable)
+;;   :config
+;;   (let ((exec-path (mapcar #'directory-file-name (directory-files-recursively (expand-file-name "~/.emacs.d") "\\bbin\\b" t))))
+;;     (setf cmake-ide-rc-executable (executable-find "rc")
+;;           cmake-ide-rdm-executable (executable-find "rdm"))))
+
 (use-package clang-rename
   :if (featurep 'clang-rename))
-
 
 (use-package rainbow-delimiters
   :ensure t
@@ -211,6 +226,9 @@
   doxygen-create-group doxygen-backward-block doxygen-forward-block)
 
 (use-package mw-perl-related)
+
+(use-package php-mode
+  :config (use-package company-php))
 
 ;;; Toggle UI Elements
 ;;;
