@@ -168,7 +168,9 @@
 (use-package company
   :ensure t
   :pin "melpa-stable"
-  :delight " Comp")
+  :delight " Ç"
+  :custom
+  (company-idle-delay 0.25))
 
 (use-package shell-pop
   :ensure t
