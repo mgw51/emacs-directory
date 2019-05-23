@@ -68,6 +68,10 @@
   (projectile-completion-system 'helm)
   (projectile-cache-file (concat (expand-file-name user-emacs-directory) "projectile/projectile.cache"))
   (projectile-enable-caching t)
+  :init
+  (projectile-register-project-type 'elisp '(".elisp-project")
+                                                 :test-suffix "-test"
+                                                 :test-dir "test/")
   :delight '(:eval (concat " " " [" (projectile-project-name) "]")))
 
 (use-package cmake-mode
