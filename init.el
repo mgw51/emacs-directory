@@ -120,7 +120,7 @@
 (use-package helm
   :ensure t
   :demand t
-  :pin "melpa-stable"
+  :pin melpa
   :bind (("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)
          ("C-x c M-g M-g" . helm-grep-do-git-grep))
@@ -131,55 +131,55 @@
 
 (use-package yasnippet
   :ensure t
-  :pin "melpa-stable"
+  :pin melpa
   :delight " ƴ")
 
 (use-package yasnippet-snippets
   :ensure t
-  :pin "melpa-stable"
+  :pin melpa
   :after yasnippet)
 
 (use-package flycheck
   :ensure t
-  :pin "melpa-stable")
+  :pin melpa)
 
 (use-package flycheck-pycheckers
   :ensure t)
 
 (use-package magit
   :ensure t
-  :pin "melpa-stable"
+  :pin melpa
   :config
   ;; Invoke magit-status screen
   (global-set-key (kbd "C-c C-g") #'magit-status))
 
 (use-package python-mode
   :ensure t
-  :pin "melpa-stable"
+  :pin melpa
   :delight "🥧")
 
 (use-package dockerfile-mode
   :ensure t
-  :pin "melpa-stable")
+  :pin melpa)
 
 (use-package docker-tramp
   :ensure t
-  :pin "melpa-stable")
+  :pin melpa)
 
 (use-package yaml-mode
   :ensure t
-  :pin "melpa-stable")
+  :pin melpa)
 
 (use-package company
   :ensure t
-  :pin "melpa-stable"
+  :pin melpa
   :delight " Ç"
   :custom
   (company-idle-delay 0.25))
 
 (use-package shell-pop
   :ensure t
-  :pin "melpa-stable"
+  :pin melpa
   :bind (("C-c s" . shell-pop))
   :config
   (setf shell-pop-window-position "bottom"
@@ -191,7 +191,7 @@
 
 (use-package buttercup
   :ensure t
-  :pin "melpa-stable")
+  :pin melpa)
 
 (use-package slime
   :if (executable-find "sbcl")
@@ -208,6 +208,7 @@
 
 (use-package lsp-mode
   :ensure t
+  :pin melpa
   :commands lsp
   :custom
   (lsp-prefer-flymake nil)
@@ -217,30 +218,38 @@
   (require 'lsp-clients)
   (use-package lsp-ui
     :ensure t
+    :pin melpa
     :commands lsp-ui-mode)
   (use-package company-lsp
     :ensure t
+    :pin melpa
     :commands company-lsp)
   (use-package helm-lsp
     :ensure t
+    :pin melpa
     :commands helm-lsp-workspace-symbol)
   (use-package dap-mode
-    :ensure t))
+    :ensure t
+    :pin melpa))
 
 (use-package toml-mode
-  :ensure t)
+  :ensure t
+  :pin melpa)
 
 (use-package rust-mode
   :ensure t
+  :pin melpa
   :hook (rust-mode . lsp)
   :custom
   (exec-path (cons (expand-file-name "~/.cargo/bin") exec-path))  ; add cargo bin directory to exec-path
   :config
   (use-package cargo
     :ensure t
+    :pin melpa
     :hook (rust-mode . cargo-minor-mode))
   (use-package flycheck-rust
     :ensure t
+    :pin melpa
     :hook (flycheck-mode . flycheck-rust-setup)))
 
 
@@ -260,7 +269,7 @@
   ; This theme is terminal-safe
   :ensure t
   :demand t
-  :pin "melpa-stable")
+  :pin melpa)
 ;; (use-package solarized-theme)
 ;; (use-package abyss-theme)
 
