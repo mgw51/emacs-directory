@@ -60,7 +60,8 @@
 ;;;
 (use-package projectile
   :ensure t
-  :pin melpa-stable
+  :pin melpa
+  :commands projectile-register-project-type
   :bind-keymap ("C-c p" . projectile-command-map)
   :hook (prog-mode . projectile-mode)
   :custom
@@ -204,6 +205,44 @@
   :after 'slime
   :ensure t
   :pin melpa-stable)
+
+(use-package lsp-mode
+  :ensure t
+  :commands lsp
+  :custom
+  (lsp-prefer-flymake nil)
+  (lsp-auto-guess-root t)  ; will use projectile
+  (lsp-auto-configure t)   ; auto configure dependencies etc.
+  :config
+  (require 'lsp-clients)
+  (use-package lsp-ui
+    :ensure t
+    :commands lsp-ui-mode)
+  (use-package company-lsp
+    :ensure t
+    :commands company-lsp)
+  (use-package helm-lsp
+    :ensure t
+    :commands helm-lsp-workspace-symbol)
+  (use-package dap-mode
+    :ensure t))
+
+(use-package toml-mode
+  :ensure t)
+
+(use-package rust-mode
+  :ensure t
+  :hook (rust-mode . lsp)
+  :custom
+  (exec-path (cons (expand-file-name "~/.cargo/bin") exec-path))  ; add cargo bin directory to exec-path
+  :config
+  (use-package cargo
+    :ensure t
+    :hook (rust-mode . cargo-minor-mode))
+  (use-package flycheck-rust
+    :ensure t
+    :hook (flycheck-mode . flycheck-rust-setup)))
+
 
 ;;; Built-ins
 ;;;
