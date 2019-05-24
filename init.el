@@ -27,11 +27,13 @@
                            ("melpa" . "https://melpa.org/packages/")))
   (package-initialize))  ; Initialize it
 
+
 (eval-when-compile
   (when (not (package-installed-p 'use-package))
     (package-refresh-contents)
     (package-install 'use-package))
   (require 'use-package))
+
 
 ;;; Personal libraries
 ;;;
@@ -42,11 +44,13 @@
                                   (local-set-key (kbd "C-c c") #'mw-insert-triplet)
                                   (local-set-key (kbd "C-c d") #'mw-debug-comment))))
 
+
 (use-package cpp-funcs
   :config
   (add-hook 'c-mode-common-hook (lambda()
                                   (local-set-key (kbd "C-c f") #'func-header)
                                   (local-set-key (kbd "C-c n") #'get-class-name))))
+
 
 (use-package mw-utils
   ; Things like timestamps and other nice-to-haves
@@ -55,6 +59,17 @@
   (global-set-key [f2] 'mw-toggle-selective-display)
   (define-key text-mode-map (kbd "C-c w t") #'mw-insert-time)
   (define-key text-mode-map (kbd "C-c w d") #'mw-insert-date))
+
+
+(use-package doxygen-mode
+  :demand t
+  :commands
+  doxygen-function-template doxygen-struct-template doxygen-class-template
+  doxygen-create-group doxygen-backward-block doxygen-forward-block)
+
+
+(use-package mw-perl-related)
+
 
 ;;; Installed packages
 ;;;
@@ -117,6 +132,7 @@
   (add-hook 'cperl-mode-hook (lambda()
                               (key-chord-define-local "pq" #'mw-insert-curly-braces))))
   
+
 (use-package helm
   :ensure t
   :demand t
@@ -133,22 +149,27 @@
   (helm-mode 1)
   :delight " Ƕ")
 
+
 (use-package yasnippet
   :ensure t
   :pin melpa
   :delight " ƴ")
+
 
 (use-package yasnippet-snippets
   :ensure t
   :pin melpa
   :after yasnippet)
 
+
 (use-package flycheck
   :ensure t
-  :pin melpa)
+  :pin melpa
+  :config
+  (use-package flycheck-pycheckers
+    :ensure t
+    :pin melpa))
 
-(use-package flycheck-pycheckers
-  :ensure t)
 
 (use-package magit
   :ensure t
@@ -157,22 +178,27 @@
   ;; Invoke magit-status screen
   (global-set-key (kbd "C-c C-g") #'magit-status))
 
+
 (use-package python-mode
   :ensure t
   :pin melpa
   :delight "🥧")
 
+
 (use-package dockerfile-mode
   :ensure t
   :pin melpa)
+
 
 (use-package docker-tramp
   :ensure t
   :pin melpa)
 
+
 (use-package yaml-mode
   :ensure t
   :pin melpa)
+
 
 (use-package company
   :ensure t
@@ -180,6 +206,7 @@
   :delight " Ç"
   :custom
   (company-idle-delay 0.25))
+
 
 (use-package shell-pop
   :ensure t
@@ -189,26 +216,29 @@
   (setf shell-pop-window-position "bottom"
         shell-pop-window-size 20))
 
+
 ;; (use-package sr-speedbar
 ;;   :config
 ;;   (setq speedbar-use-images nil))
 
+
 (use-package buttercup
   :ensure t
   :pin melpa)
+
 
 (use-package slime
   :if (executable-find "sbcl")
   :ensure t
   :pin melpa-stable
   :config
+  (use-package slime-company
+    :after 'slime
+    :ensure t
+    :pin melpa-stable)
   (setf inferior-lisp-program (executable-find "sbcl")
         slime-contribs '(slime-fancy)))
 
-(use-package slime-company
-  :after 'slime
-  :ensure t
-  :pin melpa-stable)
 
 (use-package lsp-mode
   :ensure t
@@ -236,9 +266,11 @@
     :ensure t
     :pin melpa))
 
+
 (use-package toml-mode
   :ensure t
   :pin melpa)
+
 
 (use-package rust-mode
   :ensure t
@@ -255,6 +287,10 @@
     :ensure t
     :pin melpa
     :hook (flycheck-mode . flycheck-rust-setup)))
+
+
+(use-package php-mode
+  :config (use-package company-php))
 
 
 ;;; Built-ins
@@ -277,16 +313,6 @@
 ;; (use-package solarized-theme)
 ;; (use-package abyss-theme)
 
-(use-package doxygen-mode
-  :demand t
-  :commands
-  doxygen-function-template doxygen-struct-template doxygen-class-template
-  doxygen-create-group doxygen-backward-block doxygen-forward-block)
-
-(use-package mw-perl-related)
-
-(use-package php-mode
-  :config (use-package company-php))
 
 ;;; Toggle UI Elements
 ;;;
