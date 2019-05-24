@@ -126,6 +126,10 @@
          ("C-x c M-g M-g" . helm-grep-do-git-grep))
   :config
   (use-package helm-config)
+  (use-package helm-projectile
+    :ensure t
+    :pin melpa
+    :after projectile)
   (helm-mode 1)
   :delight " Ƕ")
 
