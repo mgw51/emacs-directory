@@ -62,7 +62,7 @@
 
 
 (use-package doxygen-mode
-  :demand t
+  :hook c-mode-common
   :commands
   doxygen-function-template doxygen-struct-template doxygen-class-template
   doxygen-create-group doxygen-backward-block doxygen-forward-block)
@@ -73,6 +73,11 @@
 
 ;;; Installed packages
 ;;;
+;; (use-package malinka   ; glues together various c/c++ packages e.g. rtags, projectile, etc
+;;   ;;; Must define each project; probably best to do that in .dir-locals.el
+;;   :ensure t
+;;   :hook c-mode-common)
+
 (use-package projectile
   :ensure t
   :pin melpa
@@ -88,15 +93,24 @@
   (projectile-register-project-type 'elisp '(".elisp-project")
                                                  :test-suffix "-test"
                                                  :test-dir "test/")
-  :delight '(:eval (concat " " " [" (projectile-project-name) "]")))
+  (projectile-register-project-type 'c++ '(".c++-project")
+                                    :configure "%s/bootstrap && %s/configure"
+                                    :compile "make"
+                                    :test-suffix "_test"
+                                    :src-dir "%s/src/"
+                                    :test-dir "%s/test/unit_tests/")
+  :delight '(:eval (concat " [" (projectile-project-name) "]")))
+
 
 (use-package cmake-mode
   :ensure t
   :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
 
+
 (use-package cmake-font-lock
   :after (cmake-mode)
   :hook (cmake-mode . cmake-font-lock-activate))
+
 
 ;; (use-package cmake-ide
 ;;   :after projectile
@@ -107,17 +121,21 @@
 ;;     (setf cmake-ide-rc-executable (executable-find "rc")
 ;;           cmake-ide-rdm-executable (executable-find "rdm"))))
 
+
 (use-package clang-rename
   :if (featurep 'clang-rename))
+
 
 (use-package rainbow-delimiters
   :ensure t
   :pin melpa-stable
   :hook (prog-mode . rainbow-delimiters-mode))
 
+
 (use-package iy-go-to-char
   :ensure t
   :commands iy-go-up-to-char iy-go-to-char-backward)
+
 
 (use-package key-chord
   :ensure t
@@ -153,7 +171,7 @@
 (use-package yasnippet
   :ensure t
   :pin melpa
-  :delight " ƴ")
+  :delight " ¥")
 
 
 (use-package yasnippet-snippets
@@ -374,8 +392,8 @@
       visible-bell t                ; Flash mode-bar instead of ringing system bell
       vc-handled-backends nil       ; Eliminates "Argument Error" issues with built-in vc package.
       abbrev-file-name "~/.emacs.d/abbrev_defs"
-      save-abbrevs 'silent)         ; Abbrev-mode settings
-;      enable-remote-dir-locals t)   ; Allow emacs to search remote directory trees for .dir-locals.el files.
+      save-abbrevs 'silent          ; Abbrev-mode settings
+      compilation-scroll-output 'first-error)
 
 ;; Loading themes: Must be performed differently depending on whether this
 ;; is a daemonized server or a stand-alone instance.  For more info, see:
