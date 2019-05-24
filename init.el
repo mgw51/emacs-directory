@@ -240,6 +240,10 @@
         slime-contribs '(slime-fancy)))
 
 
+;;; Language Server Protocol setup.  Hook lsp-mode from
+;;; the appropriate language mode so we don't call it
+;;; globally.  Not all languages use LSP in this
+;;; config.
 (use-package lsp-mode
   :ensure t
   :pin melpa
@@ -262,9 +266,34 @@
     :ensure t
     :pin melpa
     :commands helm-lsp-workspace-symbol)
+  ;;; For debugging
   (use-package dap-mode
     :ensure t
-    :pin melpa))
+    :pin melpa
+    :config
+    (dap-mode t)
+    (dap-ui-mode t))
+  ;;; C-family language server
+  (use-package ccls
+    :preface
+    (defun find-ccls ()
+      "Add home directory to the `exec-path' variable and then look for ccls executable."
+      (let ((exec-path
+             (cons exec-path (cons (expand-file-name "~") (cons (expand-file-name "~/Scripts") nil)))))
+        (executable-find "ccls")))
+    :after lsp-mode  ; only load after lsp-mode
+    :if (find-ccls)  ; also only load if we can find ccls binary
+    :after projectile
+    :ensure t
+    :pin melpa
+    :custom
+    (ccls-args nil)
+    (ccls-executable (expand-file-name "~/Scripts/ccls"))
+    (projectile-project-root-files-top-down-recurring
+     (append '("compile_commands.json" ".ccls")
+             projectile-project-root-files-top-down-recurring))
+    :config
+    (add-to-list 'projectile-globally-ignored-directories ".ccls-cache")))
 
 
 (use-package toml-mode
