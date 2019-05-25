@@ -392,8 +392,7 @@
       visible-bell t                ; Flash mode-bar instead of ringing system bell
       vc-handled-backends nil       ; Eliminates "Argument Error" issues with built-in vc package.
       abbrev-file-name "~/.emacs.d/abbrev_defs"
-      save-abbrevs 'silent          ; Abbrev-mode settings
-      compilation-scroll-output 'first-error)
+      save-abbrevs 'silent)         ; Abbrev-mode settings
 
 ;; Loading themes: Must be performed differently depending on whether this
 ;; is a daemonized server or a stand-alone instance.  For more info, see:
