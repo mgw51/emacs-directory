@@ -99,7 +99,7 @@
                                     :test-suffix "_test"
                                     :src-dir "%s/src/"
                                     :test-dir "%s/test/unit_tests/")
-  :delight '(:eval (concat " [" (projectile-project-name) "]")))
+  :delight '(:eval (concat " ¶[" (projectile-project-name) "]")))
 
 
 (use-package cmake-mode
@@ -320,6 +320,7 @@
 
 
 (use-package rust-mode
+  :defer t
   :ensure t
   :pin melpa
   :hook (rust-mode . lsp)
