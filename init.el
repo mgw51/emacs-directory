@@ -139,16 +139,13 @@
 
 (use-package key-chord
   :ensure t
-  :config
-  (key-chord-mode 1)
+  :pin melpa
+  :hook
+  ((rust-mode c-mode-common sh-mode cperl-mode) . (lambda() (key-chord-define-local "pq" #'mw-insert-curly-braces)))
+  :init
+;  (key-chord-mode 1)
   (key-chord-define-global "fj" #'iy-go-up-to-char)
-  (key-chord-define-global "fk" #'iy-go-to-char-backward)
-  (add-hook 'c-mode-common-hook (lambda()
-                                  (key-chord-define-local "pq" #'mw-insert-curly-braces)))
-  (add-hook 'sh-mode-hook (lambda()
-                            (key-chord-define-local "pq" #'mw-insert-curly-braces)))
-  (add-hook 'cperl-mode-hook (lambda()
-                              (key-chord-define-local "pq" #'mw-insert-curly-braces))))
+  (key-chord-define-global "fk" #'iy-go-to-char-backward))
   
 
 (use-package helm
