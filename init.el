@@ -93,7 +93,7 @@
   (projectile-register-project-type 'elisp '(".elisp-project")
                                                  :test-suffix "-test"
                                                  :test-dir "test/")
-  (projectile-register-project-type 'c++ '(".c++-project")
+  (projectile-register-project-type 'c++-make '(".c++-project")
                                     :configure "%s/bootstrap && %s/configure"
                                     :compile "make"
                                     :test-suffix "_test"
