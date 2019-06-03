@@ -229,6 +229,7 @@
   :ensure t
   :pin melpa
   :delight " Ç"
+  :hook ((fundamental-mode text-mode prog-mode) . company-mode)
   :custom
   (company-idle-delay 0.25))
 
