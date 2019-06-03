@@ -124,6 +124,11 @@
 ;;           cmake-ide-rdm-executable (executable-find "rdm"))))
 
 
+(use-package delight
+  :ensure t
+  :pin gnu)
+
+
 (use-package clang-rename
   :if (featurep 'clang-rename))
 
