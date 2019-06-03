@@ -104,12 +104,14 @@
 
 (use-package cmake-mode
   :ensure t
-  :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
+  :pin melpa
+  :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'")
+  (use-package cmake-font-lock
+    :ensure t
+    :pin melpa
+    :hook (cmake-mode . cmake-font-lock-activate)))
 
 
-(use-package cmake-font-lock
-  :after (cmake-mode)
-  :hook (cmake-mode . cmake-font-lock-activate))
 
 
 ;; (use-package cmake-ide
