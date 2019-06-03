@@ -111,19 +111,20 @@
     :ensure t
     :pin melpa
     :hook (cmake-mode . cmake-font-lock-activate))
-  (company-mode t))
+  :config
+  (company-mode))
 
 
-
-
-;; (use-package cmake-ide
-;;   :after projectile
-;;   :init (cmake-ide-setup)
-;;   :defines (cmake-ide-rc-executable cmake-ide-rdm-executable)
-;;   :config
-;;   (let ((exec-path (mapcar #'directory-file-name (directory-files-recursively (expand-file-name "~/.emacs.d") "\\bbin\\b" t))))
-;;     (setf cmake-ide-rc-executable (executable-find "rc")
-;;           cmake-ide-rdm-executable (executable-find "rdm"))))
+(use-package cmake-ide
+  :ensure t
+  :pin melpa
+  :after projectile
+  :init (cmake-ide-setup)
+  :defines (cmake-ide-rc-executable cmake-ide-rdm-executable)
+  :config
+  (let ((exec-path (mapcar #'directory-file-name (directory-files-recursively (expand-file-name "~/.emacs.d") "\\bbin\\b" t))))
+    (setf cmake-ide-rc-executable (executable-find "rc")
+          cmake-ide-rdm-executable (executable-find "rdm"))))
 
 
 (use-package delight
