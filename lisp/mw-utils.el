@@ -159,5 +159,17 @@ If PREFIX is negative, search backward from point."
 (add-hook 'find-file-hook 'mw-large-file-precautions)
 
 
+(require 'notifications)
+(defun mw-compilation-completed-notification (buffer status)
+  "Display a system notification upon completion of compilation.
+Accepts the compilation BUFFER and a STATUS string describing
+how the process finished."
+  (with-current-buffer buffer
+    (when (string= major-mode "compilation-mode")
+      (notifications-notify
+       :title "Compilation"
+       :body (concat (buffer-name) ": " status)))))
+
+
 (provide 'mw-utils)
 ;;; mw-utils.el ends here
