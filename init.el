@@ -58,7 +58,8 @@
   (mw-create-sql-buffer)
   (global-set-key [f2] 'mw-toggle-selective-display)
   (define-key text-mode-map (kbd "C-c w t") #'mw-insert-time)
-  (define-key text-mode-map (kbd "C-c w d") #'mw-insert-date))
+  (define-key text-mode-map (kbd "C-c w d") #'mw-insert-date)
+  (add-hook 'compilation-finish-functions #'mw-compilation-completed-notification))
 
 
 (use-package doxygen-mode
