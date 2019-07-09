@@ -352,13 +352,13 @@
 
 ;;; Built-ins
 ;;;
-;; (use-package smartparens
-;;   :ensure t
-;;   :config
-;;   (let ((set-bindings (lambda()
-;;                         (sp-base-key-bindings 'sp))))
-;;     (add-hook emacs-lisp-mode-hook #'set-bindings)
-;;     (add-hook lisp-mode-hook #'set-bindings)))
+(use-package smartparens
+  :ensure t
+  :hook
+  ((emacs-lisp-mode lisp-mode) . smartparens-mode)
+  :init
+  (use-package smartparens-config))
+
 
 ;;; Themes
 ;;;
