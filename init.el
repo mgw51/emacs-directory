@@ -205,10 +205,13 @@
   (global-set-key (kbd "C-c C-g") #'magit-status))
 
 
-(use-package python-mode
+(use-package elpy
   :ensure t
+  :defer t
   :pin melpa
-  :delight "🥧")
+  :delight "🥧"
+  :init
+  (elpy-enable))
 
 
 (use-package dockerfile-mode
