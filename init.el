@@ -95,6 +95,13 @@ This was changed in version 27 to conform with XDG standards.")
     :ensure t))
 
 
+(use-package systemd
+  :ensure t
+  :config
+  (use-package helm-systemd
+    :ensure t))
+
+
 (use-package projectile
   :ensure t
   :pin melpa
