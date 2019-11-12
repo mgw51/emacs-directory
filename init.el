@@ -86,6 +86,15 @@ This was changed in version 27 to conform with XDG standards.")
 ;;   :ensure t
 ;;   :hook c-mode-common)
 
+(use-package restclient
+  :ensure t
+  :config
+  (use-package restclient-helm
+    :ensure t)
+  (use-package restclient-test
+    :ensure t))
+
+
 (use-package projectile
   :ensure t
   :pin melpa
