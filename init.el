@@ -133,10 +133,6 @@
   :pin gnu)
 
 
-(use-package clang-rename
-  :if (featurep 'clang-rename))
-
-
 (use-package rainbow-delimiters
   :ensure t
   :pin melpa-stable
@@ -350,6 +346,7 @@
 
 
 (use-package php-mode
+  :ensure t
   :config (use-package company-php))
 
 
@@ -407,13 +404,6 @@
       abbrev-file-name "~/.emacs.d/abbrev_defs"
       save-abbrevs 'silent          ; Abbrev-mode settings
       compilation-scroll-output 'first-error)
-
-;; Loading themes: Must be performed differently depending on whether this
-;; is a daemonized server or a stand-alone instance.  For more info, see:
-;;   `https://stackoverflow.com/questions/18904529/after-emacs-deamon-i-can-not-see-new-theme-in-emacsclient-frame-it-works-fr'
-;; (if (daemonp)
-;;     (add-hook 'after-make-frame-functions #'load-my-theme)
-;;   (load-my-theme))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Global Key Map and Bindings
