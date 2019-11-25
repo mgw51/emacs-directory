@@ -60,13 +60,16 @@ This was changed in version 27 to conform with XDG standards.")
 
 
 (use-package mw-utils
+  :demand t
   ; Things like timestamps and other nice-to-haves
   :config
   (mw-create-sql-buffer)
   (global-set-key [f2] 'mw-toggle-selective-display)
   (define-key text-mode-map (kbd "C-c w t") #'mw-insert-time)
   (define-key text-mode-map (kbd "C-c w d") #'mw-insert-date)
-  (add-hook 'compilation-finish-functions #'mw-compilation-completed-notification))
+  ;; see https://www.gnu.org/software/emacs/manual/html_mono/dbus.html#Bus-names
+  (when (not (null (dbus-list-activatable-names :session)))
+    (add-hook 'compilation-finish-functions #'mw-compilation-completed-notification)))
 
 
 (use-package doxygen-mode
