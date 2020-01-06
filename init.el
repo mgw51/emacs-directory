@@ -31,7 +31,8 @@ This was changed in version 27 to conform with XDG standards.")
   (require 'package)     ; Pull in package.el
   (setf package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 			   ("melpa-stable" . "https://stable.melpa.org/packages/")
-                           ("melpa" . "https://melpa.org/packages/")))
+                           ("melpa" . "https://melpa.org/packages/")
+                           ("org" . "https://orgmode.org/elpa/")))
   (package-initialize))  ; Initialize it
 
 
