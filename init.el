@@ -61,13 +61,16 @@ This was changed in version 27 to conform with XDG standards.")
 
 
 (use-package mw-utils
+  :demand t
   ; Things like timestamps and other nice-to-haves
   :config
   (mw-create-sql-buffer)
   (global-set-key [f2] 'mw-toggle-selective-display)
   (define-key text-mode-map (kbd "C-c w t") #'mw-insert-time)
   (define-key text-mode-map (kbd "C-c w d") #'mw-insert-date)
-  (add-hook 'compilation-finish-functions #'mw-compilation-completed-notification))
+  ;; see https://www.gnu.org/software/emacs/manual/html_mono/dbus.html#Bus-names
+  (when (not (null (dbus-list-activatable-names :session)))
+    (add-hook 'compilation-finish-functions #'mw-compilation-completed-notification)))
 
 
 (use-package doxygen-mode
@@ -230,6 +233,8 @@ This was changed in version 27 to conform with XDG standards.")
   :defer t
   :pin melpa
   :delight "🥧"
+  :custom
+  (exec-path (cons (expand-file-name "~/.local/bin") exec-path))  ; python pip installs live here
   :init
   (elpy-enable))
 
@@ -325,20 +330,21 @@ This was changed in version 27 to conform with XDG standards.")
     (dap-ui-mode t))
   ;;; C-family language server
   (use-package ccls
+    :defines ccls-executable
     :preface
     (defun find-ccls ()
       "Add home directory to the `exec-path' variable and then look for ccls executable."
       (let ((exec-path
              (cons exec-path (cons (expand-file-name "~") (cons (expand-file-name "~/Scripts") nil)))))
-        (executable-find "ccls")))
-    :after lsp-mode  ; only load after lsp-mode
-    :if (find-ccls)  ; also only load if we can find ccls binary
-    :after projectile
+        (setf ccls-executable (executable-find "ccls"))))
+;    :if (find-ccls)  ; only load if we can find ccls binary
+    :after lsp-mode projectile
     :ensure t
     :pin melpa
+    :hook (c++-mode c-mode)
     :custom
     (ccls-args nil)
-    (ccls-executable (expand-file-name "~/Scripts/ccls"))
+    (ccls-executable "/usr/local/bin/ccls");(find-ccls))
     (projectile-project-root-files-top-down-recurring
      (append '("compile_commands.json" ".ccls")
              projectile-project-root-files-top-down-recurring))
@@ -493,6 +499,7 @@ This was changed in version 27 to conform with XDG standards.")
   (font-lock-add-keywords 'c++-mode
                           '(("nullptr" . font-lock-keyword-face)
                             ("constexpr" . font-lock-keyword-face))))
+
 
 (defun lisp-settings ()
   "Code to be evaluated when Lisp major modes are enabled."
