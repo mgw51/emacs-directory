@@ -29,4 +29,6 @@ should any custom code--including themes, modes, and your own elisp files.
 Do not inlcude any package repository directories such as Melpa, Elpa, etc.
 These do not need to be managed by git.  Instead, create a function that can
 be run from `init.el` which will ensure all required packages are installed
-on the local system when emacs is started.
+on the local system when emacs is started, or use the excellent package
+`use-package` to handle automatic installation of necessary packages for
+you.
