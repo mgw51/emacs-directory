@@ -42,6 +42,8 @@ This was changed in version 27 to conform with XDG standards.")
     (package-install 'use-package))
   (require 'use-package))
 
+;;; org-mode export to confluence markdown
+(require 'ox-confluence)
 
 ;;; Personal libraries
 ;;;
@@ -89,6 +91,11 @@ This was changed in version 27 to conform with XDG standards.")
 ;;   ;;; Must define each project; probably best to do that in .dir-locals.el
 ;;   :ensure t
 ;;   :hook c-mode-common)
+
+(use-package org
+  :init
+  (push '(C . t) org-babel-load-languages))
+
 
 (use-package restclient
   :ensure t
