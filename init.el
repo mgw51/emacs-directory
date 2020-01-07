@@ -43,7 +43,8 @@ This was changed in version 27 to conform with XDG standards.")
   (require 'use-package))
 
 ;;; org-mode export to confluence markdown
-(require 'ox-confluence)
+(if (file-exists-p "lisp/org-contrib/ox-confluence.el")
+    (require 'ox-confluence))
 
 ;;; Personal libraries
 ;;;
