@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 ;;; init.el -- My emacs init file.
 ;;; Commentary:
 ;;;     Some things.
@@ -41,10 +43,6 @@ This was changed in version 27 to conform with XDG standards.")
     (package-refresh-contents)
     (package-install 'use-package))
   (require 'use-package))
-
-;;; org-mode export to confluence markdown
-(if (file-exists-p "lisp/org-contrib/ox-confluence.el")
-    (require 'ox-confluence))
 
 ;;; Personal libraries
 ;;;
@@ -94,17 +92,37 @@ This was changed in version 27 to conform with XDG standards.")
 ;;   :hook c-mode-common)
 
 (use-package org
+  :defines org-babel-load-languages org-export-backends
+  :preface
+  (require 'ox-confluence nil 'no-error)
+  (require 'ox-md nil 'no-error)
+  (setq org-export-backends '(ascii html icalendar latex confluence md))
   :init
-  (push '(C . t) org-babel-load-languages))
+  (push '(C . t) org-babel-load-languages)
+  :config
+  (use-package org-jira
+    :defer)
+  :hook org-jira)
 
 
 (use-package restclient
   :ensure t
+  :functions get-session
   :config
   (use-package restclient-helm
     :ensure t)
   (use-package restclient-test
-    :ensure t))
+    :ensure t)
+  (defun get-session ()
+    "Get a session token returned from a REST login call."
+    (interactive)
+    (message "%s" (setq-local session-var
+                              (with-current-buffer (get-buffer "*HTTP Response*")
+                                (goto-char (point-min))
+                                (when (search-forward "\"session\": \"" nil t)
+                                  (buffer-substring-no-properties (point) (1- (search-forward "\""))))))))
+  :bind ("C-c r s" . #'get-session))
+
 
 
 (use-package systemd
@@ -234,6 +252,52 @@ This was changed in version 27 to conform with XDG standards.")
   :config
   ;; Invoke magit-status screen
   (global-set-key (kbd "C-c C-g") #'magit-status))
+
+(use-package rtags
+  :ensure t
+  :pin melpa
+  :custom
+  (rtags-verify-protocol-version nil)
+  (rtags-autostart-diagnostics t)
+  (rtags-use-helm t)
+  (rtags-process-flags "-v --inactivity-timeout 300 --log-flush -j2 --rp-nice-value 19")
+  :config
+  (rtags-enable-standard-keybindings)
+  (rtags-start-process-unless-running)
+  (use-package flycheck-rtags
+    :ensure t
+    :pin melpa
+    :after rtags)
+  (use-package helm-rtags
+    :ensure t
+    :pin melpa
+    :after rtags))
+
+
+(use-package irony
+  :ensure t
+  :pin melpa
+  :after company
+  :hook (((c++-mode c-mode) . irony-mode) ; start irony mode when c/c++ hooks are run
+         (irony-mode . irony-cdb-autosetup-compile-options)) ; run autosetup when we enter irony mode
+  :delight " Fe"
+  :config
+  (use-package company-irony
+    :ensure t
+    :pin melpa
+    :after company
+    :config
+    (add-to-list 'company-backends 'company-irony))
+  (use-package company-irony-c-headers
+    :ensure t
+    :pin melpa
+    :after company
+    :config
+    (add-to-list 'company-backends '(company-irony-c-headers comany-irony)))
+  (use-package flycheck-irony
+    :ensure t
+    :pin melpa
+    :hook (flycheck-mode . flycheck-irony-setup)))
 
 
 (use-package elpy
