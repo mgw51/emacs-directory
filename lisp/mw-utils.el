@@ -113,25 +113,56 @@ current `major-mode'."
   (interactive
    (if (region-active-p)
        (list (region-beginning) (region-end))
-     (list (point) (point))))
-  (if (region-active-p)
-      (let ((text (buffer-substring start end)))
-        (goto-char start)
-        (delete-region start end)
-        (insert "{\n" text "}\n")
-        (indent-region start (point))
-        (end-of-line 0))
-    (let ((start (point))
-          (end)
-          (jump-location))
-      (insert "{\n")
-      (setq jump-location (point))
-      (insert "\n}")
-      (setq end (point))
-      (goto-char jump-location)
-      (indent-region start end)
-      (funcall indent-line-function))))
+     (progn
+       (let ((single-point (point)))
+         (list single-point single-point)))))
+   (if (region-active-p)
+       (curly--braces-region start end)
+     (curly--braces-at-point)))
   
+
+(defun curly--braces-at-point ()
+  "Add curly braces at point by opening two braces with a blank line between."
+       (let ((start (point))
+           (end)
+           (jump-location))
+       (insert "{\n")
+       (setq jump-location (point))
+       (insert "\n}")
+       (setq end (point))
+       (goto-char jump-location)
+       (indent-region start end)
+       (funcall indent-line-function)))
+
+
+(defun curly--braces-region (start end)
+  "Logic to add curly braces around region defined by START and END."
+  (let ((text (buffer-substring start end))
+        (add-newlines-p (maybe--newlines start end)))
+    (message "begin with newline? %s\nend with newline? %s" (car add-newlines-p) (cdr add-newlines-p))
+    (goto-char start)
+    (delete-region start end)
+    (let ((opening-brace (if (car add-newlines-p) "{\n" "{"))
+          (closing-brace (if (cdr add-newlines-p) "\n}" "}")))
+      (insert opening-brace text closing-brace))
+    (indent-region start (point))
+    (end-of-line 0)))
+
+
+(defun maybe--newlines (start end)
+  "Look at end of START and END lines to determine if a newline must be added.
+
+A newline must be added if there are graphic characters between
+START and the end of the line.  Likewise on line containing END."
+  (save-excursion
+    (goto-char start)
+    (let ((head-newline-p (looking-at-p ".*[[:graph:]]")))
+
+      (goto-char end)
+      (beginning-of-line)
+      (let ((tail-newline-p (looking-at-p ".*[[:graph:]]")))
+        (cons head-newline-p tail-newline-p)))))  ; create dotted pair
+
 
 (defun mw-toggle-selective-display (level)
   "Wrap `set-selective-display' to allow us to toggle text 'folding'.
