@@ -287,7 +287,8 @@ This was changed in version 27 to conform with XDG standards.")
     :pin melpa
     :after company
     :config
-    (add-to-list 'company-backends 'company-irony))
+    (add-to-list 'company-backends 'company-irony)
+    :bind ("C-c w i" . #'company-irony))
   (use-package company-irony-c-headers
     :ensure t
     :pin melpa
