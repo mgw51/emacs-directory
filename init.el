@@ -388,7 +388,9 @@ This was changed in version 27 to conform with XDG standards.")
   (use-package company-lsp
     :ensure t
     :pin melpa
-    :commands company-lsp)
+    :commands company-lsp
+    :config
+    (push 'company-lsp company-backends))
   (use-package helm-lsp
     :ensure t
     :pin melpa
