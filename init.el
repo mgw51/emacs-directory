@@ -91,6 +91,7 @@ This was changed in version 27 to conform with XDG standards.")
 ;;   :ensure t
 ;;   :hook c-mode-common)
 
+
 (use-package org
   :defines org-babel-load-languages org-export-backends
   :preface
@@ -404,27 +405,30 @@ This was changed in version 27 to conform with XDG standards.")
     (dap-mode t)
     (dap-ui-mode t))
   ;;; C-family language server
-  (use-package ccls
-    :defines ccls-executable
-    :preface
-    (defun find-ccls ()
-      "Add home directory to the `exec-path' variable and then look for ccls executable."
-      (let ((exec-path
-             (cons exec-path (cons (expand-file-name "~") (cons (expand-file-name "~/Scripts") nil)))))
-        (setf ccls-executable (executable-find "ccls"))))
-;    :if (find-ccls)  ; only load if we can find ccls binary
-    :after lsp-mode projectile
-    :ensure t
-    :pin melpa
-    :hook (c++-mode c-mode)
-    :custom
-    (ccls-args nil)
-    (ccls-executable "/usr/local/bin/ccls");(find-ccls))
-    (projectile-project-root-files-top-down-recurring
-     (append '("compile_commands.json" ".ccls")
-             projectile-project-root-files-top-down-recurring))
-    :config
-    (add-to-list 'projectile-globally-ignored-directories ".ccls-cache")))
+  (when (let ((exec-path
+               (cons exec-path (cons (expand-file-name "~") (cons (expand-file-name "~/Scripts") nil)))))
+          (setf ccls-executable (executable-find "ccls")))
+    (use-package ccls
+      :defines ccls-executable
+      :preface
+      (defun find-ccls ()
+        "Add home directory to the `exec-path' variable and then look for ccls executable."
+        (let ((exec-path
+               (cons exec-path (cons (expand-file-name "~") (cons (expand-file-name "~/Scripts") nil)))))
+          (setf ccls-executable (executable-find "ccls"))))
+      :if (find-ccls)  ; only load if we can find ccls binary
+      :after lsp-mode projectile
+      :ensure t
+      :pin melpa
+      :hook (c++-mode c-mode)
+      :custom
+      (ccls-args nil)
+      (ccls-executable "/usr/local/bin/ccls");(find-ccls))
+      (projectile-project-root-files-top-down-recurring
+       (append '("compile_commands.json" ".ccls")
+               projectile-project-root-files-top-down-recurring))
+      :config
+      (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))))
 
 
 (use-package toml-mode
