@@ -114,6 +114,8 @@ This was changed in version 27 to conform with XDG standards.")
     :ensure t)
   (use-package restclient-test
     :ensure t)
+  (use-package company-restclient
+    :ensure t)
   (defun get-session ()
     "Get a session token returned from a REST login call."
     (interactive)
@@ -244,7 +246,9 @@ This was changed in version 27 to conform with XDG standards.")
   :config
   (use-package flycheck-pycheckers
     :ensure t
-    :pin melpa))
+    :pin melpa)
+  (use-package flycheck-clang-tidy
+    :hook (flycheck-mode . #'flycheck-clang-tidy-setup)))
 
 
 (use-package magit
@@ -272,7 +276,11 @@ This was changed in version 27 to conform with XDG standards.")
   (use-package helm-rtags
     :ensure t
     :pin melpa
-    :after rtags))
+    :after rtags)
+  (use-package company-rtags
+    :ensure t
+    :config
+    (push 'company-rtags company-backends)))
 
 
 (use-package irony
@@ -334,7 +342,12 @@ This was changed in version 27 to conform with XDG standards.")
   :delight " Ç"
   :hook ((fundamental-mode text-mode prog-mode) . company-mode)
   :custom
-  (company-idle-delay 0.25))
+  (company-idle-delay 0.25)
+  :config
+  (global-company-mode)
+  (use-package company-shell
+    ;; placed here for lack of a better place...
+    :ensure t))
 
 
 (use-package shell-pop
@@ -456,7 +469,8 @@ This was changed in version 27 to conform with XDG standards.")
 
 (use-package php-mode
   :ensure t
-  :config (use-package company-php))
+  :config
+  (use-package company-php))
 
 
 ;;; Built-ins
