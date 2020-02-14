@@ -246,9 +246,9 @@ This was changed in version 27 to conform with XDG standards.")
   :config
   (use-package flycheck-pycheckers
     :ensure t
-    :pin melpa)
-  (use-package flycheck-clang-tidy
-    :hook (flycheck-mode . #'flycheck-clang-tidy-setup)))
+    :pin melpa))
+;  (use-package flycheck-clang-tidy
+ ;   :hook (flycheck-mode . #'flycheck-clang-tidy-setup)))
 
 
 (use-package magit
