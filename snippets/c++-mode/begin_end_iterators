@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: begin_end_iterators
+# key: beginend
+# --
+std::begin(${1:obj}), std::end(${1:obj})$0

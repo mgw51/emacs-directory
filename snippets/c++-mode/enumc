@@ -1,0 +1,6 @@
+# key: enumc
+# name: enumc
+# --
+enum class ${1:enum_name} {
+$0
+};
