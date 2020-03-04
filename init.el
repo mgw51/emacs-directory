@@ -243,7 +243,7 @@ This was changed in version 27 to conform with XDG standards.")
 (use-package flycheck
   :ensure t
   :pin melpa
-  :hook (c++-mode c-mode)
+  :hook after-init
   :config
   (use-package flycheck-pycheckers
     :ensure t
