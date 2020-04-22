@@ -22,9 +22,6 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
     (let ((start (point))
           end)
       (insert (concat
-               "// ****************************************************************************************************\n"
-               "/// @name    \n"
-               "///\n"
                "/// @brief   \n"
                "///\n"
                "///          \n"
@@ -38,28 +35,23 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
                "///\n"))
       (setq end (point))
       (indent-region start end)))
-  (forward-line)
   (end-of-line))
 
 
 (defun doxygen-class-template ()
-  "Insert doxygen class documentatoin template at point."
+  "Insert doxygen class documentation template at point."
   (interactive "*")
   (beginning-of-line)
   (save-excursion
     (let ((start (point))
           end)
       (insert (concat
-               "// ****************************************************************************************************\n"
-               "/// @class    \n"
-               "///\n"
                "/// @brief    \n"
                "///\n"
                "///           \n"
                "///\n"))
       (setq end (point))
       (indent-region start end)))
-  (forward-line)
   (end-of-line))
 
 
@@ -71,16 +63,12 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
     (let ((start (point))
           end)
       (insert (concat
-               "// ****************************************************************************************************\n"
-               "/// @struct   \n"
-               "///\n"
                "/// @brief    \n"
                "///\n"
                "///           \n"
                "///\n"))
       (setq end (point))
       (indent-region start end)))
-  (forward-line)
   (end-of-line))
 
 
