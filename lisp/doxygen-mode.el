@@ -107,6 +107,16 @@ When invoked on a region defined by START and END, wrap the
   )
 
 
+(defun doxygen-run-doxygen ()
+  "Run doxygen using projectile root if active, otherwise using Doxyfile as the dominant file to search for."
+  (interactive)
+  (if (boundp 'projectile-mode)
+      (shell-command (concat "doxygen " (projectile-expand-root "Doxyfile")))
+    (let ((file-path (locate-dominating-file "." "Doxyfile")))
+      (when (not (null file-path))
+        (shell-command (concat "doxygen " file-path "Doxyfile"))))))
+
+
 ;;; "Private" functions
 ;;;
 (defun doxygen--group-text-insert (&optional text-string)
@@ -123,7 +133,7 @@ closing group characters."
         (insert "\n"))
       (insert "///@}")
       (list insertion-point start (point)))))
-  
+
 
 (defun build-string (arg num)
   "Build a string that repeats ARG NUM times."
