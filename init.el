@@ -313,7 +313,7 @@ This was changed in version 27 to conform with XDG standards.")
     :pin melpa
     :after company
     :config
-    (add-to-list 'company-backends '(company-irony-c-headers comany-irony)))
+    (add-to-list 'company-backends '(company-irony-c-headers company-irony)))
   (use-package flycheck-irony
     :ensure t
     :pin melpa
