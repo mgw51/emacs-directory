@@ -82,7 +82,7 @@ When invoked on a region defined by START and END, wrap the
   (let ((insertion-point)
         (new-start)
         (new-end))
-    (destructuring-bind (insertion-point new-start new-end)
+    (cl-destructuring-bind (insertion-point new-start new-end)
         (save-excursion
           (if (use-region-p)
               (save-restriction
@@ -127,7 +127,7 @@ closing group characters."
   (let ((start (point)))
     (insert "/// @name   ")
     (let ((insertion-point (point)))
-      (insert "\n/// @brief  \n///\n///@{\n")
+      (insert "\n///\n/// @brief  \n///\n///@{\n")
       (if text-string
           (insert text-string)
         (insert "\n"))
