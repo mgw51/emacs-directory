@@ -539,7 +539,6 @@ This was changed in version 27 to conform with XDG standards.")
       backup-directory-alist nil    ; we don't need a backup directory
       inhibit-splash-screen t
       visible-bell t                ; Flash mode-bar instead of ringing system bell
-;      vc-handled-backends nil       ; Eliminates "Argument Error" issues with built-in vc package.
       abbrev-file-name (concat *base-dir* "abbrev_defs")
       save-abbrevs 'silent          ; Abbrev-mode settings
       compilation-scroll-output 'first-error)
