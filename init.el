@@ -319,10 +319,9 @@ This was changed in version 27 to conform with XDG standards.")
   :defer t
   :pin melpa
   :delight "🥧"
-  :custom
-  (exec-path (cons (expand-file-name "~/.local/bin") exec-path))  ; python pip installs live here
   :init
-  (elpy-enable))
+  (elpy-enable)
+  (setq exec-path (cons (expand-file-name "~/.local/bin") exec-path)))
 
 
 (use-package dockerfile-mode
