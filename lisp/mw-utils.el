@@ -186,7 +186,8 @@ If PREFIX is negative, search backward from point."
   (when (> (buffer-size) (* 1024 1024 1024))
     (buffer-disable-undo)
     (linum-mode -1)
-    (fundamental-mode)))
+    (fundamental-mode)
+    (projectile-mode -1)))
 (add-hook 'find-file-hook 'mw-large-file-precautions)
 
 
