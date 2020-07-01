@@ -103,6 +103,9 @@ This was changed in version 27 to conform with XDG standards.")
   :config
   (use-package org-jira
     :defer)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((sql . t)))
   :hook org-jira)
 
 
