@@ -112,6 +112,8 @@ This was changed in version 27 to conform with XDG standards.")
 (use-package restclient
   :ensure t
   :functions get-session
+  :custom
+  (make-local-variable 'session-var)
   :config
   (use-package restclient-helm
     :ensure t)
@@ -144,12 +146,19 @@ This was changed in version 27 to conform with XDG standards.")
   :commands projectile-register-project-type
   :bind-keymap ("C-c p" . projectile-command-map)
   :hook (prog-mode . projectile-mode)
+  :preface
+  (defun mw-advice-projectile-project-root (orig-fn &optional dir)
+    "This should disable projectile when visiting files with tramp."
+    (let ((dir (file-truename (or dir default-directory))))
+      (unless (file-remote-p dir)
+        (funcall orig-fn dir))))
   :custom
   (projectile-mode-line '(:eval (projectile-project-name)))
   (projectile-completion-system 'helm)
   (projectile-cache-file (concat (expand-file-name user-emacs-directory) "projectile/projectile.cache"))
   (projectile-enable-caching t)
   :init
+  (advice-add 'projectile-project-root :around #'mw-advice-projectile-project-root)
   (projectile-register-project-type 'elisp '(".elisp-project")
                                                  :test-suffix "-test"
                                                  :test-dir "test/")
@@ -243,16 +252,16 @@ This was changed in version 27 to conform with XDG standards.")
   :after yasnippet)
 
 
-(use-package flycheck
-  :ensure t
-  :pin melpa
-  :hook (c++-mode c-mode)
-  :config
-  (use-package flycheck-pycheckers
-    :ensure t
-    :pin melpa))
-;  (use-package flycheck-clang-tidy
- ;   :hook (flycheck-mode . #'flycheck-clang-tidy-setup)))
+;; (use-package flycheck
+;;   :ensure t
+;;   :pin melpa
+;;   :hook after-init
+;;   :config
+;;   (use-package flycheck-pycheckers
+;;     :ensure t
+;;     :pin melpa))
+;; ;  (use-package flycheck-clang-tidy
+;;  ;   :hook (flycheck-mode . #'flycheck-clang-tidy-setup)))
 
 
 (use-package magit
@@ -307,7 +316,7 @@ This was changed in version 27 to conform with XDG standards.")
     :pin melpa
     :after company
     :config
-    (add-to-list 'company-backends '(company-irony-c-headers comany-irony)))
+    (add-to-list 'company-backends '(company-irony-c-headers company-irony)))
   (use-package flycheck-irony
     :ensure t
     :pin melpa
@@ -473,7 +482,8 @@ This was changed in version 27 to conform with XDG standards.")
 (use-package php-mode
   :ensure t
   :config
-  (use-package company-php))
+  (use-package company-php
+    :ensure t))
 
 
 ;;; Built-ins

@@ -22,9 +22,6 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
     (let ((start (point))
           end)
       (insert (concat
-               "// ****************************************************************************************************\n"
-               "/// @name    \n"
-               "///\n"
                "/// @brief   \n"
                "///\n"
                "///          \n"
@@ -38,28 +35,23 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
                "///\n"))
       (setq end (point))
       (indent-region start end)))
-  (forward-line)
   (end-of-line))
 
 
 (defun doxygen-class-template ()
-  "Insert doxygen class documentatoin template at point."
+  "Insert doxygen class documentation template at point."
   (interactive "*")
   (beginning-of-line)
   (save-excursion
     (let ((start (point))
           end)
       (insert (concat
-               "// ****************************************************************************************************\n"
-               "/// @class    \n"
-               "///\n"
                "/// @brief    \n"
                "///\n"
                "///           \n"
                "///\n"))
       (setq end (point))
       (indent-region start end)))
-  (forward-line)
   (end-of-line))
 
 
@@ -71,16 +63,12 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
     (let ((start (point))
           end)
       (insert (concat
-               "// ****************************************************************************************************\n"
-               "/// @struct   \n"
-               "///\n"
                "/// @brief    \n"
                "///\n"
                "///           \n"
                "///\n"))
       (setq end (point))
       (indent-region start end)))
-  (forward-line)
   (end-of-line))
 
 
@@ -94,7 +82,7 @@ When invoked on a region defined by START and END, wrap the
   (let ((insertion-point)
         (new-start)
         (new-end))
-    (destructuring-bind (insertion-point new-start new-end)
+    (cl-destructuring-bind (insertion-point new-start new-end)
         (save-excursion
           (if (use-region-p)
               (save-restriction
@@ -119,6 +107,16 @@ When invoked on a region defined by START and END, wrap the
   )
 
 
+(defun doxygen-run-doxygen ()
+  "Run doxygen using projectile root if active, otherwise using Doxyfile as the dominant file to search for."
+  (interactive)
+  (if (boundp 'projectile-mode)
+      (shell-command (concat "doxygen " (projectile-expand-root "Doxyfile")))
+    (let ((file-path (locate-dominating-file "." "Doxyfile")))
+      (when (not (null file-path))
+        (shell-command (concat "doxygen " file-path "Doxyfile"))))))
+
+
 ;;; "Private" functions
 ;;;
 (defun doxygen--group-text-insert (&optional text-string)
@@ -129,13 +127,13 @@ closing group characters."
   (let ((start (point)))
     (insert "/// @name   ")
     (let ((insertion-point (point)))
-      (insert "\n/// @brief  \n///\n///@{\n")
+      (insert "\n///\n/// @brief  \n///\n///@{\n")
       (if text-string
           (insert text-string)
         (insert "\n"))
       (insert "///@}")
       (list insertion-point start (point)))))
-  
+
 
 (defun build-string (arg num)
   "Build a string that repeats ARG NUM times."
