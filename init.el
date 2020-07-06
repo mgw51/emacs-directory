@@ -615,10 +615,13 @@ This was changed in version 27 to conform with XDG standards.")
   ;;   M-x set-variable RET c-echo-syntactic-information-p RET t RET
   (c-set-offset 'inclass '++)
   (c-set-offset 'access-label '-)
+  (auto-revert-mode t)
   ;; Add some keywords to to C++ mode
   (font-lock-add-keywords 'c++-mode
                           '(("nullptr" . font-lock-keyword-face)
-                            ("constexpr" . font-lock-keyword-face))))
+                            ("constexpr" . font-lock-keyword-face)))
+                                        ; append --\    /-- make buffer-local
+  (add-hook 'before-save-hook #'whitespace-cleanup nil t))
 
 
 (defun lisp-settings ()
