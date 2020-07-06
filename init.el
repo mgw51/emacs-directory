@@ -479,6 +479,10 @@ This was changed in version 27 to conform with XDG standards.")
     :hook (flycheck-mode . flycheck-rust-setup)))
 
 
+(use-package cql-mode
+  :defer t
+  :ensure t)
+
 (use-package php-mode
   :ensure t
   :config
