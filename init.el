@@ -121,7 +121,7 @@ This was changed in version 27 to conform with XDG standards.")
 (use-package restclient
   :ensure t
   :functions get-session
-  :custom
+  :init
   (make-local-variable 'session-var)
   :config
   (use-package restclient-helm
