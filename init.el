@@ -14,7 +14,7 @@
       backup-directory-alist nil) ; clear list of backup directories
 
 (defconst *base-dir*
-  (if (eq emacs-major-version 27)
+  (if (>= emacs-major-version 27)
       "~/.config/emacs/"
     "~/.emacs.d/")
   "Base directory in which all config and LISP files reside.
