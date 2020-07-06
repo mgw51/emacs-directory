@@ -98,9 +98,18 @@ This was changed in version 27 to conform with XDG standards.")
   (require 'ox-confluence nil 'no-error)
   (require 'ox-md nil 'no-error)
   (setq org-export-backends '(ascii html icalendar latex confluence md))
-  :init
-  (push '(C . t) org-babel-load-languages)
   :config
+  ;; Enable some languages in org-babel
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((C . t) ; C, C++, and D are all handled by same ob-C.el file.
+     (emacs-lisp . t)
+     (lisp . t)
+     (plantuml . t)
+     (perl . t)
+     (lua . t)
+     (shell . t)
+     (latex . t)))
   (use-package org-jira
     :defer)
   (org-babel-do-load-languages
