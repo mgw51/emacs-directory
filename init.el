@@ -598,10 +598,8 @@ This was changed in version 27 to conform with XDG standards.")
   (subword-mode t)     ; treat camelCase words as separate words?
   (c-set-offset 'case-label '+) ; indent case statements in a switch block
   (which-function-mode)
-;  (yas-reload-all)
+  (flyspell-prog-mode)
   (yas-minor-mode)
-  ;; (when (fboundp 'rtags-mode)
-  ;;   (rtags-start-process-unless-running))
   (local-set-key (kbd "C-c o") #'ff-find-other-file)
   (local-set-key (kbd "C-c i") #'imenu)
   (local-set-key (kbd "C-c w C-t") #'mw-find-next-todo)
