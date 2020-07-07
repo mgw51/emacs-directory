@@ -493,11 +493,12 @@ This was changed in version 27 to conform with XDG standards.")
   :defer t
   :ensure t)
 
-(use-package php-mode
-  :ensure t
-  :config
-  (use-package company-php
-    :ensure t))
+;; (use-package php-mode
+;;   :ensure t
+;;   :pin melpa
+;;   :config
+;;   (use-package company-php
+;;     :ensure t))
 
 
 ;;; Built-ins
