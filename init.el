@@ -557,7 +557,6 @@ This was changed in version 27 to conform with XDG standards.")
       abbrev-file-name (concat *base-dir* "abbrev_defs")
       save-abbrevs 'silent          ; Abbrev-mode settings
       compilation-scroll-output 'first-error)
-(setq async-bytecomp-allowed-packages ’(all))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Global Key Map and Bindings
