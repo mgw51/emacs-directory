@@ -98,6 +98,7 @@ This was changed in version 27 to conform with XDG standards.")
   (require 'ox-confluence nil 'no-error)
   (require 'ox-md nil 'no-error)
   (setq org-export-backends '(ascii html icalendar latex confluence md))
+  :hook org-jira
   :config
   ;; Enable some languages in org-babel
   (org-babel-do-load-languages
@@ -109,13 +110,11 @@ This was changed in version 27 to conform with XDG standards.")
      (perl . t)
      (lua . t)
      (shell . t)
-     (latex . t)))
+     (latex . t)
+     (sql .t)))
   (use-package org-jira
-    :defer)
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((sql . t)))
-  :hook org-jira)
+    :defer))
+
 
 
 (use-package restclient
