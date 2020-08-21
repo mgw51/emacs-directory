@@ -38,7 +38,7 @@ This was changed in version 27 to conform with XDG standards.")
 			   ("melpa-stable" . "https://stable.melpa.org/packages/")
                            ("melpa" . "https://melpa.org/packages/")
                            ("org" . "https://orgmode.org/elpa/")))
-  (when (> emacs-major-version 27)
+  (when (< emacs-major-version 27)
     (package-initialize)))  ; 27 and above automatically call this function
 
 
