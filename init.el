@@ -111,10 +111,10 @@ This was changed in version 27 to conform with XDG standards.")
      (lua . t)
      (shell . t)
      (latex . t)
-     (sql .t)))
+     (sql . t)
+     (rust . t)))
   (use-package org-jira
     :defer))
-
 
 
 (use-package restclient
