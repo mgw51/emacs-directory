@@ -52,27 +52,27 @@ This was changed in version 27 to conform with XDG standards.")
 ;;;
 (use-package select-comment-by-lang
   ; Load for various programming languages
-  :config
-  (add-hook 'c-mode-common-hook (lambda()
-                                  (local-set-key (kbd "C-c c") #'mw-insert-triplet)
-                                  (local-set-key (kbd "C-c d") #'mw-debug-comment))))
+  :hook 'c-mode-common
+  :bind (:map 'c-mode-map
+	 ("C-c c" . #'mw-insert-triplet)
+	 ("C-c d" . #'mw-debug-comment)))     
 
 
 (use-package cpp-funcs
-  :config
-  (add-hook 'c-mode-common-hook (lambda()
-                                  (local-set-key (kbd "C-c f") #'func-header)
-                                  (local-set-key (kbd "C-c n") #'get-class-name))))
+  :hook (:map 'c-mode-map
+	 ("C-c f" . #'func-header)
+	 ("C-c n" . #'get-class-name)))
 
 
 (use-package mw-utils
   :demand t
+  :bind (([f2] . #'mw-toggle-selective-display)
+	 :map 'text-mode-map
+	 ("C-c w t" . #'mw-insert-time)
+	 ("C-c w d" . #'mw-insert-time))
   ; Things like timestamps and other nice-to-haves
   :config
   (mw-create-sql-buffer)
-  (global-set-key [f2] 'mw-toggle-selective-display)
-  (define-key text-mode-map (kbd "C-c w t") #'mw-insert-time)
-  (define-key text-mode-map (kbd "C-c w d") #'mw-insert-date)
   ;; see https://www.gnu.org/software/emacs/manual/html_mono/dbus.html#Bus-names
   (when (not (null (dbus-list-activatable-names :session)))
     (add-hook 'compilation-finish-functions #'mw-compilation-completed-notification)))
@@ -85,7 +85,8 @@ This was changed in version 27 to conform with XDG standards.")
   doxygen-create-group doxygen-backward-block doxygen-forward-block)
 
 
-(use-package mw-perl-related)
+(use-package mw-perl-related
+  :defer t)
 
 
 ;;; Installed packages
