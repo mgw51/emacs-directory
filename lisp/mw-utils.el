@@ -184,8 +184,8 @@ If PREFIX is negative, search backward from point."
 
 ;;;###autoload
 (defun mw-large-file-precautions ()
-  "If a file is over a certain size, take some precautions to make it easier to view it."
-  (when (> (buffer-size) (* 1024 1024 1024))
+  "If a file is over a certain size, take some precautions to make it easier to view."
+  (when (> (buffer-size) (* 5 1024 1024))
     (buffer-disable-undo)
     (linum-mode -1)
     (fundamental-mode)
