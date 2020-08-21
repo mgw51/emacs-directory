@@ -51,6 +51,7 @@ not appear in helm's completion list."
 
 (require 'find-file)
 
+;;;###autoload
 (defun mw-find-proper-mode()
   "Flycheck does not seem to be smart enough to detect when a header file
 ending in '.h' is a c++ or c header file.   This function is a workaround
@@ -181,6 +182,7 @@ If PREFIX is negative, search backward from point."
   (search-forward-regexp "TODO\\|TBD\\|FIXME" nil 'no-error prefix))
 
 
+;;;###autoload
 (defun mw-large-file-precautions ()
   "If a file is over a certain size, take some precautions to make it easier to view it."
   (when (> (buffer-size) (* 1024 1024 1024))
