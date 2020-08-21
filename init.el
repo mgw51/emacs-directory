@@ -7,9 +7,12 @@
 
 ;;; Code:
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Core Emacs Functionality
+;;; Debug Variables
+;;; ~~~~~~~~~~~~~~~
+;(setf use-package
 
+;;; Core Setup
+;;; ~~~~~~~~~~
 (setf make-backup-files nil       ; don't make backups
       backup-directory-alist nil) ; clear list of backup directories
 
@@ -24,10 +27,10 @@ This was changed in version 27 to conform with XDG standards.")
   (normal-top-level-add-to-load-path '("."))     ; add current directory to load path
   (normal-top-level-add-subdirs-to-load-path))   ; recursively add subdirectories to load path
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Customizations
 
-;;; Packages
+;;; Customizations
+;;; ~~~~~~~~~~~~~~
+
 ;;; Handle package archives and also ensure all required packages are installed.
 (progn
   (require 'package)     ; Pull in package.el
@@ -35,7 +38,8 @@ This was changed in version 27 to conform with XDG standards.")
 			   ("melpa-stable" . "https://stable.melpa.org/packages/")
                            ("melpa" . "https://melpa.org/packages/")
                            ("org" . "https://orgmode.org/elpa/")))
-  (package-initialize))  ; Initialize it
+  (when (> emacs-major-version 27)
+    (package-initialize)))  ; 27 and above automatically call this function
 
 
 (eval-when-compile
