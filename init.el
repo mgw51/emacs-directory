@@ -283,6 +283,8 @@ This was changed in version 27 to conform with XDG standards.")
   :ensure t
   :pin melpa
   :hook ((c++-mode c-mode) . (rtags-start-process-unless-running))
+  :init
+  (setq-local exec-path (cons (expand-file-name "~/.local/bin") exec-path))
   :custom
   (rtags-verify-protocol-version nil)
   (rtags-autostart-diagnostics t)
@@ -290,7 +292,6 @@ This was changed in version 27 to conform with XDG standards.")
   (rtags-process-flags "-v --inactivity-timeout 300 --log-flush -j2 --rp-nice-value 19")
   :config
   (rtags-enable-standard-keybindings)
-  (rtags-start-process-unless-running)
   (use-package flycheck-rtags
     :ensure t
     :pin melpa
@@ -301,6 +302,7 @@ This was changed in version 27 to conform with XDG standards.")
     :after rtags)
   (use-package company-rtags
     :ensure t
+    :delight " CrT"
     :config
     (push 'company-rtags company-backends)))
 
