@@ -194,6 +194,7 @@ If PREFIX is negative, search backward from point."
 
 
 (require 'notifications)
+;;;###autoload
 (defun mw-compilation-completed-notification (buffer status)
   "Display a system notification upon completion of compilation.
 Accepts the compilation BUFFER and a STATUS string describing
