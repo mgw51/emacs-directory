@@ -69,22 +69,23 @@ This was changed in version 27 to conform with XDG standards.")
 ;;;
 (use-package select-comment-by-lang
   ; Load for various programming languages
-  :hook 'c-mode-common
-  :bind (:map 'c-mode-map
+  :hook c-mode-common
+  :bind (:map c-mode-map
 	 ("C-c c" . #'mw-insert-triplet)
 	 ("C-c d" . #'mw-debug-comment)))     
 
 
 (use-package cpp-funcs
-  :hook (:map 'c-mode-map
+  :hook c-mode-common
+  :bind (:map c-mode-map
 	 ("C-c f" . #'func-header)
 	 ("C-c n" . #'get-class-name)))
 
 
 (use-package mw-utils
-  :demand t
+  :defer t
   :bind (([f2] . #'mw-toggle-selective-display)
-	 :map 'text-mode-map
+	 :map text-mode-map
 	 ("C-c w t" . #'mw-insert-time)
 	 ("C-c w d" . #'mw-insert-time))
   ; Things like timestamps and other nice-to-haves
