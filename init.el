@@ -108,11 +108,24 @@ This was changed in version 27 to conform with XDG standards.")
 
 
 ;;; Installed packages
-;;;
-;; (use-package malinka   ; glues together various c/c++ packages e.g. rtags, projectile, etc
-;;   ;;; Must define each project; probably best to do that in .dir-locals.el
-;;   :ensure t
-;;   :hook c-mode-common)
+;;; ~~~~~~~~~~~~~~~~~~
+
+(use-package c++-mode
+  :defer t
+  :config
+  ;; Found this info at: https://lists.gnu.org/archive/html/help-gnu-emacs/2013-03/msg00335.html
+  ;; By issuing the following command, you can see what indentation vars are set to:
+  ;;   M-x set-variable RET c-echo-syntactic-information-p RET t RET
+  (c-set-offset 'inclass '++)
+  (c-set-offset 'access-label '-)
+  (auto-revert-mode t)
+  ;; Add some keywords to to C++ mode
+  (font-lock-add-keywords 'c++-mode
+                          '(("nullptr" . font-lock-keyword-face)
+                            ("constexpr" . font-lock-keyword-face)))
+  ;;                               append--------\   /-----make buffer-local
+  (add-hook 'c++-mode-hook #'mw-find-proper-mode nil t)
+  (add-hook 'before-save-hook #'whitespace-cleanup nil t))
 
 
 (use-package org
