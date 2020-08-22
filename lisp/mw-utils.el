@@ -50,7 +50,6 @@ not appear in helm's completion list."
 
 
 (require 'find-file)
-
 ;;;###autoload
 (defun mw-find-proper-mode()
   "Flycheck does not seem to be smart enough to detect when a header file
@@ -164,7 +163,7 @@ START and the end of the line.  Likewise on line containing END."
       (let ((tail-newline-p (looking-at-p ".*[[:graph:]]")))
         (cons head-newline-p tail-newline-p)))))  ; create dotted pair
 
-
+;;;###autoload
 (defun mw-toggle-selective-display (level)
   "Wrap `set-selective-display' to allow us to toggle text 'folding'.
 If the optional prefix is set, then set the folding level to LEVEL, otherwise
