@@ -2,13 +2,13 @@
 
 ;;; init.el -- My emacs init file.
 ;;; Commentary:
-;;;     Some things.
+;;;     
 ;;;
 ;;; Code:
 
 ;;; Debug Variables
 ;;; ~~~~~~~~~~~~~~~
-(setf use-package-verbose t)
+
 
 ;;; Core Setup
 ;;; ~~~~~~~~~~
@@ -48,7 +48,7 @@ This was changed in version 27 to conform with XDG standards.")
 ;;; Customizations
 ;;; ~~~~~~~~~~~~~~
 
-;;; Handle package archives and also ensure all required packages are installed.
+;;; Set up package archives
 (progn
   (require 'package)     ; Pull in package.el
   (setf package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -58,28 +58,32 @@ This was changed in version 27 to conform with XDG standards.")
   (when (< emacs-major-version 27)
     (package-initialize)))  ; 27 and above automatically call this function
 
-
+;;; Setup use-package
 (eval-when-compile
   (when (not (package-installed-p 'use-package))
     (package-refresh-contents)
     (package-install 'use-package))
   (require 'use-package))
+;;; Use-Package Debug Variables
+(setf use-package-verbose t
+      use-package-compute-statistics t)
 
 ;;; Personal libraries
-;;;
+;;; ~~~~~~~~~~~~~~~~~~
 (use-package select-comment-by-lang
-  ; Load for various programming languages
-  :hook c-mode-common
+  :defer t  ; not necessary when bind and others are used, just being verbose.
   :bind (:map c-mode-map
 	 ("C-c c" . #'mw-insert-triplet)
 	 ("C-c d" . #'mw-debug-comment)))     
 
 
 (use-package cpp-funcs
-  :hook c-mode-common
+  :defer t
   :bind (:map c-mode-map
-	 ("C-c f" . #'func-header)
-	 ("C-c n" . #'get-class-name)))
+	      ("C-c f" . #'func-header)
+         :map c++-mode-map
+	      ("C-c n" . #'get-class-name)
+              ("C-c f" . #'func-header)))
 
 
 (use-package mw-utils
@@ -109,32 +113,72 @@ This was changed in version 27 to conform with XDG standards.")
 
 ;;; Installed packages
 ;;; ~~~~~~~~~~~~~~~~~~
+;; (use-package prog-mode
+;;   :config
+;;   (require 'select-comment-by-lang))
 
-(use-package c++-mode
+
+(use-package cc-mode
   :defer t
+  :mode (("\\.\\(cpp\\|CC\\|cxx\\|tpp\\|hpp\\)\\'" . c++-mode)
+         ("\\.\\(c\\|h\\)\\'" . c-mode))
+  :bind (:map c-mode-base-map
+              ("C-c o" . #'ff-find-other-file)
+              ("C-c i" . #'imenu)
+              ("C-c w C-t" . #'mw-find-next-todo))
+  :preface
+  (defun cc-mode-customizations ()
+    "Run these commands for C, C++, objective-C, AWK, etc"
+    (superword-mode -1)  ; treat underscore-separated words as a single word?
+    (subword-mode t)     ; treat camelCase words as separate words?
+    (auto-revert-mode t)
+    (c-set-offset 'case-label '+) ; indent case statements in a switch block
+    (which-function-mode)
+    (flyspell-prog-mode)
+    (font-lock-add-keywords nil '(("\\<\\(TBD\\|TODO\\|FIXME\\)" 1 font-lock-warning-face prepend)))
+    ;; Add the following hook function(s) here because we can make them buffer-local
+    (add-hook 'before-save-hook #'whitespace-cleanup nil t)
+    (require 'mw-utils)
+    (require 'select-comment-by-lang))
+
+
+  (defun c-customization()
+    (require 'cpp-funcs))
+
+  
+  (defun cpp-customization ()
+    "Do some cpp things."
+    ;; Found this info at: https://lists.gnu.org/archive/html/help-gnu-emacs/2013-03/msg00335.html
+    ;; By issuing the following command, you can see what indentation vars are set to:
+    ;;   M-x set-variable RET c-echo-syntactic-information-p RET t RET
+    (c-set-offset 'inclass '++)
+    (c-set-offset 'access-label '-)
+    ;; Add some keywords to to C++ mode
+    (font-lock-add-keywords 'c++-mode
+                            '(("nullptr" . font-lock-keyword-face)
+                              ("constexpr" . font-lock-keyword-face)))
+    ;; Enable Doxygen comment styling
+    (setf c-doc-comment-style '((c++-mode . doxygen)))
+    ;; Add the following hook function(s) here because we can make them buffer-local
+                                        ; append --\    /-- make buffer-local
+    (add-hook 'c++-mode-hook #'mw-find-proper-mode nil t)
+    (require 'cpp-funcs))
   :config
-  ;; Found this info at: https://lists.gnu.org/archive/html/help-gnu-emacs/2013-03/msg00335.html
-  ;; By issuing the following command, you can see what indentation vars are set to:
-  ;;   M-x set-variable RET c-echo-syntactic-information-p RET t RET
-  (c-set-offset 'inclass '++)
-  (c-set-offset 'access-label '-)
-  (auto-revert-mode t)
-  ;; Add some keywords to to C++ mode
-  (font-lock-add-keywords 'c++-mode
-                          '(("nullptr" . font-lock-keyword-face)
-                            ("constexpr" . font-lock-keyword-face)))
-  ;;                               append--------\   /-----make buffer-local
-  (add-hook 'c++-mode-hook #'mw-find-proper-mode nil t)
-  (add-hook 'before-save-hook #'whitespace-cleanup nil t))
+  
+  :hook ((c++-mode . #'cpp-customization)
+         (c-mode . #'c-customization)
+         (cc-mode . #'cc-mode-customizations)))
 
 
 (use-package org
+  :defer t
+  :ensure t
+  :pin org
   :defines org-babel-load-languages org-export-backends
   :preface
   (require 'ox-confluence nil 'no-error)
   (require 'ox-md nil 'no-error)
   (setq org-export-backends '(ascii html icalendar latex confluence md))
-  :hook org-jira
   :config
   ;; Enable some languages in org-babel
   (org-babel-do-load-languages
@@ -147,17 +191,21 @@ This was changed in version 27 to conform with XDG standards.")
      (lua . t)
      (shell . t)
      (latex . t)
-     (sql . t)
-     (rust . t)))
+;     (rust . t)
+     (sql . t)))
   (use-package org-jira
-    :defer))
+    :defer t))
 
 
 (use-package restclient
   :ensure t
+  :pin melpa
+  :defer t
   :functions get-session
   :init
   (make-local-variable 'session-var)
+  :bind (:map restclient-mode-map
+         ("C-c r s" . #'get-session))
   :config
   (use-package restclient-helm
     :ensure t)
@@ -172,12 +220,12 @@ This was changed in version 27 to conform with XDG standards.")
                               (with-current-buffer (get-buffer "*HTTP Response*")
                                 (goto-char (point-min))
                                 (when (search-forward "\"session\": \"" nil t)
-                                  (buffer-substring-no-properties (point) (1- (search-forward "\""))))))))
-  :bind ("C-c r s" . #'get-session))
+                                  (buffer-substring-no-properties (point) (1- (search-forward "\"")))))))))
 
 
 
 (use-package systemd
+  :defer t
   :ensure t
   :config
   (use-package helm-systemd
@@ -185,6 +233,7 @@ This was changed in version 27 to conform with XDG standards.")
 
 
 (use-package projectile
+  :defer t
   :ensure t
   :pin melpa
   :commands projectile-register-project-type
@@ -201,7 +250,7 @@ This was changed in version 27 to conform with XDG standards.")
   (projectile-completion-system 'helm)
   (projectile-cache-file (concat (expand-file-name user-emacs-directory) "projectile/projectile.cache"))
   (projectile-enable-caching t)
-  :init
+  :config
   (advice-add 'projectile-project-root :around #'mw-advice-projectile-project-root)
   (projectile-register-project-type 'elisp '(".elisp-project")
                                                  :test-suffix "-test"
@@ -216,11 +265,13 @@ This was changed in version 27 to conform with XDG standards.")
 
 
 (use-package cmake-mode
+  :defer t
   :ensure t
   :pin melpa
   :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'")
   :init
   (use-package cmake-font-lock
+    :defer t
     :ensure t
     :pin melpa
     :hook (cmake-mode . cmake-font-lock-activate))
@@ -228,40 +279,43 @@ This was changed in version 27 to conform with XDG standards.")
   (company-mode))
 
 
-;; (use-package cmake-ide
-;;   :ensure t
-;;   :pin melpa
-;;   :after projectile
-;;   :init (cmake-ide-setup)
-;;   :defines (cmake-ide-rc-executable cmake-ide-rdm-executable)
-;;   :config
-;;   (let ((exec-path (mapcar #'directory-file-name (directory-files-recursively (expand-file-name "~/.emacs.d") "\\bbin\\b" t))))
-;;     (setf cmake-ide-rc-executable (executable-find "rc")
-;;           cmake-ide-rdm-executable (executable-find "rdm"))))
+;; ;; (use-package cmake-ide
+;; ;;   :ensure t
+;; ;;   :pin melpa
+;; ;;   :after projectile
+;; ;;   :init (cmake-ide-setup)
+;; ;;   :defines (cmake-ide-rc-executable cmake-ide-rdm-executable)
+;; ;;   :config
+;; ;;   (let ((exec-path (mapcar #'directory-file-name (directory-files-recursively (expand-file-name "~/.emacs.d") "\\bbin\\b" t))))
+;; ;;     (setf cmake-ide-rc-executable (executable-find "rc")
+;; ;;           cmake-ide-rdm-executable (executable-find "rdm"))))
 
 
 (use-package delight
+  :defer t
   :ensure t
   :pin gnu)
 
 
-(use-package rainbow-delimiters
-  :ensure t
-  :pin melpa-stable
-  :hook (prog-mode . rainbow-delimiters-mode))
+;; (use-package rainbow-delimiters
+;;   :ensure t
+;;   :pin melpa-stable
+;;   :hook (prog-mode . rainbow-delimiters-mode))
 
 
 (use-package iy-go-to-char
+  :defer t
   :ensure t
   :commands iy-go-up-to-char iy-go-to-char-backward)
 
 
 (use-package key-chord
+  :defer t
   :ensure t
   :pin melpa
   :hook
   ((rust-mode c-mode-common sh-mode cperl-mode) . (lambda() (key-chord-define-local "pq" #'mw-insert-curly-braces)))
-  :init
+  :config
   (key-chord-mode 1)
   (key-chord-define-global "fj" #'iy-go-up-to-char)
   (key-chord-define-global "fk" #'iy-go-to-char-backward))
@@ -269,297 +323,298 @@ This was changed in version 27 to conform with XDG standards.")
 
 (use-package helm
   :ensure t
-  :demand t
   :pin melpa
   :bind (("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)
          ("C-x c M-g M-g" . helm-grep-do-git-grep))
   :config
+  (helm-mode 1)
   (use-package helm-config)
   (use-package helm-projectile
+    :defer t
     :ensure t
     :pin melpa
     :after projectile)
-  (helm-mode 1)
   :delight " Ƕ")
 
 
 (use-package yasnippet
+  :defer t
   :ensure t
   :pin melpa
-  :delight " ¥")
+  :config
+  (yas-global-mode 1))
+  ;; (use-package yasnippet-snippets
+  ;;   :defer t
+  ;;   :ensure t
+  ;;   :pin melpa
+  ;;   :after yasnippet))
 
 
-(use-package yasnippet-snippets
-  :ensure t
-  :pin melpa
-  :after yasnippet)
+;; ;; (use-package flycheck
+;; ;;   :ensure t
+;; ;;   :pin melpa
+;; ;;   :hook after-init
+;; ;;   :config
+;; ;;   (use-package flycheck-pycheckers
+;; ;;     :ensure t
+;; ;;     :pin melpa))
+;; ;; ;  (use-package flycheck-clang-tidy
+;; ;;  ;   :hook (flycheck-mode . #'flycheck-clang-tidy-setup)))
 
 
-;; (use-package flycheck
+;; (use-package magit
 ;;   :ensure t
 ;;   :pin melpa
-;;   :hook after-init
 ;;   :config
-;;   (use-package flycheck-pycheckers
+;;   ;; Invoke magit-status screen
+;;   (global-set-key (kbd "C-c C-g") #'magit-status))
+
+;; (use-package rtags
+;;   :ensure t
+;;   :pin melpa
+;;   :hook ((c++-mode c-mode) . (rtags-start-process-unless-running))
+;;   :init
+;;   (setq-local exec-path (cons (expand-file-name "~/.local/bin") exec-path))
+;;   :custom
+;;   (rtags-verify-protocol-version nil)
+;;   (rtags-autostart-diagnostics t)
+;;   (rtags-use-helm t)
+;;   (rtags-process-flags "-v --inactivity-timeout 300 --log-flush -j2 --rp-nice-value 19")
+;;   :config
+;;   (rtags-enable-standard-keybindings)
+;;   (use-package flycheck-rtags
 ;;     :ensure t
-;;     :pin melpa))
-;; ;  (use-package flycheck-clang-tidy
-;;  ;   :hook (flycheck-mode . #'flycheck-clang-tidy-setup)))
+;;     :pin melpa
+;;     :after rtags)
+;;   (use-package helm-rtags
+;;     :ensure t
+;;     :pin melpa
+;;     :after rtags)
+;;   (use-package company-rtags
+;;     :ensure t
+;;     :delight " CrT"
+;;     :config
+;;     (push 'company-rtags company-backends)))
 
 
-(use-package magit
-  :ensure t
-  :pin melpa
-  :config
-  ;; Invoke magit-status screen
-  (global-set-key (kbd "C-c C-g") #'magit-status))
-
-(use-package rtags
-  :ensure t
-  :pin melpa
-  :hook ((c++-mode c-mode) . (rtags-start-process-unless-running))
-  :init
-  (setq-local exec-path (cons (expand-file-name "~/.local/bin") exec-path))
-  :custom
-  (rtags-verify-protocol-version nil)
-  (rtags-autostart-diagnostics t)
-  (rtags-use-helm t)
-  (rtags-process-flags "-v --inactivity-timeout 300 --log-flush -j2 --rp-nice-value 19")
-  :config
-  (rtags-enable-standard-keybindings)
-  (use-package flycheck-rtags
-    :ensure t
-    :pin melpa
-    :after rtags)
-  (use-package helm-rtags
-    :ensure t
-    :pin melpa
-    :after rtags)
-  (use-package company-rtags
-    :ensure t
-    :delight " CrT"
-    :config
-    (push 'company-rtags company-backends)))
-
-
-(use-package irony
-  :ensure t
-  :pin melpa
-  :after company
-  :hook (((c++-mode c-mode) . irony-mode) ; start irony mode when c/c++ hooks are run
-         (irony-mode . irony-cdb-autosetup-compile-options)) ; run autosetup when we enter irony mode
-  :delight " Fe"
-  :config
-  (use-package company-irony
-    :ensure t
-    :pin melpa
-    :after company
-    :config
-    (add-to-list 'company-backends 'company-irony)
-    :bind ("C-c w i" . #'company-irony))
-  (use-package company-irony-c-headers
-    :ensure t
-    :pin melpa
-    :after company
-    :config
-    (add-to-list 'company-backends '(company-irony-c-headers company-irony)))
-  (use-package flycheck-irony
-    :ensure t
-    :pin melpa
-    :hook (flycheck-mode . flycheck-irony-setup)))
-
-
-(use-package elpy
-  :ensure t
-  :defer t
-  :pin melpa
-  :delight "🥧"
-  :init
-  (elpy-enable)
-  (setq exec-path (cons (expand-file-name "~/.local/bin") exec-path)))
-
-
-(use-package dockerfile-mode
-  :ensure t
-  :pin melpa)
-
-
-(use-package docker-tramp
-  :ensure t
-  :pin melpa)
-
-
-(use-package yaml-mode
-  :ensure t
-  :pin melpa)
-
-
-(use-package company
-  :ensure t
-  :pin melpa
-  :delight " Ç"
-  :hook ((fundamental-mode text-mode prog-mode) . company-mode)
-  :custom
-  (company-idle-delay 0.25)
-  :config
-  (global-company-mode)
-  (use-package company-shell
-    ;; placed here for lack of a better place...
-    :ensure t))
-
-
-(use-package shell-pop
-  :ensure t
-  :pin melpa
-  :bind (("C-c s" . shell-pop))
-  :config
-  (setf shell-pop-window-position "bottom"
-        shell-pop-window-size 20))
-
-
-;; (use-package sr-speedbar
-;;   :config
-;;   (setq speedbar-use-images nil))
-
-
-(use-package buttercup
-  :ensure t
-  :pin melpa)
-
-
-(use-package slime
-  :if (executable-find "sbcl")
-  :ensure t
-  :pin melpa-stable
-  :config
-  (use-package slime-company
-    :after 'slime
-    :ensure t
-    :pin melpa-stable)
-  (setf inferior-lisp-program (executable-find "sbcl")
-        slime-contribs '(slime-fancy)))
-
-
-;;; Language Server Protocol setup.  Hook lsp-mode from
-;;; the appropriate language mode so we don't call it
-;;; globally.  Not all languages use LSP in this
-;;; config.
-(use-package lsp-mode
-  :ensure t
-  :pin melpa
-  :commands lsp
-  :custom
-  (lsp-prefer-flymake nil)
-  (lsp-auto-guess-root t)  ; will use projectile
-  (lsp-auto-configure t)   ; auto configure dependencies etc.
-  :config
-  (require 'lsp-clients)
-  (use-package lsp-ui
-    :ensure t
-    :pin melpa
-    :commands lsp-ui-mode)
-  (use-package company-lsp
-    :ensure t
-    :pin melpa
-    :commands company-lsp
-    :config
-    (push 'company-lsp company-backends))
-  (use-package helm-lsp
-    :ensure t
-    :pin melpa
-    :commands helm-lsp-workspace-symbol)
-  ;;; For debugging
-  (use-package dap-mode
-    :ensure t
-    :pin melpa
-    :config
-    (dap-mode t)
-    (dap-ui-mode t))
-  ;;; C-family language server
-  (when (let ((exec-path
-               (cons exec-path (cons (expand-file-name "~") (cons (expand-file-name "~/Scripts") nil)))))
-          (setf ccls-executable (executable-find "ccls")))
-    (use-package ccls
-      :defines ccls-executable
-      :preface
-      (defun find-ccls ()
-        "Add home directory to the `exec-path' variable and then look for ccls executable."
-        (let ((exec-path
-               (cons exec-path (cons (expand-file-name "~") (cons (expand-file-name "~/Scripts") nil)))))
-          (setf ccls-executable (executable-find "ccls"))))
-      :if (find-ccls)  ; only load if we can find ccls binary
-      :after lsp-mode projectile
-      :ensure t
-      :pin melpa
-      :hook (c++-mode c-mode)
-      :custom
-      (ccls-args nil)
-      (ccls-executable "/usr/local/bin/ccls");(find-ccls))
-      (projectile-project-root-files-top-down-recurring
-       (append '("compile_commands.json" ".ccls")
-               projectile-project-root-files-top-down-recurring))
-      :config
-      (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))))
-
-
-(use-package toml-mode
-  :ensure t
-  :pin melpa)
-
-
-(use-package rust-mode
-  :defer t
-  :ensure t
-  :pin melpa
-  :hook (rust-mode . lsp)
-  :custom
-  (exec-path (cons (expand-file-name "~/.cargo/bin") exec-path))  ; add cargo bin directory to exec-path
-  :config
-  (use-package cargo
-    :ensure t
-    :pin melpa
-    :hook (rust-mode . cargo-minor-mode))
-  (use-package flycheck-rust
-    :ensure t
-    :pin melpa
-    :hook (flycheck-mode . flycheck-rust-setup)))
-
-
-(use-package cql-mode
-  :defer t
-  :ensure t)
-
-;; (use-package php-mode
+;; (use-package irony
 ;;   :ensure t
 ;;   :pin melpa
+;;   :after company
+;;   :hook (((c++-mode c-mode) . irony-mode) ; start irony mode when c/c++ hooks are run
+;;          (irony-mode . irony-cdb-autosetup-compile-options)) ; run autosetup when we enter irony mode
+;;   :delight " Fe"
 ;;   :config
-;;   (use-package company-php
+;;   (use-package company-irony
+;;     :ensure t
+;;     :pin melpa
+;;     :after company
+;;     :config
+;;     (add-to-list 'company-backends 'company-irony)
+;;     :bind ("C-c w i" . #'company-irony))
+;;   (use-package company-irony-c-headers
+;;     :ensure t
+;;     :pin melpa
+;;     :after company
+;;     :config
+;;     (add-to-list 'company-backends '(company-irony-c-headers company-irony)))
+;;   (use-package flycheck-irony
+;;     :ensure t
+;;     :pin melpa
+;;     :hook (flycheck-mode . flycheck-irony-setup)))
+
+
+;; (use-package elpy
+;;   :ensure t
+;;   :defer t
+;;   :pin melpa
+;;   :delight "🥧"
+;;   :init
+;;   (elpy-enable)
+;;   (setq exec-path (cons (expand-file-name "~/.local/bin") exec-path)))
+
+
+;; (use-package dockerfile-mode
+;;   :ensure t
+;;   :pin melpa)
+
+
+;; (use-package docker-tramp
+;;   :ensure t
+;;   :pin melpa)
+
+
+;; (use-package yaml-mode
+;;   :ensure t
+;;   :pin melpa)
+
+
+;; (use-package company
+;;   :ensure t
+;;   :pin melpa
+;;   :delight " Ç"
+;;   :hook ((fundamental-mode text-mode prog-mode) . company-mode)
+;;   :custom
+;;   (company-idle-delay 0.25)
+;;   :config
+;;   (global-company-mode)
+;;   (use-package company-shell
+;;     ;; placed here for lack of a better place...
 ;;     :ensure t))
 
 
-;;; Built-ins
-;;;
-(use-package smartparens
-  :ensure t
-  :hook
-  ((emacs-lisp-mode lisp-mode) . smartparens-mode)
-  :init
-  (use-package smartparens-config))
+;; (use-package shell-pop
+;;   :ensure t
+;;   :pin melpa
+;;   :bind (("C-c s" . shell-pop))
+;;   :config
+;;   (setf shell-pop-window-position "bottom"
+;;         shell-pop-window-size 20))
 
 
-;;; Themes
-;;;
-(use-package zerodark-theme
-  ; This theme is terminal-safe
-  :ensure t
-  :demand t
-  :pin melpa
-  :init
-  ;; emacs27 changed default behavior, requiring a theme no longer automatically loads that theme.
-  (load-theme 'zerodark 'NO-CONFIRM))
-;; (use-package solarized-theme)
-;; (use-package abyss-theme)
+;; ;; (use-package sr-speedbar
+;; ;;   :config
+;; ;;   (setq speedbar-use-images nil))
+
+
+;; (use-package buttercup
+;;   :ensure t
+;;   :pin melpa)
+
+
+;; (use-package slime
+;;   :if (executable-find "sbcl")
+;;   :ensure t
+;;   :pin melpa-stable
+;;   :config
+;;   (use-package slime-company
+;;     :after 'slime
+;;     :ensure t
+;;     :pin melpa-stable)
+;;   (setf inferior-lisp-program (executable-find "sbcl")
+;;         slime-contribs '(slime-fancy)))
+
+
+;; ;;; Language Server Protocol setup.  Hook lsp-mode from
+;; ;;; the appropriate language mode so we don't call it
+;; ;;; globally.  Not all languages use LSP in this
+;; ;;; config.
+;; (use-package lsp-mode
+;;   :ensure t
+;;   :pin melpa
+;;   :commands lsp
+;;   :custom
+;;   (lsp-prefer-flymake nil)
+;;   (lsp-auto-guess-root t)  ; will use projectile
+;;   (lsp-auto-configure t)   ; auto configure dependencies etc.
+;;   :config
+;;   (require 'lsp-clients)
+;;   (use-package lsp-ui
+;;     :ensure t
+;;     :pin melpa
+;;     :commands lsp-ui-mode)
+;;   (use-package company-lsp
+;;     :ensure t
+;;     :pin melpa
+;;     :commands company-lsp
+;;     :config
+;;     (push 'company-lsp company-backends))
+;;   (use-package helm-lsp
+;;     :ensure t
+;;     :pin melpa
+;;     :commands helm-lsp-workspace-symbol)
+;;   ;;; For debugging
+;;   (use-package dap-mode
+;;     :ensure t
+;;     :pin melpa
+;;     :config
+;;     (dap-mode t)
+;;     (dap-ui-mode t))
+;;   ;;; C-family language server
+;;   (when (let ((exec-path
+;;                (cons exec-path (cons (expand-file-name "~") (cons (expand-file-name "~/Scripts") nil)))))
+;;           (setf ccls-executable (executable-find "ccls")))
+;;     (use-package ccls
+;;       :defines ccls-executable
+;;       :preface
+;;       (defun find-ccls ()
+;;         "Add home directory to the `exec-path' variable and then look for ccls executable."
+;;         (let ((exec-path
+;;                (cons exec-path (cons (expand-file-name "~") (cons (expand-file-name "~/Scripts") nil)))))
+;;           (setf ccls-executable (executable-find "ccls"))))
+;;       :if (find-ccls)  ; only load if we can find ccls binary
+;;       :after lsp-mode projectile
+;;       :ensure t
+;;       :pin melpa
+;;       :hook (c++-mode c-mode)
+;;       :custom
+;;       (ccls-args nil)
+;;       (ccls-executable "/usr/local/bin/ccls");(find-ccls))
+;;       (projectile-project-root-files-top-down-recurring
+;;        (append '("compile_commands.json" ".ccls")
+;;                projectile-project-root-files-top-down-recurring))
+;;       :config
+;;       (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))))
+
+
+;; (use-package toml-mode
+;;   :ensure t
+;;   :pin melpa)
+
+
+;; (use-package rust-mode
+;;   :defer t
+;;   :ensure t
+;;   :pin melpa
+;;   :hook (rust-mode . lsp)
+;;   :custom
+;;   (exec-path (cons (expand-file-name "~/.cargo/bin") exec-path))  ; add cargo bin directory to exec-path
+;;   :config
+;;   (use-package cargo
+;;     :ensure t
+;;     :pin melpa
+;;     :hook (rust-mode . cargo-minor-mode))
+;;   (use-package flycheck-rust
+;;     :ensure t
+;;     :pin melpa
+;;     :hook (flycheck-mode . flycheck-rust-setup)))
+
+
+;; (use-package cql-mode
+;;   :defer t
+;;   :ensure t)
+
+;; ;; (use-package php-mode
+;; ;;   :ensure t
+;; ;;   :pin melpa
+;; ;;   :config
+;; ;;   (use-package company-php
+;; ;;     :ensure t))
+
+
+;; ;;; Built-ins
+;; ;;;
+;; (use-package smartparens
+;;   :ensure t
+;;   :hook
+;;   ((emacs-lisp-mode lisp-mode) . smartparens-mode)
+;;   :init
+;;   (use-package smartparens-config))
+
+
+;; ;;; Themes
+;; ;;;
+;; (use-package zerodark-theme
+;;   ; This theme is terminal-safe
+;;   :ensure t
+;;   :demand t
+;;   :pin melpa
+;;   :init
+;;   ;; emacs27 changed default behavior, requiring a theme no longer automatically loads that theme.
+;;   (load-theme 'zerodark 'NO-CONFIRM))
+;; ;; (use-package solarized-theme)
+;; ;; (use-package abyss-theme)
 
 
 ;;; Toggle UI Elements
@@ -595,151 +650,120 @@ This was changed in version 27 to conform with XDG standards.")
       save-abbrevs 'silent          ; Abbrev-mode settings
       compilation-scroll-output 'first-error)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Global Key Map and Bindings
-;;; Anything that should happen across all modes (more or less)
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;;; Global Key Map and Bindings
+;; ;;; Anything that should happen across all modes (more or less)
 
-;; General keybindings
-(global-set-key (kbd "<f1>") #'shell-command)          ; shell command
-(global-set-key (kbd "<select>") #'move-end-of-line)   ; <end> -> end of line
+;; ;; General keybindings
+;; (global-set-key (kbd "<f1>") #'shell-command)          ; shell command
+;; (global-set-key (kbd "<select>") #'move-end-of-line)   ; <end> -> end of line
 
-(global-set-key (kbd "C-x C-b") #'ibuffer)  ; Use ibuffer instead of default buffer list
+;; (global-set-key (kbd "C-x C-b") #'ibuffer)  ; Use ibuffer instead of default buffer list
 
-;;; Macros and Hooks
-;; Common C/C++ hooks. This hook will be run for many c-like languages,
-;; but these keybindings may be overridden by defining local bindings in
-;; a lower keymap for a given language. See 'https://www.masteringemacs.org/article/mastering-key-bindings-emacs'
-;; for a discussion of this topic.
-;;
-;; TODO - Since my list of hook functions is always growing, I would like to move the hooks and hook functions
-;;        into a list and then use something like mapcar to apply the add-hook function to everything in the list.
-;;
-(add-hook 'c-mode-common-hook #'c-style-lang-hook-func)
-(add-hook 'c++-mode-hook #'cpp-hook-func)
-(add-hook 'python-mode-hook #'python-hook-func)
-(add-hook 'emacs-lisp-mode-hook #'lisp-settings)
-(add-hook 'lisp-mode-hook #'lisp-settings)
-(add-hook 'perl-mode-hook #'perl-settings)
-(add-hook 'sh-mode-hook #'bash-hook-func)
-(add-hook 'text-mode-hook #'text-hook-func)
-(add-hook 'org-mode-hook #'org-hook-func)
-(add-hook 'after-init-hook #'global-flycheck-mode)
-(add-hook 'sql-mode-hook #'sql-hook-func)
-(add-hook 'find-file-hook #'mw-find-proper-mode)  ; finds proper major mode for *.h files.
-(add-hook 'cperl-mode-hook #'cperl-hook-func)
+;; ;;; Macros and Hooks
+;; ;; Common C/C++ hooks. This hook will be run for many c-like languages,
+;; ;; but these keybindings may be overridden by defining local bindings in
+;; ;; a lower keymap for a given language. See 'https://www.masteringemacs.org/article/mastering-key-bindings-emacs'
+;; ;; for a discussion of this topic.
+;; ;;
+;; ;; TODO - Since my list of hook functions is always growing, I would like to move the hooks and hook functions
+;; ;;        into a list and then use something like mapcar to apply the add-hook function to everything in the list.
+;; ;;
+;; (add-hook 'c-mode-common-hook #'c-style-lang-hook-func)
+;; ;(add-hook 'c++-mode-hook #'cpp-hook-func)
+;; (add-hook 'python-mode-hook #'python-hook-func)
+;; (add-hook 'emacs-lisp-mode-hook #'lisp-settings)
+;; (add-hook 'lisp-mode-hook #'lisp-settings)
+;; (add-hook 'perl-mode-hook #'perl-settings)
+;; (add-hook 'sh-mode-hook #'bash-hook-func)
+;; (add-hook 'text-mode-hook #'text-hook-func)
+;; (add-hook 'org-mode-hook #'org-hook-func)
+;; ;(add-hook 'after-init-hook #'global-flycheck-mode)
+;; (add-hook 'sql-mode-hook #'sql-hook-func)
 
-;;; Custom Hook functions
-(defun c-style-lang-hook-func ()
-  "Run these commands for all c-like languages."
-  (superword-mode -1)  ; treat underscore-separated words as a single word?
-  (subword-mode t)     ; treat camelCase words as separate words?
-  (c-set-offset 'case-label '+) ; indent case statements in a switch block
-  (which-function-mode)
-  (flyspell-prog-mode)
-  (yas-minor-mode)
-  (local-set-key (kbd "C-c o") #'ff-find-other-file)
-  (local-set-key (kbd "C-c i") #'imenu)
-  (local-set-key (kbd "C-c w C-t") #'mw-find-next-todo)
-  (font-lock-add-keywords nil '(("\\<\\(TBD\\|TODO\\|FIXME\\)" 1 font-lock-warning-face prepend))))
+;; (add-hook 'cperl-mode-hook #'cperl-hook-func)
+
+;; ;;; Custom Hook functions
 
 
-(defun cpp-hook-func ()
-  "Do some cpp things."
-  ;; Found this info at: https://lists.gnu.org/archive/html/help-gnu-emacs/2013-03/msg00335.html
-  ;; By issuing the following command, you can see what indentation vars are set to:
-  ;;   M-x set-variable RET c-echo-syntactic-information-p RET t RET
-  (c-set-offset 'inclass '++)
-  (c-set-offset 'access-label '-)
-  (auto-revert-mode t)
-  ;; Add some keywords to to C++ mode
-  (font-lock-add-keywords 'c++-mode
-                          '(("nullptr" . font-lock-keyword-face)
-                            ("constexpr" . font-lock-keyword-face)))
-                                        ; append --\    /-- make buffer-local
-  (add-hook 'before-save-hook #'whitespace-cleanup nil t))
 
 
-(defun lisp-settings ()
-  "Code to be evaluated when Lisp major modes are enabled."
-  ;; This function probably does not need to be run for the slime hook, as
-  ;; these functions and others are already included in that mode.
-  (eldoc-mode)
-;  (yas-reload-all)
-  (show-paren-mode t)
-  (yas-minor-mode)
-  (local-set-key (kbd "C-m") #'newline-and-indent)
-  (company-mode))
+;; (defun lisp-settings ()
+;;   "Code to be evaluated when Lisp major modes are enabled."
+;;   ;; This function probably does not need to be run for the slime hook, as
+;;   ;; these functions and others are already included in that mode.
+;;   (eldoc-mode)
+;; ;  (yas-reload-all)
+;;   (show-paren-mode t)
+;;   (yas-minor-mode)
+;;   (local-set-key (kbd "C-m") #'newline-and-indent)
+;;   (company-mode))
 
 
-(defun perl-settings()
-  "Evaluate this stuff after perl mode has been started."
-  (setf tab-width 4)
-  (yas-minor-mode)
-  (local-set-key (kbd "C-c c") #'mw-insert-triplet))
+;; (defun perl-settings()
+;;   "Evaluate this stuff after perl mode has been started."
+;;   (setf tab-width 4)
+;;   (yas-minor-mode)
+;;   (local-set-key (kbd "C-c c") #'mw-insert-triplet))
 
-(defun python-hook-func ()
-  "Some call me... Tim."
-  (setq-default indent-tabs-mode nil)  ; use spaces, not tabs
-  (setf tab-width 4)
-;  (yas-reload-all)
-  (yas-minor-mode)
-  (local-set-key (kbd "C-c c") #'mw-insert-triplet)
-  (local-set-key (kbd "C-c d") #'mw-debug-comment)
-  (local-set-key (kbd "C-c f") #'func-header))
+;; (defun python-hook-func ()
+;;   "Some call me... Tim."
+;;   (setq-default indent-tabs-mode nil)  ; use spaces, not tabs
+;;   (setf tab-width 4)
+;; ;  (yas-reload-all)
+;;   (yas-minor-mode)
+;;   (local-set-key (kbd "C-c c") #'mw-insert-triplet)
+;;   (local-set-key (kbd "C-c d") #'mw-debug-comment)
+;;   (local-set-key (kbd "C-c f") #'func-header))
 
-(defun bash-hook-func ()
-  "To be run when we open a bash shell script."
-  (message "Welcome to shell script mode. Grrrrr!!")
-;  (yas-reload-all)
-  (show-paren-mode t)
-  (yas-minor-mode)
-  (local-set-key (kbd "C-c c") #'mw-insert-triplet)
-  (local-set-key (kbd "C-c d") #'mw-debug-comment))
+;; (defun bash-hook-func ()
+;;   "To be run when we open a bash shell script."
+;;   (message "Welcome to shell script mode. Grrrrr!!")
+;; ;  (yas-reload-all)
+;;   (show-paren-mode t)
+;;   (yas-minor-mode)
+;;   (local-set-key (kbd "C-c c") #'mw-insert-triplet)
+;;   (local-set-key (kbd "C-c d") #'mw-debug-comment))
 
-(defun text-hook-func()
-  "These settings will be applied to anything using 'text-mode'.
-Org-mode is based on 'text-mode', so these settings affect that as well."
-  (auto-fill-mode t)
-  (setf fill-column 95)
-  (yas-minor-mode))
+;; (defun text-hook-func()
+;;   "These settings will be applied to anything using 'text-mode'.
+;; Org-mode is based on 'text-mode', so these settings affect that as well."
+;;   (auto-fill-mode t)
+;;   (setf fill-column 95)
+;;   (yas-minor-mode))
 
-(defun org-hook-func()
-  "These are orgmode-specific settings."
-  (setf org-log-done 'time    ; timestamp when TODO item marked as DONE
-        org-latex-remove-logfiles t))
+;; (defun org-hook-func()
+;;   "These are orgmode-specific settings."
+;;   (setf org-log-done 'time    ; timestamp when TODO item marked as DONE
+;;         org-latex-remove-logfiles t))
 
-(defun json-hook-func()
-  (flycheck-mode))
+;; (defun json-hook-func()
+;;   (flycheck-mode))
 
-(defun sql-hook-func()
-  (local-set-key (kbd "C-c c") #'mw-insert-triplet))
+;; (defun sql-hook-func()
+;;   (local-set-key (kbd "C-c c") #'mw-insert-triplet))
 
-(defalias 'perl-mode 'cperl-mode)
-(defun cperl-hook-func()
-  (local-set-key (kbd "C-c w c") #'mw-insert-triplet)
-  (local-set-key (kbd "C-c w s") #'mw-perl-setup))
+;; (defalias 'perl-mode 'cperl-mode)
+;; (defun cperl-hook-func()
+;;   (local-set-key (kbd "C-c w c") #'mw-insert-triplet)
+;;   (local-set-key (kbd "C-c w s") #'mw-perl-setup))
 
-;; Put all the configuration garbage generated by package into a separate file.
-(setf custom-file (concat *base-dir* "lisp/init-custom.el"))
-(unless (file-exists-p custom-file)
-  (with-temp-file custom-file
-    (insert ";;; init-custom.el --- Dedicated file into which Emacs packages may freely write configuration data.\n"
-            ";;;\n"
-            ";;; Commentary:\n"
-            ";;;   Provide this file to prevent packages from writing their config data into my `init.el' file.\n"
-            ";;;   This file was automatically generated from my `init.el' file.\n"
-            ";;;\n"
-            ";;; Code:\n"
-            ";;;\n\n\n"
+;; ;; Load rig-specific config files
+;; (when (file-directory-p (concat *base-dir* "lisp/config"))
+;;   (dolist (file (directory-files (concat *base-dir* "lisp/config") 'full-path)
+;;                 (message "Finished loading custom config files"))
+;;     (unless (file-directory-p file)
+;;       (load file))))
 
-            ";;; init-custom.el ends here.\n")))
-(load custom-file)
+;; Use a hook so the message doesn't get clobbered by other messages.
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "Emacs ready in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))
 
-;; Load rig-specific config files
-(when (file-directory-p (concat *base-dir* "lisp/config"))
-  (dolist (file (directory-files (concat *base-dir* "lisp/config") 'full-path)
-                (message "Finished loading custom config files"))
-    (unless (file-directory-p file)
-      (load file))))
-
+;; Set GC to sometihng reasonable
+(setq gc-cons-threshold (* 2 1024 1024))
 ;;; init.el ends here
