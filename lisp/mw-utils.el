@@ -4,18 +4,21 @@
 ;;; Code:
 ;;;
 
+;;;###autoload
 (defun mw-insert-time ()
   "Insert at point the current time in 'HH:MM:SS' format."
   (interactive)
   (insert (format-time-string "%H:%M:%S")))
 
 
+;;;###autoload
 (defun mw-insert-date ()
   "Insert at point the current date in 'DoW, Month Day, Year' format."
   (interactive)
   (insert (format-time-string "%A, %b %d, %Y")))
 
 
+;;;###autoload
 (defun mw-guid-clean (start end)
   "Replace colons (:) with hyphens (-), and set the region to upper case.
 If a region is selected, operate on text between START and END."
@@ -27,6 +30,7 @@ If a region is selected, operate on text between START and END."
     (upcase-region start end)))
 
 
+;;;###autoload
 (defun mw-create-sql-buffer ()
   "Create a scratch SQL buffer with some basic settings enabled."
   (interactive)
@@ -47,31 +51,6 @@ c++-mode using the `helm-Mx' function.  The `c++-mode' option does
 not appear in helm's completion list."
     (interactive)
     (command-execute 'c++-mode))
-
-
-(require 'find-file)
-;;;###autoload
-(defun mw-find-proper-mode()
-  "Flycheck does not seem to be smart enough to detect when a header file
-ending in '.h' is a c++ or c header file.   This function is a workaround
-for this problem.  I found it on SO: `https://stackoverflow.com/a/1016389/1456187'."
-  (interactive)
-  ;; only run this on '.h' files
-  (when (string= "h" (file-name-extension (buffer-file-name)))
-    (save-window-excursion
-      (save-excursion
-        (let* ((alist (append auto-mode-alist nil))  ;; use whatever auto-mode-alist has
-               (ff-ignore-include t)                 ;; operate on buffer name only
-               (src (ff-other-file-name))            ;; find the src file corresponding to .h
-               re mode)
-          ;; Go through the a-list and find the mode associated with
-          ;; the src file: that is the mode we want to use for the header.
-          (while (and alist
-                      (setf mode (cdar alist)
-                            re (caar alist))
-                      (not (string-match re src)))
-            (setf alist (cdr alist)))
-          (when mode (funcall mode)))))))
 
 
 (defun mw-find-file (prefix)
@@ -95,6 +74,7 @@ case we call `helm-projectile-find-file' instead."
                              #'find-file))))
 
 
+;;;###autoload
 (defun mw-reload-dir-locals ()
   "Reload dir-locals.el for the current buffer."
   (interactive)
@@ -102,6 +82,7 @@ case we call `helm-projectile-find-file' instead."
     (hack-dir-local-variables-non-file-buffer)))
 
 
+;;;###autoload
 (defun mw-insert-curly-braces (start end)
   "Enclose the region defined by START and END within curly braces.
 
@@ -163,6 +144,7 @@ START and the end of the line.  Likewise on line containing END."
       (let ((tail-newline-p (looking-at-p ".*[[:graph:]]")))
         (cons head-newline-p tail-newline-p)))))  ; create dotted pair
 
+
 ;;;###autoload
 (defun mw-toggle-selective-display (level)
   "Wrap `set-selective-display' to allow us to toggle text 'folding'.
@@ -192,13 +174,13 @@ If PREFIX is negative, search backward from point."
 (add-hook 'find-file-hook 'mw-large-file-precautions)
 
 
-(require 'notifications)
 ;;;###autoload
 (defun mw-compilation-completed-notification (buffer status)
   "Display a system notification upon completion of compilation.
 Accepts the compilation BUFFER and a STATUS string describing
 how the process finished."
   (with-current-buffer buffer
+    (require 'notifications)
     (when (string= major-mode "compilation-mode")
       (notifications-notify
        :title "Compilation"

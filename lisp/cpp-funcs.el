@@ -4,6 +4,8 @@
 ;;;;   is also great for c.
 ;;;; Code:
 
+
+;;;###autoload
 (defun func-header ()
   "This function prints a standard header for a c++ function.
 The header consists of: three comment lines; first line contains a line of
@@ -19,6 +21,7 @@ stars, second line is function name, third line is empty."
   (end-of-line))
 
 
+;;;###autoload
 (defun include-guard ()
   "Generate include guards for a c or cpp header file."
   (interactive)
@@ -36,6 +39,7 @@ stars, second line is function name, third line is empty."
     (insert "#endif  // " guard-name)))
 
 
+;;;###autoload
 (defun get-class-name ()
   "Extract the class name from the filename.
 Takes everything before the file extension and uses that as the class name."
@@ -43,6 +47,33 @@ Takes everything before the file extension and uses that as the class name."
   (indent-according-to-mode)
   (insert (car (split-string (buffer-name) "\\."))))
 
+
+;;;###autoload
+(defun mw-find-proper-mode()
+  "Flycheck does not seem to be smart enough to detect when a header file
+ending in '.h' is a c++ or c header file.   This function is a workaround
+for this problem.  I found it on SO: `https://stackoverflow.com/a/1016389/1456187'."
+  (interactive)
+  ;; only run this on '.h' files
+  (require 'find-file)
+  (when (string= "h" (file-name-extension (buffer-file-name)))
+    (save-window-excursion
+      (save-excursion
+        (let* ((alist (append auto-mode-alist nil))  ;; use whatever auto-mode-alist has
+               (ff-ignore-include t)                 ;; operate on buffer name only
+               (src (ff-other-file-name))            ;; find the src file corresponding to .h
+               re mode)
+          ;; Go through the a-list and find the mode associated with
+          ;; the src file: that is the mode we want to use for the header.
+          (while (and alist
+                      (setf mode (cdar alist)
+                            re (caar alist))
+                      (not (string-match re src)))
+            (setf alist (cdr alist)))
+          (when mode (funcall mode)))))))
+
+
+;;;###autoload
 (defun create-basic-makefile (target lang)
   "Create a basic Makefile and use the most common flags.
 TARGET is the binary output name, LANG is the programming language used,
