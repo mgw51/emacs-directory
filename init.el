@@ -198,10 +198,18 @@ This was changed in version 27 to conform with XDG standards.")
 (use-package restclient
   :ensure t
   :pin melpa
-  :defer t
-  :functions get-session
   :init
   (make-local-variable 'session-var)
+  :preface
+  (defun get-session ()
+    "Get a session token returned from a REST login call."
+    (interactive)
+    (message "%s"
+             (setq-local session-var
+                         (with-current-buffer (get-buffer "*HTTP Response*")
+                           (goto-char (point-min))
+                           (when (search-forward "\"session\": \"" nil t)
+                             (buffer-substring-no-properties (point) (1- (search-forward "\""))))))))
   :bind (:map restclient-mode-map
          ("C-c r s" . #'get-session))
   :config
@@ -210,15 +218,7 @@ This was changed in version 27 to conform with XDG standards.")
   (use-package restclient-test
     :ensure t)
   (use-package company-restclient
-    :ensure t)
-  (defun get-session ()
-    "Get a session token returned from a REST login call."
-    (interactive)
-    (message "%s" (setq-local session-var
-                              (with-current-buffer (get-buffer "*HTTP Response*")
-                                (goto-char (point-min))
-                                (when (search-forward "\"session\": \"" nil t)
-                                  (buffer-substring-no-properties (point) (1- (search-forward "\"")))))))))
+    :ensure t))
 
 
 
