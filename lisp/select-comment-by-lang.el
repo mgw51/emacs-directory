@@ -16,23 +16,26 @@
 ;;;
 ;;; Code:
 
-;; Declare and fill the hash table.
-(and (defvar *lang-suffixes* (make-hash-table :test 'equal)
-       "This hash table maps common programming language file extensions with that language's associated comment character(s).")
-     (puthash "py" "#" *lang-suffixes*)
-     (puthash "sh" "#" *lang-suffixes*)
-     (puthash "bash" "#" *lang-suffixes*)
-     (puthash "pl" "#" *lang-suffixes*)
-     (puthash "perl" "#" *lang-suffixes*)
-     (puthash "cpp" "//" *lang-suffixes*)
-     (puthash "hpp" "//" *lang-suffixes*)
-     (puthash "c" "//" *lang-suffixes*)
-     (puthash "h" "//" *lang-suffixes*)
-     (puthash "lisp" ";" *lang-suffixes*)
-     (puthash "el" ";" *lang-suffixes*)
-     (puthash "elisp" ";" *lang-suffixes*)
-     (puthash "emacs" ";" *lang-suffixes*)
-     (puthash "sql" "--" *lang-suffixes*))
+
+(defun select-comment-by-lang()
+  ;; Declare and fill the hash table.
+  (and (defvar *lang-suffixes* (make-hash-table :test 'equal)
+         "This hash table maps common programming language file extensions with that language's associated comment character(s).")
+       (puthash "py" "#" *lang-suffixes*)
+       (puthash "sh" "#" *lang-suffixes*)
+       (puthash "bash" "#" *lang-suffixes*)
+       (puthash "pl" "#" *lang-suffixes*)
+       (puthash "perl" "#" *lang-suffixes*)
+       (puthash "cpp" "//" *lang-suffixes*)
+       (puthash "hpp" "//" *lang-suffixes*)
+       (puthash "c" "//" *lang-suffixes*)
+       (puthash "h" "//" *lang-suffixes*)
+       (puthash "lisp" ";" *lang-suffixes*)
+       (puthash "el" ";" *lang-suffixes*)
+       (puthash "elisp" ";" *lang-suffixes*)
+       (puthash "emacs" ";" *lang-suffixes*)
+       (puthash "sql" "--" *lang-suffixes*))
+  *lang-suffixes*)
 
 
 (defun get--buffer-suffix ()
