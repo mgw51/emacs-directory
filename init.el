@@ -224,11 +224,16 @@ This was changed in version 27 to conform with XDG standards.")
   :ensure t
   :pin melpa
   :hook
-  ((rust-mode c-mode-common sh-mode cperl-mode) . (lambda() (key-chord-define-local "pq" #'mw-insert-curly-braces)))
+  ((rust-mode c-mode-common sh-mode cperl-mode) . #'load-curly-braces)
+  :preface
+  (defun load-curly-braces()
+    (key-chord-define-local "pq" #'mw-insert-curly-braces))
+  (defun global-chords()
+    (key-chord-define-global "fj" #'iy-go-up-to-char)
+    (key-chord-define-global "kd" #'iy-go-to-char-backward))
   :init
   (key-chord-mode 1)
-  (key-chord-define-global "fj" #'iy-go-up-to-char)
-  (key-chord-define-global "fk" #'iy-go-to-char-backward))
+  (global-chords))
   
 
 (use-package helm
