@@ -116,56 +116,56 @@ This was changed in version 27 to conform with XDG standards.")
 ;;   (require 'select-comment-by-lang))
 
 
-(use-package cc-mode
-  :defer t
-  :mode (("\\.\\(cpp\\|CC\\|cxx\\|tpp\\|hpp\\)\\'" . c++-mode)
-         ("\\.\\(c\\|h\\)\\'" . c-mode))
-  :bind (:map c-mode-base-map
-              ("C-c o" . #'ff-find-other-file)
-              ("C-c i" . #'imenu)
-              ("C-c w C-t" . #'mw-find-next-todo))
-  :preface
-  (defun cc-mode-customizations ()
-    "Run these commands for C, C++, objective-C, AWK, etc"
-    (superword-mode -1)  ; treat underscore-separated words as a single word?
-    (subword-mode t)     ; treat camelCase words as separate words?
-    (auto-revert-mode t)
-    (c-set-offset 'case-label '+) ; indent case statements in a switch block
-    (which-function-mode)
-    (flyspell-prog-mode)
-    (font-lock-add-keywords nil '(("\\<\\(TBD\\|TODO\\|FIXME\\)" 1 font-lock-warning-face prepend)))
-    ;; Add the following hook function(s) here because we can make them buffer-local
-    (add-hook 'before-save-hook #'whitespace-cleanup nil t)
-    (require 'mw-utils)
-    (require 'select-comment-by-lang))
+;; (use-package cc-mode
+;;   :defer t
+;;   :mode (("\\.\\(cpp\\|CC\\|cxx\\|tpp\\|hpp\\)\\'" . c++-mode)
+;;          ("\\.\\(c\\|h\\)\\'" . c-mode))
+;;   :bind (:map c-mode-base-map
+;;               ("C-c o" . #'ff-find-other-file)
+;;               ("C-c i" . #'imenu)
+;;               ("C-c w C-t" . #'mw-find-next-todo))
+;;   :preface
+;;   (defun cc-mode-customizations ()
+;;     "Run these commands for C, C++, objective-C, AWK, etc"
+;;     (superword-mode -1)  ; treat underscore-separated words as a single word?
+;;     (subword-mode t)     ; treat camelCase words as separate words?
+;;     (auto-revert-mode t)
+;;     (c-set-offset 'case-label '+) ; indent case statements in a switch block
+;;     (which-function-mode)
+;;     (flyspell-prog-mode)
+;;     (font-lock-add-keywords nil '(("\\<\\(TBD\\|TODO\\|FIXME\\)" 1 font-lock-warning-face prepend)))
+;;     ;; Add the following hook function(s) here because we can make them buffer-local
+;;     (add-hook 'before-save-hook #'whitespace-cleanup nil t)
+;;     (require 'mw-utils)
+;;     (require 'select-comment-by-lang))
 
 
-  (defun c-customization()
-    (require 'cpp-funcs))
+;;   (defun c-customization()
+;;     (require 'cpp-funcs))
 
   
-  (defun cpp-customization ()
-    "Do some cpp things."
-    ;; Found this info at: https://lists.gnu.org/archive/html/help-gnu-emacs/2013-03/msg00335.html
-    ;; By issuing the following command, you can see what indentation vars are set to:
-    ;;   M-x set-variable RET c-echo-syntactic-information-p RET t RET
-    (c-set-offset 'inclass '++)
-    (c-set-offset 'access-label '-)
-    ;; Add some keywords to to C++ mode
-    (font-lock-add-keywords 'c++-mode
-                            '(("nullptr" . font-lock-keyword-face)
-                              ("constexpr" . font-lock-keyword-face)))
-    ;; Enable Doxygen comment styling
-    (setf c-doc-comment-style '((c++-mode . doxygen)))
-    ;; Add the following hook function(s) here because we can make them buffer-local
-                                        ; append --\    /-- make buffer-local
-    (add-hook 'c++-mode-hook #'mw-find-proper-mode nil t)
-    (require 'cpp-funcs))
-  :config
+;;   (defun cpp-customization ()
+;;     "Do some cpp things."
+;;     ;; Found this info at: https://lists.gnu.org/archive/html/help-gnu-emacs/2013-03/msg00335.html
+;;     ;; By issuing the following command, you can see what indentation vars are set to:
+;;     ;;   M-x set-variable RET c-echo-syntactic-information-p RET t RET
+;;     (c-set-offset 'inclass '++)
+;;     (c-set-offset 'access-label '-)
+;;     ;; Add some keywords to to C++ mode
+;;     (font-lock-add-keywords 'c++-mode
+;;                             '(("nullptr" . font-lock-keyword-face)
+;;                               ("constexpr" . font-lock-keyword-face)))
+;;     ;; Enable Doxygen comment styling
+;;     (setf c-doc-comment-style '((c++-mode . doxygen)))
+;;     ;; Add the following hook function(s) here because we can make them buffer-local
+;;                                         ; append --\    /-- make buffer-local
+;;     (add-hook 'c++-mode-hook #'mw-find-proper-mode nil t)
+;;     (require 'cpp-funcs))
+;;   :config
   
-  :hook ((c++-mode . #'cpp-customization)
-         (c-mode . #'c-customization)
-         (cc-mode . #'cc-mode-customizations)))
+;;   :hook ((c++-mode . #'cpp-customization)
+;;          (c-mode . #'c-customization)
+;;          (cc-mode . #'cc-mode-customizations)))
 
 
 (use-package org
