@@ -84,10 +84,6 @@ This was changed in version 27 to conform with XDG standards.")
   doxygen-create-group doxygen-backward-block doxygen-forward-block)
 
 
-(use-package mw-perl-related
-  :hook (perl-mode cperl-mode))
-
-
 ;;; Installed packages
 ;;;
 ;; (use-package malinka   ; glues together various c/c++ packages e.g. rtags, projectile, etc
