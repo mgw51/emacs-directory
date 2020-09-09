@@ -5,6 +5,7 @@
 
 ;;; Code:
 
+;;;###autoload
 (defun mw-perl-setup(prefix)
   "Add a shebang and some `use' statements to the top of a perl script.
 If the PREFIX key is used, use diagnostics instead of warnings at the top of the script."
