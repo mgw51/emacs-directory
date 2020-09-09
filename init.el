@@ -301,12 +301,6 @@ This was changed in version 27 to conform with XDG standards.")
 ;;   :hook (prog-mode . rainbow-delimiters-mode))
 
 
-(use-package iy-go-to-char
-  :defer t
-  :ensure t
-  :commands iy-go-up-to-char iy-go-to-char-backward)
-
-
 (use-package key-chord
   :defer t
   :ensure t
