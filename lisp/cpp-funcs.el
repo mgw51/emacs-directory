@@ -4,6 +4,12 @@
 ;;;;   is also great for c.
 ;;;; Code:
 
+
+(defun cpp-funcs()
+  "Dummy function"
+  (message "Provide a function for `use-package' to call."))
+
+;;;###autoload
 (defun func-header ()
   "This function prints a standard header for a c++ function.
 The header consists of: three comment lines; first line contains a line of
@@ -19,6 +25,7 @@ stars, second line is function name, third line is empty."
   (end-of-line))
 
 
+;;;###autoload
 (defun include-guard ()
   "Generate include guards for a c or cpp header file."
   (interactive)
@@ -36,6 +43,7 @@ stars, second line is function name, third line is empty."
     (insert "#endif  // " guard-name)))
 
 
+;;;###autoload
 (defun get-class-name ()
   "Extract the class name from the filename.
 Takes everything before the file extension and uses that as the class name."
@@ -43,6 +51,8 @@ Takes everything before the file extension and uses that as the class name."
   (indent-according-to-mode)
   (insert (car (split-string (buffer-name) "\\."))))
 
+
+;;;###autoload
 (defun create-basic-makefile (target lang)
   "Create a basic Makefile and use the most common flags.
 TARGET is the binary output name, LANG is the programming language used,
