@@ -47,18 +47,21 @@ This was changed in version 27 to conform with XDG standards.")
 ;;; Personal libraries
 ;;;
 (use-package select-comment-by-lang
-  ; Load for various programming languages
-  :config
-  (add-hook 'c-mode-common-hook (lambda()
-                                  (local-set-key (kbd "C-c c") #'mw-insert-triplet)
-                                  (local-set-key (kbd "C-c d") #'mw-debug-comment))))
+  :hook (c-mode-common sh-mode perl-mode cperl-mode rust-mode)
+  :defines prog-mode-map
+  :bind (:map prog-mode-map
+              ("C-c c" . #'mw-insert-triplet)
+              ("C-c d d" . #'mw-debug-comment)
+              ("C-c d r" . #'mw-remove-debug)))
 
 
 (use-package cpp-funcs
-  :config
-  (add-hook 'c-mode-common-hook (lambda()
-                                  (local-set-key (kbd "C-c f") #'func-header)
-                                  (local-set-key (kbd "C-c n") #'get-class-name))))
+  :hook (c-mode-common sh-mode perl-mode cperl-mode)
+  :defines c-mode-base-map prog-mode-map
+  :bind (:map prog-mode-map
+              ("C-c f" . #'func-header)
+         :map c-mode-base-map
+              ("C-c n" . #'get-class-name)))
 
 
 (use-package mw-utils
