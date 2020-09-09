@@ -5,10 +5,13 @@
 ;;;; Code:
 
 
+<<<<<<< HEAD
 (defun cpp-funcs()
   "Dummy function"
   (message "Provide a function for `use-package' to call."))
 
+=======
+>>>>>>> 50e8255f6303264a4f6fb4da3a1d6f5e3a77153a
 ;;;###autoload
 (defun func-header ()
   "This function prints a standard header for a c++ function.
@@ -53,6 +56,34 @@ Takes everything before the file extension and uses that as the class name."
 
 
 ;;;###autoload
+<<<<<<< HEAD
+=======
+(defun mw-find-proper-mode()
+  "Flycheck does not seem to be smart enough to detect when a header file
+ending in '.h' is a c++ or c header file.   This function is a workaround
+for this problem.  I found it on SO: `https://stackoverflow.com/a/1016389/1456187'."
+  (interactive)
+  ;; only run this on '.h' files
+  (require 'find-file)
+  (when (string= "h" (file-name-extension (buffer-file-name)))
+    (save-window-excursion
+      (save-excursion
+        (let* ((alist (append auto-mode-alist nil))  ;; use whatever auto-mode-alist has
+               (ff-ignore-include t)                 ;; operate on buffer name only
+               (src (ff-other-file-name))            ;; find the src file corresponding to .h
+               re mode)
+          ;; Go through the a-list and find the mode associated with
+          ;; the src file: that is the mode we want to use for the header.
+          (while (and alist
+                      (setf mode (cdar alist)
+                            re (caar alist))
+                      (not (string-match re src)))
+            (setf alist (cdr alist)))
+          (when mode (funcall mode)))))))
+
+
+;;;###autoload
+>>>>>>> 50e8255f6303264a4f6fb4da3a1d6f5e3a77153a
 (defun create-basic-makefile (target lang)
   "Create a basic Makefile and use the most common flags.
 TARGET is the binary output name, LANG is the programming language used,

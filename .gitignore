@@ -12,3 +12,4 @@ lisp/init-custom.el
 bookmarks
 irony/
 lisp/config/
+projectile-bookmarks.eld

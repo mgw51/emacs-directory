@@ -9,6 +9,7 @@
 ;;; "Public" Functions
 ;;;
 
+;;;###autoload
 (defun doxygen-function-template (&optional number-args)
   "Insert doxygen function documentation template at point.
 If NUMBER-ARGS is specified, insert that number of param fields into the templatne."
@@ -38,6 +39,7 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
   (end-of-line))
 
 
+;;;###autoload
 (defun doxygen-class-template ()
   "Insert doxygen class documentation template at point."
   (interactive "*")
@@ -55,6 +57,7 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
   (end-of-line))
 
 
+;;;###autoload
 (defun doxygen-struct-template ()
   "Insert doxygen struct documentation template at point."
   (interactive "*")
@@ -72,6 +75,7 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
   (end-of-line))
 
 
+;;;###autoload
 (defun doxygen-create-group (start end)
   "Create a doxygen group prefaced with 'name' and 'brief' tags.
 
@@ -107,6 +111,7 @@ When invoked on a region defined by START and END, wrap the
   )
 
 
+;;;###autoload
 (defun doxygen-run-doxygen ()
   "Run doxygen using projectile root if active, otherwise using Doxyfile as the dominant file to search for."
   (interactive)
