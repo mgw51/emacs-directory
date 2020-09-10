@@ -365,7 +365,7 @@ This was changed in version 27 to conform with XDG standards.")
   (rtags-use-helm t)
   (rtags-process-flags "-v --inactivity-timeout 300 --log-flush -j2 --rp-nice-value 19")
   :config
-  (setq-local exec-path (cons (expand-file-name "~/.local/bin") exec-path))
+  (setq-local exec-path (cons (expand-file-name (concat *base-dir* "elpa")) exec-path))
   (rtags-enable-standard-keybindings)
   (use-package flycheck-rtags
     :ensure t
