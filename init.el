@@ -688,10 +688,6 @@ This was changed in version 27 to conform with XDG standards.")
   ;;   M-x set-variable RET c-echo-syntactic-information-p RET t RET
   (c-set-offset 'inclass '++)
   (c-set-offset 'access-label '-)
-  ;; Add some keywords to to C++ mode
-  (font-lock-add-keywords 'c++-mode
-                          '(("nullptr" . font-lock-keyword-face)
-                            ("constexpr" . font-lock-keyword-face)))
   ;; Enable Doxygen comment styling
   (setf c-doc-comment-style '((c++-mode . doxygen))))
 
