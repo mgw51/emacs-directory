@@ -190,8 +190,6 @@ This was changed in version 27 to conform with XDG standards.")
   :defer t
   :ensure t
   :pin melpa
-  :init
-  (make-local-variable 'session-var)
   :preface
   (defun get-session ()
     "Get a session token returned from a REST login call."
