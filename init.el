@@ -342,32 +342,33 @@ This was changed in version 27 to conform with XDG standards.")
   :pin melpa
   :bind ("C-c C-g" . #'magit-status))
 
-;; (use-package rtags
-;;   :ensure t
-;;   :pin melpa
-;;   :hook ((c++-mode c-mode) . (rtags-start-process-unless-running))
-;;   :init
-;;   (setq-local exec-path (cons (expand-file-name "~/.local/bin") exec-path))
-;;   :custom
-;;   (rtags-verify-protocol-version nil)
-;;   (rtags-autostart-diagnostics t)
-;;   (rtags-use-helm t)
-;;   (rtags-process-flags "-v --inactivity-timeout 300 --log-flush -j2 --rp-nice-value 19")
-;;   :config
-;;   (rtags-enable-standard-keybindings)
-;;   (use-package flycheck-rtags
-;;     :ensure t
-;;     :pin melpa
-;;     :after rtags)
-;;   (use-package helm-rtags
-;;     :ensure t
-;;     :pin melpa
-;;     :after rtags)
-;;   (use-package company-rtags
-;;     :ensure t
-;;     :delight " CrT"
-;;     :config
-;;     (push 'company-rtags company-backends)))
+(use-package rtags
+  :defer t
+  :ensure t
+  :pin melpa
+  :hook ((c++-mode c-mode) . (rtags-start-process-unless-running))
+  :custom
+  (rtags-verify-protocol-version nil)
+  (rtags-autostart-diagnostics t)
+  (rtags-use-helm t)
+  (rtags-process-flags "-v --inactivity-timeout 300 --log-flush -j2 --rp-nice-value 19")
+  :config
+  (setq-local exec-path (cons (expand-file-name "~/.local/bin") exec-path))
+  (rtags-enable-standard-keybindings)
+  (use-package flycheck-rtags
+    :ensure t
+    :pin melpa
+    :after flycheck)
+  (use-package helm-rtags
+    :ensure t
+    :pin melpa
+    :after helm)
+  (use-package company-rtags
+    :ensure t
+    :delight " CrT"
+    :after company
+    :config
+    (push 'company-rtags company-backends)))
 
 
 ;; (use-package irony
