@@ -275,12 +275,6 @@ This was changed in version 27 to conform with XDG standards.")
   :pin gnu)
 
 
-;; (use-package rainbow-delimiters
-;;   :ensure t
-;;   :pin melpa-stable
-;;   :hook (prog-mode . rainbow-delimiters-mode))
-
-
 (use-package key-chord
   :defer t
   :ensure t
