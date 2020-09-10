@@ -346,7 +346,7 @@ This was changed in version 27 to conform with XDG standards.")
   :defer t
   :ensure t
   :pin melpa
-  :hook ((c++-mode c-mode) . (rtags-start-process-unless-running))
+  :hook ((c++-mode c-mode) . #'rtags-start-process-unless-running)
   :custom
   (rtags-verify-protocol-version nil)
   (rtags-autostart-diagnostics t)
