@@ -190,6 +190,9 @@ This was changed in version 27 to conform with XDG standards.")
   :defer t
   :ensure t
   :pin melpa
+  :commands restclient-mode
+  :mode (("\\.restclient\\'" . restclient-mode)
+         ( "\\.rest\\'" . restclient-mode))
   :preface
   (defun get-session ()
     "Get a session token returned from a REST login call."
