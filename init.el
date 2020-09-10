@@ -323,17 +323,25 @@ This was changed in version 27 to conform with XDG standards.")
   ;;   :after yasnippet))
 
 
-;; (use-package flycheck
-;;   :ensure t
-;;   :pin melpa
-;;   :hook after-init
-;;   :config
-;;   (use-package flycheck-pycheckers
-;;     :defer t
-;;     :ensure t
-;;     :pin melpa))
-;; ;  (use-package flycheck-clang-tidy
-;;  ;   :hook (flycheck-mode . #'flycheck-clang-tidy-setup)))
+(use-package flycheck
+  :defer t
+  :commands flycheck-mode
+  :ensure t
+  :pin melpa
+  :init (global-flycheck-mode)
+  :config
+  (use-package flycheck-pycheckers
+    :defer t
+    :after elpy
+    :hook elpy-mode
+    :ensure t
+    :pin melpa)
+  (use-package flycheck-clang-tidy
+    :defer t
+    :after flycheck-mode
+    :hook (flycheck-mode . #'flycheck-clang-tidy-setup)
+    :ensure t
+    :pin melpa))
 
 
 (use-package magit
@@ -341,6 +349,7 @@ This was changed in version 27 to conform with XDG standards.")
   :ensure t
   :pin melpa
   :bind ("C-c C-g" . #'magit-status))
+
 
 (use-package rtags
   :defer t
