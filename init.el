@@ -355,12 +355,12 @@ This was changed in version 27 to conform with XDG standards.")
 ;;  ;   :hook (flycheck-mode . #'flycheck-clang-tidy-setup)))
 
 
-;; (use-package magit
-;;   :ensure t
-;;   :pin melpa
-;;   :config
-;;   ;; Invoke magit-status screen
-;;   (global-set-key (kbd "C-c C-g") #'magit-status))
+(use-package magit
+  :ensure t
+  :pin melpa
+  :config
+  ;; Invoke magit-status screen
+  (global-set-key (kbd "C-c C-g") #'magit-status))
 
 ;; (use-package rtags
 ;;   :ensure t
