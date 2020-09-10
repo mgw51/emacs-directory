@@ -70,16 +70,6 @@ This was changed in version 27 to conform with XDG standards.")
 
 ;;; Personal libraries
 ;;; ~~~~~~~~~~~~~~~~~~
-;; (use-package cpp-funcs
-;;   :hook (c-mode-common sh-mode perl-mode cperl-mode)
-;;   :defines c-mode-base-map prog-mode-map
-;;   :commands func-head get-class-name
-;;   :bind (:map prog-mode-map
-;;               ("C-c f" . #'func-header)
-;;          :map c-mode-base-map
-;;               ("C-c n" . #'get-class-name)))
-
-
 (use-package mw-utils
   :defer t
   :commands mw-toggle-selective-display mw-insert-time mw-insert-date
