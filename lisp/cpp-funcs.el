@@ -5,13 +5,6 @@
 ;;;; Code:
 
 
-<<<<<<< HEAD
-(defun cpp-funcs()
-  "Dummy function"
-  (message "Provide a function for `use-package' to call."))
-
-=======
->>>>>>> 50e8255f6303264a4f6fb4da3a1d6f5e3a77153a
 ;;;###autoload
 (defun func-header ()
   "This function prints a standard header for a c++ function.
@@ -56,8 +49,6 @@ Takes everything before the file extension and uses that as the class name."
 
 
 ;;;###autoload
-<<<<<<< HEAD
-=======
 (defun mw-find-proper-mode()
   "Flycheck does not seem to be smart enough to detect when a header file
 ending in '.h' is a c++ or c header file.   This function is a workaround
@@ -83,7 +74,6 @@ for this problem.  I found it on SO: `https://stackoverflow.com/a/1016389/145618
 
 
 ;;;###autoload
->>>>>>> 50e8255f6303264a4f6fb4da3a1d6f5e3a77153a
 (defun create-basic-makefile (target lang)
   "Create a basic Makefile and use the most common flags.
 TARGET is the binary output name, LANG is the programming language used,
