@@ -70,13 +70,13 @@ This was changed in version 27 to conform with XDG standards.")
 
 ;;; Personal libraries
 ;;; ~~~~~~~~~~~~~~~~~~
-(use-package select-comment-by-lang
-  :hook (c-mode-common sh-mode perl-mode cperl-mode rust-mode)
-  :defines prog-mode-map
-  :bind (:map prog-mode-map
-              ("C-c c" . #'mw-insert-triplet)
-              ("C-c d d" . #'mw-debug-comment)
-              ("C-c d r" . #'mw-remove-debug)))
+;; (use-package select-comment-by-lang
+;;   :hook (c-mode-common sh-mode perl-mode cperl-mode rust-mode)
+;;   :defines prog-mode-map
+;;   :bind (:map prog-mode-map
+;;               ("C-c c" . #'mw-insert-triplet)
+;;               ("C-c d d" . #'mw-debug-comment)
+;;               ("C-c d r" . #'mw-remove-debug)))
 
 
 (use-package cpp-funcs
@@ -111,10 +111,15 @@ This was changed in version 27 to conform with XDG standards.")
 
 ;;; Installed packages
 ;;; ~~~~~~~~~~~~~~~~~~
-;; (use-package prog-mode
-;;   :config
-;;   (require 'select-comment-by-lang))
 
+(use-package prog-mode
+  :defer t
+  :defines prog-mode-map
+  :bind (:map prog-mode-map
+              ("C-c c" . #'mw-insert-triplet)
+              ("C-c d d" . #'mw-debug-comment)
+              ("C-c d r" . #'mw-remove-debug))
+  :config (require 'select-comment-by-lang))
 
 ;; (use-package cc-mode
 ;;   :defer t
@@ -196,6 +201,7 @@ This was changed in version 27 to conform with XDG standards.")
 
 
 (use-package restclient
+  :defer t
   :ensure t
   :pin melpa
   :init
@@ -277,18 +283,6 @@ This was changed in version 27 to conform with XDG standards.")
   (company-mode))
 
 
-;; ;; (use-package cmake-ide
-;; ;;   :ensure t
-;; ;;   :pin melpa
-;; ;;   :after projectile
-;; ;;   :init (cmake-ide-setup)
-;; ;;   :defines (cmake-ide-rc-executable cmake-ide-rdm-executable)
-;; ;;   :config
-;; ;;   (let ((exec-path (mapcar #'directory-file-name (directory-files-recursively (expand-file-name "~/.emacs.d") "\\bbin\\b" t))))
-;; ;;     (setf cmake-ide-rc-executable (executable-find "rc")
-;; ;;           cmake-ide-rdm-executable (executable-find "rdm"))))
-
-
 (use-package delight
   :defer t
   :ensure t
@@ -348,16 +342,17 @@ This was changed in version 27 to conform with XDG standards.")
   ;;   :after yasnippet))
 
 
-;; ;; (use-package flycheck
-;; ;;   :ensure t
-;; ;;   :pin melpa
-;; ;;   :hook after-init
-;; ;;   :config
-;; ;;   (use-package flycheck-pycheckers
-;; ;;     :ensure t
-;; ;;     :pin melpa))
-;; ;; ;  (use-package flycheck-clang-tidy
-;; ;;  ;   :hook (flycheck-mode . #'flycheck-clang-tidy-setup)))
+;; (use-package flycheck
+;;   :ensure t
+;;   :pin melpa
+;;   :hook after-init
+;;   :config
+;;   (use-package flycheck-pycheckers
+;;     :defer t
+;;     :ensure t
+;;     :pin melpa))
+;; ;  (use-package flycheck-clang-tidy
+;;  ;   :hook (flycheck-mode . #'flycheck-clang-tidy-setup)))
 
 
 ;; (use-package magit
