@@ -70,22 +70,14 @@ This was changed in version 27 to conform with XDG standards.")
 
 ;;; Personal libraries
 ;;; ~~~~~~~~~~~~~~~~~~
-;; (use-package select-comment-by-lang
-;;   :hook (c-mode-common sh-mode perl-mode cperl-mode rust-mode)
-;;   :defines prog-mode-map
+;; (use-package cpp-funcs
+;;   :hook (c-mode-common sh-mode perl-mode cperl-mode)
+;;   :defines c-mode-base-map prog-mode-map
+;;   :commands func-head get-class-name
 ;;   :bind (:map prog-mode-map
-;;               ("C-c c" . #'mw-insert-triplet)
-;;               ("C-c d d" . #'mw-debug-comment)
-;;               ("C-c d r" . #'mw-remove-debug)))
-
-
-(use-package cpp-funcs
-  :hook (c-mode-common sh-mode perl-mode cperl-mode)
-  :defines c-mode-base-map prog-mode-map
-  :bind (:map prog-mode-map
-              ("C-c f" . #'func-header)
-         :map c-mode-base-map
-              ("C-c n" . #'get-class-name)))
+;;               ("C-c f" . #'func-header)
+;;          :map c-mode-base-map
+;;               ("C-c n" . #'get-class-name)))
 
 
 (use-package mw-utils
@@ -116,10 +108,13 @@ This was changed in version 27 to conform with XDG standards.")
   :defer t
   :defines prog-mode-map
   :bind (:map prog-mode-map
+              ("C-c f" . #'func-header)
               ("C-c c" . #'mw-insert-triplet)
               ("C-c d d" . #'mw-debug-comment)
               ("C-c d r" . #'mw-remove-debug))
-  :config (require 'select-comment-by-lang))
+  :config
+  (require 'select-comment-by-lang)
+  (require 'cpp-funcs))
 
 ;; (use-package cc-mode
 ;;   :defer t
