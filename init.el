@@ -259,7 +259,7 @@ This was changed in version 27 to conform with XDG standards.")
   (projectile-register-project-type 'elisp '(".elisp-project")
                                                  :test-suffix "-test"
                                                  :test-dir "test/")
-  (projectile-register-project-type 'c++-make '(".c++-project")
+  (projectile-register-project-type 'c++-autotools '(".c++-autotools")
                                     :configure "%s/bootstrap && %s/configure"
                                     :compile "make"
                                     :test-suffix "_test"
