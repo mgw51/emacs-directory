@@ -343,11 +343,10 @@ This was changed in version 27 to conform with XDG standards.")
 
 
 (use-package magit
+  :defer t
   :ensure t
   :pin melpa
-  :config
-  ;; Invoke magit-status screen
-  (global-set-key (kbd "C-c C-g") #'magit-status))
+  :bind ("C-c C-g" . #'magit-status))
 
 ;; (use-package rtags
 ;;   :ensure t
