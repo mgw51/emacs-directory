@@ -313,6 +313,7 @@ This was changed in version 27 to conform with XDG standards.")
   
 
 (use-package helm
+  :demand t
   :ensure t
   :pin melpa
   :bind (("M-x" . helm-M-x)
