@@ -87,7 +87,7 @@ This was changed in version 27 to conform with XDG standards.")
 	 ("C-c w t" . #'mw-insert-time)
 	 ("C-c w d" . #'mw-insert-time))
   ; Things like timestamps and other nice-to-haves
-  :config
+  :init
   (mw-create-sql-buffer)
   ;; see https://www.gnu.org/software/emacs/manual/html_mono/dbus.html#Bus-names
   (when (not (null (dbus-list-activatable-names :session)))
