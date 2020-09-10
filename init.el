@@ -583,18 +583,18 @@ This was changed in version 27 to conform with XDG standards.")
 ;;   (use-package smartparens-config))
 
 
-;; ;;; Themes
-;; ;;;
-;; (use-package zerodark-theme
-;;   ; This theme is terminal-safe
-;;   :ensure t
-;;   :demand t
-;;   :pin melpa
-;;   :init
-;;   ;; emacs27 changed default behavior, requiring a theme no longer automatically loads that theme.
-;;   (load-theme 'zerodark 'NO-CONFIRM))
-;; ;; (use-package solarized-theme)
-;; ;; (use-package abyss-theme)
+;;; Themes
+;;;
+(use-package zerodark-theme
+  ; This theme is terminal-safe
+  :demand t
+  :ensure t
+  :pin melpa
+  :init
+  ;; emacs27 changed default behavior, requiring a theme no longer automatically loads that theme.
+  (load-theme 'zerodark 'NO-CONFIRM))
+;; (use-package solarized-theme)
+;; (use-package abyss-theme)
 
 
 ;;; Toggle UI Elements
