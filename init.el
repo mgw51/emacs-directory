@@ -320,7 +320,6 @@ This was changed in version 27 to conform with XDG standards.")
 
 
 (use-package yasnippet
-  :defer t
   :ensure t
   :pin melpa
   :config
