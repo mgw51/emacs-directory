@@ -439,18 +439,17 @@ This was changed in version 27 to conform with XDG standards.")
 ;;   :pin melpa)
 
 
-;; (use-package company
-;;   :ensure t
-;;   :pin melpa
-;;   :delight " Ç"
-;;   :hook ((fundamental-mode text-mode prog-mode) . company-mode)
-;;   :custom
-;;   (company-idle-delay 0.25)
-;;   :config
-;;   (global-company-mode)
-;;   (use-package company-shell
-;;     ;; placed here for lack of a better place...
-;;     :ensure t))
+(use-package company
+  :ensure t
+  :pin melpa
+  :delight " Ç"
+  :custom
+  (company-idle-delay 0.25)
+  :config
+  (global-company-mode)
+  (use-package company-shell
+    ;; placed here for lack of a better place...
+    :ensure t))
 
 
 ;; (use-package shell-pop
