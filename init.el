@@ -287,6 +287,7 @@ This was changed in version 27 to conform with XDG standards.")
   :defer t
   :ensure t
   :pin melpa
+  :commands mw-insert-curly-braces
   :hook
   ((rust-mode c-mode-common sh-mode cperl-mode) . #'load-curly-braces)
   :preface
