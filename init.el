@@ -698,16 +698,15 @@ This was changed in version 27 to conform with XDG standards.")
   (setf c-doc-comment-style '((c++-mode . doxygen))))
 
 
-;; (defun lisp-settings ()
-;;   "Code to be evaluated when Lisp major modes are enabled."
-;;   ;; This function probably does not need to be run for the slime hook, as
-;;   ;; these functions and others are already included in that mode.
-;;   (eldoc-mode)
-;; ;  (yas-reload-all)
-;;   (show-paren-mode t)
-;;   (yas-minor-mode)
-;;   (local-set-key (kbd "C-m") #'newline-and-indent)
-;;   (company-mode))
+(defun lisp-settings ()
+  "Code to be evaluated when Lisp major modes are enabled."
+  ;; This function probably does not need to be run for the slime hook, as
+  ;; these functions and others are already included in that mode.
+  (eldoc-mode)
+  (yas-reload-all)
+  (show-paren-mode t)
+;  (local-set-key (kbd "C-m") #'newline-and-indent)
+  (company-mode))
 
 
 ;; (defun perl-settings()
