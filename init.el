@@ -674,19 +674,20 @@ This was changed in version 27 to conform with XDG standards.")
 ;;; Custom Hook functions
 (defun cc-mode-customizations ()
   "Run these commands for C, C++, objective-C, AWK, etc."
+  (yas-reload-all)
   (superword-mode -1)  ; treat underscore-separated words as a single word?
   (subword-mode t)     ; treat camelCase words as separate words?
   (auto-revert-mode t)
   (c-set-offset 'case-label '+) ; indent case statements in a switch block
   (which-function-mode)
   (flyspell-prog-mode)
-  (font-lock-add-keywords nil '(("\\<\\(TBD\\|TODO\\|FIXME\\)" 1 font-lock-warning-face prepend)))
+  (font-lock-add-keywords nil '(("\\<\\(TBD\\|TODO\\|FIXME\\|DEBUG\\)" 1 font-lock-warning-face prepend)))
   ;; Add the following hook function(s) here because we can make them buffer-local
                                  ;   append -------\   /------- make buffer-local
   (add-hook 'before-save-hook #'whitespace-cleanup nil t))
 
 
-(defun cpp-customization ()
+(defun cpp-customizations ()
   "Do some cpp things."
   ;; Found this info at: https://lists.gnu.org/archive/html/help-gnu-emacs/2013-03/msg00335.html
   ;; By issuing the following command, you can see what indentation vars are set to:
