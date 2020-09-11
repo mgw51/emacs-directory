@@ -657,8 +657,8 @@ This was changed in version 27 to conform with XDG standards.")
 ;; ;; TODO - Since my list of hook functions is always growing, I would like to move the hooks and hook functions
 ;; ;;        into a list and then use something like mapcar to apply the add-hook function to everything in the list.
 ;; ;;
-(add-hook 'c-mode-common-hook #'c-style-lang-hook-func)
-(add-hook 'c++-mode-hook #'cpp-hook-func)
+(add-hook 'c-mode-common-hook #'cc-mode-customizations)
+(add-hook 'c++-mode-hook #'cpp-customizations)
 ;; (add-hook 'python-mode-hook #'python-hook-func)
 ;; (add-hook 'emacs-lisp-mode-hook #'lisp-settings)
 ;; (add-hook 'lisp-mode-hook #'lisp-settings)
