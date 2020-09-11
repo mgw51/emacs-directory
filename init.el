@@ -97,6 +97,11 @@ This was changed in version 27 to conform with XDG standards.")
 ;;; Installed packages
 ;;; ~~~~~~~~~~~~~~~~~~
 
+(use-package flyspell
+  :defer t
+  :custom (ispell-program-name "hunspell"))
+
+
 (use-package prog-mode
   :defer t
   :defines prog-mode-map
