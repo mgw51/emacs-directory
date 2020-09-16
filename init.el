@@ -608,7 +608,6 @@ This was changed in version 27 to conform with XDG standards.")
 ;;; Toggle UI Elements
 ;;;
 (dolist (mode-value '((global-linum-mode . 1)  ; display line numbers in margin
-                      (column-number-mode . 1) ; display line and col num in mode line
                       (show-paren-mode . 1)    ; this should be on all the time
                       (tool-bar-mode . -1)
                       (menu-bar-mode . -1)
