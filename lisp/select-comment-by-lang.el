@@ -75,7 +75,8 @@ current line."
           (goto-char begin)
           (insert blob)))
       ;; Use the current line
-      (progn
+      (save-excursion
+        (push-mark)
 	(end-of-line)
 	(insert "  " char " [DEBUG]")
 	(forward-line 1)))))
