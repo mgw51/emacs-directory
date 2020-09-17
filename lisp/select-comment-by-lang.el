@@ -84,17 +84,17 @@ current line."
 
 ;;;###autoload
 (defun mw-remove-debug (&optional start end)
-  "Remove debug comments from region START to END."
+  "Remove debug comments from region START to END.
+
+If region is not active (or 'use-empty-active-region' is nil)
+then operate on the whole file."
   (interactive
    (if (use-region-p)
        (list (region-beginning) (region-end))
      (list (point-min) (point-max))))
-  (push-mark)
   (save-excursion
+    (push-mark)
     (save-restriction
-      (when (not (use-region-p))
-        (setf start (point-min)
-              end (point-max)))
       (goto-char start)
       (narrow-to-region start end)
       (while (re-search-forward "^.*// \\[DEBUG\\].*\n" end t)
