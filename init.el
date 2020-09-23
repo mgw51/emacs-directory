@@ -259,6 +259,10 @@ This was changed in version 27 to conform with XDG standards.")
                                     :test-suffix "_test"
                                     :src-dir "%s/src/"
                                     :test-dir "%s/test/unit_tests/")
+  (use-package ag
+    :ensure t
+    :pin melpa
+    :after projectile)
   :delight '(:eval (concat " ¶[" (projectile-project-name) "]")))
 
 
