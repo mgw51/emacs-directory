@@ -80,7 +80,8 @@ current line."
             (set-mark (point)) ; in case no mark has yet been set
             (end-of-line)
             (insert "  " char " [DEBUG]"))
-          (forward-line 1)))))
+          (forward-line 1)
+          (back-to-indentation)))))
 
 
 ;;;###autoload
