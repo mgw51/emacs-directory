@@ -65,21 +65,23 @@ region is active, insert a single debug comment at the end of the
 current line."
   (interactive "r")
   (let ((char (gethash (get--buffer-suffix) *lang-suffixes*)))
-    (if (use-region-p)
-      ;; Use the active region
-      (let ((blob (buffer-substring begin end))
-            (db-string (concat "\\1  " char " [DEBUG]\\2")))
-        (setf blob (replace-regexp-in-string "\\(^.*[[:graph:]].*\\)\\(\n\\)" db-string blob))
-        (save-excursion
-          (delete-region begin end)
-          (goto-char begin)
-          (insert blob)))
-      ;; Use the current line
-      (save-excursion
-        (push-mark)
-	(end-of-line)
-	(insert "  " char " [DEBUG]")
-	(forward-line 1)))))
+      (if (use-region-p)
+          (save-mark-and-excursion
+            ;; Use the active region
+            (let ((blob (buffer-substring begin end))
+                  (db-string (concat "\\1  " char " [DEBUG]\\2")))
+              (setf blob (replace-regexp-in-string "\\(^.*[[:graph:]].*\\)\\(\n\\)" db-string blob))
+              (delete-region begin end)
+              (goto-char begin)
+              (insert blob)))
+        ;; Use the current line
+        (progn
+          (save-mark-and-excursion
+            (set-mark (point)) ; in case no mark has yet been set
+            (end-of-line)
+            (insert "  " char " [DEBUG]"))
+          (forward-line 1)
+          (back-to-indentation)))))
 
 
 ;;;###autoload
