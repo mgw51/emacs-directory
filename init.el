@@ -181,6 +181,8 @@ This was changed in version 27 to conform with XDG standards.")
   (require 'ox-md nil 'no-error)
   (setq org-export-backends '(ascii html icalendar latex confluence md))
   :config
+  ;; Add minimal support for generally unsupported modes.
+  (add-to-list 'org-src-lang-modes '("CQL" . "cql-mode"))
   ;; Enable some languages in org-babel
   (org-babel-do-load-languages
    'org-babel-load-languages
