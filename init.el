@@ -190,6 +190,7 @@ This was changed in version 27 to conform with XDG standards.")
      (latex . t)
 ;     (rust . t)
      (sql . t)))
+  (require 'c2-rowing)
   (use-package org-jira
     :defer t))
 
