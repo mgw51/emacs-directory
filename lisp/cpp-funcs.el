@@ -6,7 +6,7 @@
 
 
 ;;;###autoload
-(defun func-header ()
+(defun mw-func-header ()
   "This function prints a standard header for a c++ function.
 The header consists of: three comment lines; first line contains a line of
 stars, second line is function name, third line is empty."
@@ -22,7 +22,7 @@ stars, second line is function name, third line is empty."
 
 
 ;;;###autoload
-(defun include-guard ()
+(defun mw-include-guard ()
   "Generate include guards for a c or cpp header file."
   (interactive)
   (defvar header-name)
@@ -40,7 +40,7 @@ stars, second line is function name, third line is empty."
 
 
 ;;;###autoload
-(defun get-class-name ()
+(defun mw-get-class-name ()
   "Extract the class name from the filename.
 Takes everything before the file extension and uses that as the class name."
   (interactive)

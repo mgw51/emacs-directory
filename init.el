@@ -104,13 +104,17 @@ This was changed in version 27 to conform with XDG standards.")
 
 (use-package prog-mode
   :defer t
-  :defines prog-mode-map c-mode-base-map
+  :defines prog-mode-map c-mode-base-map c++-mode-map
+  :commands mw-class-name mw-func-header mw-insert-triplet
+            mw-debug-comment mw-remove-debug
   :bind (:map prog-mode-map
               ("C-c c" . #'mw-insert-triplet)
               ("C-c d d" . #'mw-debug-comment)
               ("C-c d r" . #'mw-remove-debug)
          :map c-mode-base-map
-              ("C-c f" . #'func-header))
+              ("C-c f" . #'mw-func-header)
+         :map c++-mode-map
+              ("C-c n" . #'mw-get-class-name))
   :config
   (require 'select-comment-by-lang)
   (require 'cpp-funcs))
