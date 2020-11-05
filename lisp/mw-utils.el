@@ -154,7 +154,7 @@ set LEVEL to 1."
   (set-selective-display
    (if selective-display nil (or level 1))))
 
-
+;;;###autoload
 (defun mw-find-next-todo (prefix)
   "Find the next TODO or TODO-like comment in current buffer.
 If PREFIX is negative, search backward from point."
