@@ -48,27 +48,9 @@ If NUMBER-ARGS is specified, insert that number of param fields into the templat
     (let ((start (point))
           end)
       (insert (concat
-               "/// @brief    \n"
+               "/// @brief   \n"
                "///\n"
-               "///           \n"
-               "///\n"))
-      (setq end (point))
-      (indent-region start end)))
-  (end-of-line))
-
-
-;;;###autoload
-(defun doxygen-struct-template ()
-  "Insert doxygen struct documentation template at point."
-  (interactive "*")
-  (beginning-of-line)
-  (save-excursion
-    (let ((start (point))
-          end)
-      (insert (concat
-               "/// @brief    \n"
-               "///\n"
-               "///           \n"
+               "///          \n"
                "///\n"))
       (setq end (point))
       (indent-region start end)))
@@ -307,7 +289,6 @@ Keybindings for `doxygen-mode':
   (let ((doxy-map (make-sparse-keymap)))
     (define-key doxy-map (kbd "C-c w") nil)
     (define-key doxy-map (kbd "C-c w f") #'doxygen-function-template)
-    (define-key doxy-map (kbd "C-c w s") #'doxygen-struct-template)
     (define-key doxy-map (kbd "C-c w c") #'doxygen-class-template)
     (define-key doxy-map (kbd "C-c w g") #'doxygen-create-group)
     (define-key doxy-map (kbd "C-c w n") #'doxygen-forward-block)
