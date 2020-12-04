@@ -6,13 +6,6 @@
 ;;;
 ;;; Code:
 
-;;; Debug Variables
-;;; ~~~~~~~~~~~~~~~
-
-
-;;; Core Setup
-;;; ~~~~~~~~~~
-
 ;; Make startup faster by reducing the frequency of garbage
 ;; collection.  The default is 800 kilobytes.  Measured in bytes.
 (setq gc-cons-threshold (* 25 1024 1024))
@@ -253,7 +246,9 @@ This was changed in version 27 to conform with XDG standards.")
   :hook (prog-mode . projectile-mode)
   :preface
   (defun mw-advice-projectile-project-root (orig-fn &optional dir)
-    "This should disable projectile when visiting files with tramp."
+    "Disable projectile when visiting remote files with tramp.
+
+Projectile typcially requires significant file system operations which can slow things down when operating on a remote file system.  Disabling this feature avoids these issues."
     (let ((dir (file-truename (or dir default-directory))))
       (unless (file-remote-p dir)
         (funcall orig-fn dir))))
