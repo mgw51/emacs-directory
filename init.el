@@ -248,7 +248,7 @@ This was changed in version 27 to conform with XDG standards.")
   (defun mw-advice-projectile-project-root (orig-fn &optional dir)
     "Disable projectile when visiting remote files with tramp.
 
-Projectile typcially requires significant file system operations which can slow things down when operating on a remote file system.  Disabling this feature avoids these issues."
+Projectile typcially requires significant file system operations which can slow things down when operating on a remote file.  Disabling this feature avoids these issues."
     (let ((dir (file-truename (or dir default-directory))))
       (unless (file-remote-p dir)
         (funcall orig-fn dir))))
