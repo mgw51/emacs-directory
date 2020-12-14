@@ -45,7 +45,7 @@
 (defun mw-insert-triplet ()
   "Insert comment-triplet appropriate to language in which we are writing."
   (interactive)
-  (let ((char (gethash (get--buffer-suffix) *lang-suffixes*)))
+  (let ((char (gethash (get--buffer-suffix) *lang-suffixes* "//")))
       (when (char-or-string-p char) ; do we have a character to use?
         (save-excursion
           (set-mark (point))
