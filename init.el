@@ -118,6 +118,9 @@ This was changed in version 27 to conform with XDG standards.")
   (require 'cpp-funcs))
 
 
+(use-package go-mode
+  :defer t)
+
 ;; (use-package cc-mode
 ;;   :defer t
 ;;   :mode (("\\.\\(cpp\\|CC\\|cxx\\|tpp\\|hpp\\)\\'" . c++-mode)
