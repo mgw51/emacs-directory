@@ -169,6 +169,13 @@ This was changed in version 27 to conform with XDG standards.")
 ;;          (c-mode . #'c-customization)
 ;;          (cc-mode . #'cc-mode-customizations)))
 
+;; (use-package org-roam
+;;   :demand t
+;;   :ensure t
+;;   :pin melpa
+;;   :hook after-init
+;;   :config
+;;   (setq org-roam-directory "~/Nextcloud/org-roam"))
 
 (use-package org
   :defer t
