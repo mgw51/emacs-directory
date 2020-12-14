@@ -32,7 +32,8 @@
      (puthash "el" ";" *lang-suffixes*)
      (puthash "elisp" ";" *lang-suffixes*)
      (puthash "emacs" ";" *lang-suffixes*)
-     (puthash "sql" "--" *lang-suffixes*))
+     (puthash "sql" "--" *lang-suffixes*)
+     (puthash "go" "//" *lang-suffixes*))
 
 
 (defun get--buffer-suffix ()
