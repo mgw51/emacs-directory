@@ -680,7 +680,7 @@ This was changed in version 27 to conform with XDG standards.")
   (auto-revert-mode t)
   (c-set-offset 'case-label '+) ; indent case statements in a switch block
   (which-function-mode)
-  (flyspell-prog-mode)
+;  (flyspell-prog-mode)
   (font-lock-add-keywords nil '(("\\<\\(TBD\\|TODO\\|FIXME\\|DEBUG\\)" 1 font-lock-warning-face prepend)))
   ;; Add the following hook function(s) here because we can make them buffer-local
                                  ;   append -------\   /------- make buffer-local
