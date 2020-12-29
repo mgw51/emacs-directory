@@ -2,23 +2,16 @@
 
 ;;; init.el -- My emacs init file.
 ;;; Commentary:
-;;;     
+;;;
 ;;;
 ;;; Code:
 
-;;; Debug Variables
-;;; ~~~~~~~~~~~~~~~
-
-
-;;; Core Setup
-;;; ~~~~~~~~~~
-
 ;; Make startup faster by reducing the frequency of garbage
 ;; collection.  The default is 800 kilobytes.  Measured in bytes.
-(setq gc-cons-threshold (* 25 1024 1024))
+(setq gc-cons-threshold (* 100 1024 1024))
 
 (defconst *base-dir*
-  (if (>= emacs-major-version 27)
+  (if (= emacs-major-version 27)
       "~/.config/emacs/"
     "~/.emacs.d/")
   "Base directory in which all config and LISP files reside.
@@ -52,7 +45,7 @@ This was changed in version 27 to conform with XDG standards.")
 (progn
   (require 'package)     ; Pull in package.el
   (setf package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-			   ("melpa-stable" . "https://stable.melpa.org/packages/")
+                           ("melpa-stable" . "https://stable.melpa.org/packages/")
                            ("melpa" . "https://melpa.org/packages/")
                            ("org" . "https://orgmode.org/elpa/")))
   (when (< emacs-major-version 27)
@@ -74,9 +67,9 @@ This was changed in version 27 to conform with XDG standards.")
   :defer t
   :commands (mw-toggle-selective-display mw-insert-time mw-insert-date mw-create-sql-buffer)
   :bind (([f2] . #'mw-toggle-selective-display)
-	 :map text-mode-map
-	 ("C-c w t" . #'mw-insert-time)
-	 ("C-c w d" . #'mw-insert-date))
+         :map text-mode-map
+         ("C-c w t" . #'mw-insert-time)
+         ("C-c w d" . #'mw-insert-time))
   ; Things like timestamps and other nice-to-haves
   :init
   (mw-create-sql-buffer)
@@ -106,13 +99,27 @@ This was changed in version 27 to conform with XDG standards.")
   :defer t
   :defines prog-mode-map
   :bind (:map prog-mode-map
-              ("C-c f" . #'func-header)
               ("C-c c" . #'mw-insert-triplet)
               ("C-c d d" . #'mw-debug-comment)
-              ("C-c d r" . #'mw-remove-debug))
+              ("C-c d r" . #'mw-remove-debug)
+              ("C-c w t" . #'mw-find-next-todo))
   :config
-  (require 'select-comment-by-lang)
+  (require 'select-comment-by-lang))
+
+
+(use-package cc-mode
+  :defer t
+  :defines c-mode-base-map c++-mode-map
+  :bind (:map c-mode-base-map
+              ("C-c f" . #'mw-func-header)
+         :map c++-mode-map
+              ("C-c n" . #'mw-get-class-name))
+  :config
   (require 'cpp-funcs))
+
+
+(use-package go-mode
+  :defer t)
 
 ;; (use-package cc-mode
 ;;   :defer t
@@ -165,17 +172,28 @@ This was changed in version 27 to conform with XDG standards.")
 ;;          (c-mode . #'c-customization)
 ;;          (cc-mode . #'cc-mode-customizations)))
 
+;; (use-package org-roam
+;;   :demand t
+;;   :ensure t
+;;   :pin melpa
+;;   :hook after-init
+;;   :config
+;;   (setq org-roam-directory "~/Nextcloud/org-roam"))
 
 (use-package org
   :defer t
   :ensure t
   :pin org
+  :hook auto-fill-mode
   :defines org-babel-load-languages org-export-backends
   :preface
   (require 'ox-confluence nil 'no-error)
   (require 'ox-md nil 'no-error)
   (setq org-export-backends '(ascii html icalendar latex confluence md))
   :config
+  (set-fill-column 86) ; Fill to column 86
+  ;; Add minimal support for generally unsupported modes.
+  (add-to-list 'org-src-lang-modes '("CQL" . "cql-mode"))
   ;; Enable some languages in org-babel
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -189,9 +207,9 @@ This was changed in version 27 to conform with XDG standards.")
      (latex . t)
 ;     (rust . t)
      (sql . t)))
+  (require 'c2-rowing)
   (use-package org-jira
     :defer t))
-
 
 (use-package restclient
   :defer t
@@ -239,7 +257,9 @@ This was changed in version 27 to conform with XDG standards.")
   :hook (prog-mode . projectile-mode)
   :preface
   (defun mw-advice-projectile-project-root (orig-fn &optional dir)
-    "This should disable projectile when visiting files with tramp."
+    "Disable projectile when visiting remote files with tramp.
+
+Projectile typcially requires significant file system operations which can slow things down when operating on a remote file.  Disabling this feature avoids these issues."
     (let ((dir (file-truename (or dir default-directory))))
       (unless (file-remote-p dir)
         (funcall orig-fn dir))))
@@ -259,6 +279,10 @@ This was changed in version 27 to conform with XDG standards.")
                                     :test-suffix "_test"
                                     :src-dir "%s/src/"
                                     :test-dir "%s/test/unit_tests/")
+  (use-package ag
+    :ensure t
+    :pin melpa
+    :after projectile)
   :delight '(:eval (concat " ¶[" (projectile-project-name) "]")))
 
 
@@ -289,7 +313,7 @@ This was changed in version 27 to conform with XDG standards.")
   :pin melpa
   :commands mw-insert-curly-braces
   :hook
-  ((rust-mode c-mode-common sh-mode cperl-mode) . #'load-curly-braces)
+  ((rust-mode c-mode-common sh-mode cperl-mode go-mode) . #'load-curly-braces)
   :preface
   (defun load-curly-braces()
     (key-chord-define-local "pq" #'mw-insert-curly-braces))
@@ -608,7 +632,6 @@ This was changed in version 27 to conform with XDG standards.")
 ;;; Toggle UI Elements
 ;;;
 (dolist (mode-value '((global-linum-mode . 1)  ; display line numbers in margin
-                      (column-number-mode . 1) ; display line and col num in mode line
                       (show-paren-mode . 1)    ; this should be on all the time
                       (tool-bar-mode . -1)
                       (menu-bar-mode . -1)
