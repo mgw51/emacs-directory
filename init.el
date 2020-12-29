@@ -11,7 +11,7 @@
 (setq gc-cons-threshold (* 100 1024 1024))
 
 (defconst *base-dir*
-  (if (>= emacs-major-version 27)
+  (if (= emacs-major-version 27)
       "~/.config/emacs/"
     "~/.emacs.d/")
   "Base directory in which all config and LISP files reside.
