@@ -2,7 +2,7 @@
 
 ;;; init.el -- My emacs init file.
 ;;; Commentary:
-;;;     
+;;;
 ;;;
 ;;; Code:
 
@@ -45,7 +45,7 @@ This was changed in version 27 to conform with XDG standards.")
 (progn
   (require 'package)     ; Pull in package.el
   (setf package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-			   ("melpa-stable" . "https://stable.melpa.org/packages/")
+                           ("melpa-stable" . "https://stable.melpa.org/packages/")
                            ("melpa" . "https://melpa.org/packages/")
                            ("org" . "https://orgmode.org/elpa/")))
   (when (< emacs-major-version 27)
@@ -67,9 +67,9 @@ This was changed in version 27 to conform with XDG standards.")
   :defer t
   :commands (mw-toggle-selective-display mw-insert-time mw-insert-date mw-create-sql-buffer)
   :bind (([f2] . #'mw-toggle-selective-display)
-	 :map text-mode-map
-	 ("C-c w t" . #'mw-insert-time)
-	 ("C-c w d" . #'mw-insert-date))
+         :map text-mode-map
+         ("C-c w t" . #'mw-insert-time)
+         ("C-c w d" . #'mw-insert-time))
   ; Things like timestamps and other nice-to-haves
   :init
   (mw-create-sql-buffer)
@@ -211,7 +211,6 @@ This was changed in version 27 to conform with XDG standards.")
   (use-package org-jira
     :defer t))
 
-
 (use-package restclient
   :defer t
   :ensure t
@@ -314,7 +313,7 @@ Projectile typcially requires significant file system operations which can slow 
   :pin melpa
   :commands mw-insert-curly-braces
   :hook
-  ((rust-mode c-mode-common sh-mode cperl-mode) . #'load-curly-braces)
+  ((rust-mode c-mode-common sh-mode cperl-mode go-mode) . #'load-curly-braces)
   :preface
   (defun load-curly-braces()
     (key-chord-define-local "pq" #'mw-insert-curly-braces))
