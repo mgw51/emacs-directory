@@ -8,7 +8,7 @@
 
 ;; Make startup faster by reducing the frequency of garbage
 ;; collection.  The default is 800 kilobytes.  Measured in bytes.
-(setq gc-cons-threshold (* 25 1024 1024))
+(setq gc-cons-threshold (* 100 1024 1024))
 
 (defconst *base-dir*
   (if (>= emacs-major-version 27)
