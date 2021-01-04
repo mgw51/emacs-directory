@@ -69,7 +69,7 @@ This was changed in version 27 to conform with XDG standards.")
   :bind (([f2] . #'mw-toggle-selective-display)
          :map text-mode-map
          ("C-c w t" . #'mw-insert-time)
-         ("C-c w d" . #'mw-insert-time))
+         ("C-c w d" . #'mw-insert-date))
   ; Things like timestamps and other nice-to-haves
   :init
   (mw-create-sql-buffer)
