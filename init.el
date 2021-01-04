@@ -232,20 +232,25 @@ This was changed in version 27 to conform with XDG standards.")
          ("C-c r s" . #'get-session))
   :config
   (use-package restclient-helm
-    :ensure t)
+    :ensure t
+    :pin melpa)
   (use-package restclient-test
-    :ensure t)
+	       :ensure t
+	       :pin melpa)
   (use-package company-restclient
-    :ensure t))
+	       :ensure t
+	       :pin melpa))
 
 
 
 (use-package systemd
   :defer t
   :ensure t
+  :pin melpa
   :config
   (use-package helm-systemd
-    :ensure t))
+    :ensure t
+    :pin melpa))
 
 
 (use-package projectile
@@ -468,7 +473,7 @@ Projectile typcially requires significant file system operations which can slow 
   :pin melpa
   :delight " Ç"
   :custom
-  (company-idle-delay 0.25)
+  (company-idle-delay 0.50)
   :config
   (global-company-mode)
   (use-package company-shell
@@ -570,9 +575,9 @@ Projectile typcially requires significant file system operations which can slow 
 ;;       (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))))
 
 
-;; (use-package toml-mode
-;;   :ensure t
-;;   :pin melpa)
+(use-package toml-mode
+  :ensure t
+  :pin melpa)
 
 
 ;; (use-package rust-mode
@@ -593,9 +598,9 @@ Projectile typcially requires significant file system operations which can slow 
 ;;     :hook (flycheck-mode . flycheck-rust-setup)))
 
 
-;; (use-package cql-mode
-;;   :defer t
-;;   :ensure t)
+(use-package cql-mode
+  :defer t
+  :ensure t)
 
 ;; ;; (use-package php-mode
 ;; ;;   :ensure t
@@ -607,12 +612,12 @@ Projectile typcially requires significant file system operations which can slow 
 
 ;; ;;; Built-ins
 ;; ;;;
-;; (use-package smartparens
-;;   :ensure t
-;;   :hook
-;;   ((emacs-lisp-mode lisp-mode) . smartparens-mode)
-;;   :init
-;;   (use-package smartparens-config))
+(use-package smartparens
+  :ensure t
+  :hook
+  ((emacs-lisp-mode lisp-mode) . smartparens-mode)
+  :init
+  (use-package smartparens-config))
 
 
 ;;; Themes
@@ -661,25 +666,25 @@ Projectile typcially requires significant file system operations which can slow 
       save-abbrevs 'silent          ; Abbrev-mode settings
       compilation-scroll-output 'first-error)
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ;;; Global Key Map and Bindings
-;; ;;; Anything that should happen across all modes (more or less)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Global Key Map and Bindings
+;;; Anything that should happen across all modes (more or less)
 
-;; ;; General keybindings
-;; (global-set-key (kbd "<f1>") #'shell-command)          ; shell command
-;; (global-set-key (kbd "<select>") #'move-end-of-line)   ; <end> -> end of line
+;; General keybindings
+(global-set-key (kbd "<f1>") #'shell-command)          ; shell command
+(global-set-key (kbd "<select>") #'move-end-of-line)   ; <end> -> end of line
 
-;; (global-set-key (kbd "C-x C-b") #'ibuffer)  ; Use ibuffer instead of default buffer list
+(global-set-key (kbd "C-x C-b") #'ibuffer)  ; Use ibuffer instead of default buffer list
 
-;; ;;; Macros and Hooks
-;; ;; Common C/C++ hooks. This hook will be run for many c-like languages,
-;; ;; but these keybindings may be overridden by defining local bindings in
-;; ;; a lower keymap for a given language. See 'https://www.masteringemacs.org/article/mastering-key-bindings-emacs'
-;; ;; for a discussion of this topic.
-;; ;;
-;; ;; TODO - Since my list of hook functions is always growing, I would like to move the hooks and hook functions
-;; ;;        into a list and then use something like mapcar to apply the add-hook function to everything in the list.
-;; ;;
+;;; Macros and Hooks
+;; Common C/C++ hooks. This hook will be run for many c-like languages,
+;; but these keybindings may be overridden by defining local bindings in
+;; a lower keymap for a given language. See 'https://www.masteringemacs.org/article/mastering-key-bindings-emacs'
+;; for a discussion of this topic.
+;;
+;; TODO - Since my list of hook functions is always growing, I would like to move the hooks and hook functions
+;;        into a list and then use something like mapcar to apply the add-hook function to everything in the list.
+;;
 (add-hook 'c-mode-common-hook #'cc-mode-customizations)
 (add-hook 'c++-mode-hook #'cpp-customizations)
 ;; (add-hook 'python-mode-hook #'python-hook-func)
