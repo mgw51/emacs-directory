@@ -119,7 +119,16 @@ This was changed in version 27 to conform with XDG standards.")
 
 
 (use-package go-mode
-  :defer t)
+  :ensure t
+  :defer t
+  :config
+  (use-package company-go
+    :ensure t
+    :config
+    (use-package company
+      :ensure t))
+  (use-package flymake-golangci
+    :ensure t))
 
 ;; (use-package cc-mode
 ;;   :defer t
@@ -186,6 +195,9 @@ This was changed in version 27 to conform with XDG standards.")
   :pin org
   :hook auto-fill-mode
   :defines org-babel-load-languages org-export-backends
+  :bind (("C-c o l" . 'org-store-link)
+         ("C-c o a" . 'org-agenda)
+         ("C-c o c" . 'org-capture))
   :preface
   (require 'ox-confluence nil 'no-error)
   (require 'ox-md nil 'no-error)
