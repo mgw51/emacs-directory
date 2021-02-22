@@ -182,20 +182,26 @@ This was changed in version 27 to conform with XDG standards.")
 ;;   :config
 ;;   (setq org-roam-directory "~/Nextcloud/org-roam"))
 
+
 (use-package org
-  :defer t
   :ensure t
   :pin org
-  :hook auto-fill-mode
+  :mode ("\\.org\\'" . org-mode)
+  :hook (org-mode . auto-fill-mode)
   :defines org-babel-load-languages org-export-backends
   :preface
   (require 'ox-confluence nil 'no-error)
   (require 'ox-md nil 'no-error)
   (setq org-export-backends '(ascii html icalendar latex confluence md))
+  :custom (fill-column 86 "Set `auto-fill-mode' fill column to something reasonable.")
   :config
-  (set-fill-column 86) ; Fill to column 86
+
+  (use-package org-jira
+    :defer t)
+
   ;; Add minimal support for generally unsupported modes.
   (add-to-list 'org-src-lang-modes '("CQL" . "cql-mode"))
+
   ;; Enable some languages in org-babel
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -209,9 +215,8 @@ This was changed in version 27 to conform with XDG standards.")
      (latex . t)
 ;     (rust . t)
      (sql . t)))
-  (require 'c2-rowing)
-  (use-package org-jira
-    :defer t))
+  (require 'c2-rowing))
+
 
 (use-package restclient
   :defer t
