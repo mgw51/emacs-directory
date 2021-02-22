@@ -90,8 +90,11 @@ This was changed in version 27 to conform with XDG standards.")
 ;;; ~~~~~~~~~~~~~~~~~~
 
 (use-package flyspell
-  :defer t
-  :custom (ispell-program-name "hunspell"))
+  :hook (text-mode . #'turn-on-flyspell))
+  ;; :custom
+  ;; (ispell-program-name "/usr/bin/hunspell")
+  ;; (ispell-really-hunspell t "Set to indicate we can use Hunspell extensions")
+  ;; (ispell-dictionary "en_US"))
 
 
 (use-package prog-mode
