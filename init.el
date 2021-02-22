@@ -643,7 +643,7 @@ Projectile typcially requires significant file system operations which can slow 
 
 ;;; Toggle UI Elements
 ;;;
-(dolist (mode-value '((global-linum-mode . 1)  ; display line numbers in margin
+(dolist (mode-value '((global-display-line-numbers-mode . 1)  ; display line numbers in margin
                       (show-paren-mode . 1)    ; this should be on all the time
                       (tool-bar-mode . -1)
                       (menu-bar-mode . -1)
@@ -661,8 +661,8 @@ Projectile typcially requires significant file system operations which can slow 
 (put 'narrow-to-region 'disabled nil)  ;
 
 ;;; General Customizations
-(when (not (display-graphic-p))
-    (setf linum-format "%d "))      ; add space between line numbers and buffer text
+;; (when (not (display-graphic-p))
+;;     (setf linum-format "%d "))      ; add space between line numbers and buffer text
 (setq-default indent-tabs-mode nil) ; indent with spaces only
 (setq-default c-basic-offset 2)     ; ensure that offset is two spaces and no more
 (setf make-backup-files nil         ; do not make backup files (tilde files)
