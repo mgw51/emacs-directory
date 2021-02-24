@@ -196,7 +196,6 @@ This was changed in version 27 to conform with XDG standards.")
   :ensure t
   :pin org
   :mode ("\\.org\\'" . org-mode)
-  :hook (org-mode . auto-fill-mode)
   :defines org-babel-load-languages org-export-backends
   :bind (("C-c o l" . 'org-store-link)
          ("C-c o a" . 'org-agenda)
@@ -206,8 +205,9 @@ This was changed in version 27 to conform with XDG standards.")
   (require 'ox-md nil 'no-error)
   (setq org-export-backends '(ascii html icalendar latex confluence md))
   :custom (fill-column 86 "Set `auto-fill-mode' fill column to something reasonable.")
+  :init
+  (add-hook 'org-mode-hook #'turn-on-auto-fill)
   :config
-
   (use-package org-jira
     :defer t)
 
