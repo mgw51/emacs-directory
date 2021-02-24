@@ -460,19 +460,28 @@ Projectile typcially requires significant file system operations which can slow 
 ;;   (setq exec-path (cons (expand-file-name "~/.local/bin") exec-path)))
 
 
-;; (use-package dockerfile-mode
+;; (use-package dockerfile
 ;;   :ensure t
-;;   :pin melpa)
+;;   :config)
+  ;; (use-package docker-tramp
+  ;;   :ensure t
+  ;;   :pin melpa))
 
 
-;; (use-package docker-tramp
-;;   :ensure t
-;;   :pin melpa)
+(use-package go-mode
+  :ensure t
+  :pin melpa
+  :defer t
+  :config
+  (use-package company-go
+    :ensure t
+    :pin melpa
+    :defer t))
 
 
-;; (use-package yaml-mode
-;;   :ensure t
-;;   :pin melpa)
+(use-package yaml-mode
+  :ensure t
+  :pin melpa)
 
 
 (use-package company
