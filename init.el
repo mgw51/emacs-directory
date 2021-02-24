@@ -90,7 +90,8 @@ This was changed in version 27 to conform with XDG standards.")
 ;;; ~~~~~~~~~~~~~~~~~~
 
 (use-package flyspell
-  :hook (text-mode . #'turn-on-flyspell))
+  :commands (turn-on-flyspell turn-off-flyspell flyspell-mode)
+  :hook (text-mode . flyspell-mode))
   ;; :custom
   ;; (ispell-program-name "/usr/bin/hunspell")
   ;; (ispell-really-hunspell t "Set to indicate we can use Hunspell extensions")
