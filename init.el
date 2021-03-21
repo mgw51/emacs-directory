@@ -124,14 +124,18 @@ This was changed in version 27 to conform with XDG standards.")
 (use-package go-mode
   :ensure t
   :defer t
+  :custom (gofmt-command "goimports")
   :config
+  (add-hook 'before-save-hook #'gofmt-before-save)
   (use-package company-go
     :ensure t
+    :hook go-mode
     :config
-    (use-package company
-      :ensure t))
-  (use-package flymake-golangci
-    :ensure t))
+    :after company)
+  (use-package flycheck-golang
+    :ensure t
+    :hook go-mode
+    :after flycheck))
 
 ;; (use-package cc-mode
 ;;   :defer t
