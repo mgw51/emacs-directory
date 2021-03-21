@@ -19,6 +19,13 @@
 
 
 ;;;###autoload
+(defun mw-from-unixtime ()
+  "Convert a Unix timestamp to locale-specific time."
+  (interactive)
+  (message (format-time-string "%c" (number-at-point))))
+
+
+;;;###autoload
 (defun mw-guid-clean (start end)
   "Replace colons (:) with hyphens (-), and set the region to upper case.
 If a region is selected, operate on text between START and END."
