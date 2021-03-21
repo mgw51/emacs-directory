@@ -46,7 +46,7 @@ If a region is selected, operate on text between START and END."
         (progn (set-buffer
                 (get-buffer-create "*sql*"))
                (sql-mode)
-               (linum-mode -1)
+               (display-line-numbers-mode t)
                (set-display-table-slot standard-display-table 'wrap ?\ )  ; Sets line-wrap character to space ( ) instead of backslash (\)
                (insert "--\n-- Use this buffer for SQL snippets\n--\n\n")))))
 
