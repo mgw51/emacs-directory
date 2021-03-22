@@ -47,8 +47,10 @@ This was changed in version 27 to conform with XDG standards.")
   (setf package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                            ("melpa" . "https://melpa.org/packages/")
                            ("org" . "https://orgmode.org/elpa/")))
+  ;; package-initialize must be called explicitly for major versions below 27
   (when (< emacs-major-version 27)
-    (package-initialize)))  ; 27 and above automatically call this function
+    (package-initialize)))
+
 
 ;;; Setup use-package
 (eval-when-compile
@@ -88,6 +90,17 @@ This was changed in version 27 to conform with XDG standards.")
 
 ;;; Installed packages
 ;;; ~~~~~~~~~~~~~~~~~~
+
+(use-package exec-path-from-shell
+  :ensure t
+  :pin melpa
+  :config
+  ;; Copy important environment variables into emacs session
+  ;; Mainly needed because OSX and systemd do not pass user env to emacs
+  (when (daemonp)
+    (exec-path-from-shell-initialize)))
+
+
 
 (use-package flyspell
   :commands (turn-on-flyspell turn-off-flyspell flyspell-mode)
