@@ -215,20 +215,25 @@ This was changed in version 27 to conform with XDG standards.")
   :pin org
   :mode ("\\.org\\'" . org-mode)
   :defines org-babel-load-languages org-export-backends
-  :bind (("C-c o l" . 'org-store-link)
+  :bind (; Bind these globally
+         ("C-c o l" . 'org-store-link)
          ("C-c o a" . 'org-agenda)
          ("C-c o c" . 'org-capture))
   :preface
   (require 'ox-confluence nil 'no-error)
   (require 'ox-md nil 'no-error)
-  (setq org-export-backends '(ascii html icalendar latex confluence md))
+  (require 'ox-man nil 'no-error)
+  (setq org-export-backends '(ascii html icalendar latex confluence md man))
   :custom (fill-column 86 "Set `auto-fill-mode' fill column to something reasonable.")
   :init
   (add-hook 'org-mode-hook #'turn-on-auto-fill)
   :config
-  (use-package org-jira
-    :defer t)
-
+  (use-package ob-go
+    :ensure t
+    :pin melpa)
+  (use-package ob-rust
+    :ensure t
+    :pin melpa)
   ;; Add minimal support for generally unsupported modes.
   (add-to-list 'org-src-lang-modes '("CQL" . "cql-mode"))
 
@@ -236,6 +241,7 @@ This was changed in version 27 to conform with XDG standards.")
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((C . t) ; C, C++, and D are all handled by same ob-C.el file.
+     (go . t)
      (emacs-lisp . t)
      (lisp . t)
      (plantuml . t)
@@ -243,7 +249,7 @@ This was changed in version 27 to conform with XDG standards.")
      (lua . t)
      (shell . t)
      (latex . t)
-;     (rust . t)
+     (rust . t)
      (sql . t)))
   (require 'c2-rowing))
 
