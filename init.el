@@ -267,10 +267,10 @@ This was changed in version 27 to conform with XDG standards.")
     (interactive)
     (message "%s"
              (setq-local session-var
-                         (with-current-buffer (get-buffer "*HTTP Response*")
+                         (with-current-buffer "*HTTP Response*"
                            (goto-char (point-min))
-                           (when (search-forward "\"session\": \"" nil t)
-                             (buffer-substring-no-properties (point) (1- (search-forward "\""))))))))
+                           (when (search-forward-regexp "\"session\": \"\\(.*\\)\"" nil t)
+                             (match-string 1))))))
   :bind (:map restclient-mode-map
          ("C-c r s" . #'get-session))
   :config
