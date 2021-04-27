@@ -147,11 +147,11 @@ This was changed in version 27 to conform with XDG standards.")
     :ensure t
     :hook go-mode
     :config
-    :after company)
-  (use-package flycheck-golang
+    :after company-mode)
+  (use-package flycheck-golangci-lint
     :ensure t
-    :hook go-mode
-    :after flycheck))
+    :hook (go-mode . flycheck-golangci-lint-setup)
+    :after (flycheck go-mode) ))
 
 ;; (use-package cc-mode
 ;;   :defer t
