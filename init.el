@@ -513,17 +513,6 @@ Projectile typcially requires significant file system operations which can slow 
   ;;   :pin melpa))
 
 
-(use-package go-mode
-  :ensure t
-  :pin melpa
-  :defer t
-  :config
-  (use-package company-go
-    :ensure t
-    :pin melpa
-    :defer t))
-
-
 (use-package yaml-mode
   :ensure t
   :pin melpa)
