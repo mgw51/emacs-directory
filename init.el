@@ -123,19 +123,19 @@ This was changed in version 27 to conform with XDG standards.")
               ("C-c d r" . #'mw-remove-debug)
               ("C-c w t" . #'mw-find-next-todo))
   :config
-  (require 'select-comment-by-lang))
+  (require 'select-comment-by-lang)
+  :functions mw-insert-triplet mw-debug-comment mw-remove-debug mw-find-next-todo)
 
 
 (use-package cc-mode
-  :defer t
   :defines c-mode-base-map c++-mode-map
   :bind (:map c-mode-base-map
               ("C-c f" . #'mw-func-header)
          :map c++-mode-map
               ("C-c n" . #'mw-get-class-name))
   :config
-  (require 'cpp-funcs))
-
+  (require 'cpp-funcs)
+  :functions mw-func-header mw-get-class-name)
 
 (use-package go-mode
   :ensure t
