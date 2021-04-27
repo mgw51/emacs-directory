@@ -66,11 +66,10 @@ This was changed in version 27 to conform with XDG standards.")
 ;;; ~~~~~~~~~~~~~~~~~~
 (use-package mw-utils
   :defer t
-  :commands (mw-toggle-selective-display mw-insert-time mw-insert-date mw-create-sql-buffer)
   :bind (([f2] . #'mw-toggle-selective-display)
          :map text-mode-map
-         ("C-c w t" . #'mw-insert-time)
-         ("C-c w d" . #'mw-insert-date))
+         ("C-c m t" . #'mw-insert-time)
+         ("C-c m d" . #'mw-insert-date))
   ; Things like timestamps and other nice-to-haves
   :init
   (mw-create-sql-buffer)
@@ -78,7 +77,11 @@ This was changed in version 27 to conform with XDG standards.")
   ;; see https://www.gnu.org/software/emacs/manual/html_mono/dbus.html#Bus-names
   (require 'dbus)
   (when (not (null (dbus-list-activatable-names :session)))
-    (add-hook 'compilation-finish-functions #'mw-compilation-completed-notification)))
+    (add-hook 'compilation-finish-functions #'mw-compilation-completed-notification))
+  ;; Silence byte-compiler
+  :functions mw-compilation-completed-notification dbus-list-activatable-names
+  ;; Create autoloads for these
+  :commands (mw-toggle-selective-display mw-insert-time mw-insert-date mw-create-sql-buffer))
 
 
 (use-package doxygen-mode
