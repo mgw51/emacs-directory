@@ -115,7 +115,6 @@ This was changed in version 27 to conform with XDG standards.")
 
 
 (use-package prog-mode
-  :defer t
   :defines prog-mode-map
   :bind (:map prog-mode-map
               ("C-c c" . #'mw-insert-triplet)
@@ -631,7 +630,6 @@ Projectile typcially requires significant file system operations which can slow 
 
 
 ;; (use-package rust-mode
-;;   :defer t
 ;;   :ensure t
 ;;   :pin melpa
 ;;   :hook (rust-mode . lsp)
