@@ -65,9 +65,11 @@ This was changed in version 27 to conform with XDG standards.")
 ;;; Personal libraries
 ;;; ~~~~~~~~~~~~~~~~~~
 (use-package mw-utils
-  :defer t
   :bind (([f2] . #'mw-toggle-selective-display)
          :map text-mode-map
+         ("C-c m t" . #'mw-insert-time)
+         ("C-c m d" . #'mw-insert-date)
+         :map org-mode-map
          ("C-c m t" . #'mw-insert-time)
          ("C-c m d" . #'mw-insert-date))
   ; Things like timestamps and other nice-to-haves
