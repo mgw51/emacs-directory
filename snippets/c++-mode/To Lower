@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: To Lower
+# key: tlr
+# --
+std::transform(std::begin($1), std::end($1), std::begin($1),
+$>[](int c) { return std::tolower(c); });
