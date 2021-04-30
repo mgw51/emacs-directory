@@ -65,6 +65,7 @@ This was changed in version 27 to conform with XDG standards.")
 ;;; Personal libraries
 ;;; ~~~~~~~~~~~~~~~~~~
 (use-package mw-utils
+  :defines org-mode-map ; not really, but shhh
   :bind (([f2] . #'mw-toggle-selective-display)
          :map text-mode-map
          ("C-c m t" . #'mw-insert-time)
