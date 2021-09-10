@@ -131,6 +131,8 @@ This was changed in version 27 to conform with XDG standards.")
 
 (use-package cc-mode
   :defines c-mode-base-map c++-mode-map
+  :mode (("\\.\\(cpp\\|CC\\|cxx\\|tpp\\|hpp\\)\\'" . c++-mode)
+         ("\\.\\(c\\|h\\)\\'" . c-mode))
   :bind (:map c-mode-base-map
               ("C-c f" . #'mw-func-header)
          :map c++-mode-map
@@ -653,12 +655,13 @@ Projectile typcially requires significant file system operations which can slow 
   :defer t
   :ensure t)
 
-;; ;; (use-package php-mode
-;; ;;   :ensure t
-;; ;;   :pin melpa
-;; ;;   :config
-;; ;;   (use-package company-php
-;; ;;     :ensure t))
+(use-package php-mode
+  :ensure t
+  :pin melpa
+  :mode ("\\.php\\'" . php-mode)
+  :config
+  (use-package company-php
+    :ensure t))
 
 
 ;; ;;; Built-ins
