@@ -9,6 +9,17 @@
 ;;; "Public" Functions
 ;;;
 
+(require 'projectile nil t) ; no errors
+
+(defcustom doxygen-config-file "Doxyfile"
+  "Contains the name of the Doxygen configuration file.
+
+This file is typically located somewhere in a projects directory tree.  The
+configuration file is read by the doxygen application prior to compiling
+documentation for a project."
+  :type '(string)
+  :group 'Doxygen)
+
 ;;;###autoload
 (defun doxygen-function-template (&optional number-args)
   "Insert doxygen function documentation template at point.
@@ -97,11 +108,13 @@ When invoked on a region defined by START and END, wrap the
 (defun doxygen-run-doxygen ()
   "Run doxygen using projectile root if active, otherwise using Doxyfile as the dominant file to search for."
   (interactive)
-  (if (boundp 'projectile-mode)
-      (shell-command (concat "doxygen " (projectile-expand-root "Doxyfile")))
-    (let ((file-path (locate-dominating-file "." "Doxyfile")))
-      (when (not (null file-path))
-        (shell-command (concat "doxygen " file-path "Doxyfile"))))))
+  (let ((file-path (if (and (boundp 'projectile-project-p)
+                            (projectile-project-p))
+                       (projectile-expand-root doxygen-config-file)
+                     (concat (locate-dominating-file "." doxygen-config-file) doxygen-config-file))))
+    (when (not (null file-path))
+      (let ((default-directory (file-name-directory file-path)))
+        (start-process "doxygen" (get-buffer-create "*doxygen-output*") "doxygen" (expand-file-name file-path))))))
 
 
 ;;; "Private" functions
