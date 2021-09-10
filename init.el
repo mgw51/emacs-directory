@@ -444,32 +444,32 @@ Projectile typcially requires significant file system operations which can slow 
   :bind ("C-c C-g" . #'magit-status))
 
 
-(use-package rtags
-  :defer t
-  :ensure t
-  :pin melpa
-  :hook ((c++-mode c-mode) . #'rtags-start-process-unless-running)
-  :custom
-  (rtags-verify-protocol-version nil)
-  (rtags-autostart-diagnostics t)
-  (rtags-use-helm t)
-  (rtags-process-flags "-v --inactivity-timeout 300 --log-flush -j2 --rp-nice-value 19")
-  :config
-  (rtags-enable-standard-keybindings)
-  (use-package flycheck-rtags
-    :ensure t
-    :pin melpa
-    :after flycheck)
-  (use-package helm-rtags
-    :ensure t
-    :pin melpa
-    :after helm)
-  (use-package company-rtags
-    :ensure t
-    :delight " CrT"
-    :after company
-    :config
-    (push 'company-rtags company-backends)))
+;; (use-package rtags
+;;   :defer t
+;;   :ensure t
+;;   :pin melpa
+;;   :hook ((c++-mode c-mode) . #'rtags-start-process-unless-running)
+;;   :custom
+;;   (rtags-verify-protocol-version nil)
+;;   (rtags-autostart-diagnostics t)
+;;   (rtags-use-helm t)
+;;   (rtags-process-flags "-v --inactivity-timeout 300 --log-flush -j2 --rp-nice-value 19")
+;;   :config
+;;   (rtags-enable-standard-keybindings)
+;;   (use-package flycheck-rtags
+;;     :ensure t
+;;     :pin melpa
+;;     :after flycheck)
+;;   (use-package helm-rtags
+;;     :ensure t
+;;     :pin melpa
+;;     :after helm)
+;;   (use-package company-rtags
+;;     :ensure t
+;;     :delight " CrT"
+;;     :after company
+;;     :config
+;;     (push 'company-rtags company-backends)))
 
 
 ;; (use-package irony
@@ -567,66 +567,66 @@ Projectile typcially requires significant file system operations which can slow 
 ;;         slime-contribs '(slime-fancy)))
 
 
-;; ;;; Language Server Protocol setup.  Hook lsp-mode from
-;; ;;; the appropriate language mode so we don't call it
-;; ;;; globally.  Not all languages use LSP in this
-;; ;;; config.
-;; (use-package lsp-mode
-;;   :ensure t
-;;   :pin melpa
-;;   :commands lsp
-;;   :custom
-;;   (lsp-prefer-flymake nil)
-;;   (lsp-auto-guess-root t)  ; will use projectile
-;;   (lsp-auto-configure t)   ; auto configure dependencies etc.
-;;   :config
-;;   (require 'lsp-clients)
-;;   (use-package lsp-ui
-;;     :ensure t
-;;     :pin melpa
-;;     :commands lsp-ui-mode)
-;;   (use-package company-lsp
-;;     :ensure t
-;;     :pin melpa
-;;     :commands company-lsp
-;;     :config
-;;     (push 'company-lsp company-backends))
-;;   (use-package helm-lsp
-;;     :ensure t
-;;     :pin melpa
-;;     :commands helm-lsp-workspace-symbol)
-;;   ;;; For debugging
-;;   (use-package dap-mode
-;;     :ensure t
-;;     :pin melpa
-;;     :config
-;;     (dap-mode t)
-;;     (dap-ui-mode t))
-;;   ;;; C-family language server
-;;   (when (let ((exec-path
-;;                (cons exec-path (cons (expand-file-name "~") (cons (expand-file-name "~/Scripts") nil)))))
-;;           (setf ccls-executable (executable-find "ccls")))
-;;     (use-package ccls
-;;       :defines ccls-executable
-;;       :preface
-;;       (defun find-ccls ()
-;;         "Add home directory to the `exec-path' variable and then look for ccls executable."
-;;         (let ((exec-path
-;;                (cons exec-path (cons (expand-file-name "~") (cons (expand-file-name "~/Scripts") nil)))))
-;;           (setf ccls-executable (executable-find "ccls"))))
-;;       :if (find-ccls)  ; only load if we can find ccls binary
-;;       :after lsp-mode projectile
-;;       :ensure t
-;;       :pin melpa
-;;       :hook (c++-mode c-mode)
-;;       :custom
-;;       (ccls-args nil)
-;;       (ccls-executable "/usr/local/bin/ccls");(find-ccls))
-;;       (projectile-project-root-files-top-down-recurring
-;;        (append '("compile_commands.json" ".ccls")
-;;                projectile-project-root-files-top-down-recurring))
-;;       :config
-;;       (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))))
+;;; Language Server Protocol setup.  Hook lsp-mode from
+;;; the appropriate language mode so we don't call it
+;;; globally.  Not all languages use LSP in this
+;;; config.
+(use-package lsp-mode
+  :ensure t
+  :pin melpa
+  :hook prog-mode
+  :commands lsp
+  :custom
+  (lsp-prefer-flymake nil)
+  (lsp-auto-guess-root t)  ; will use projectile
+  (lsp-auto-configure t)   ; auto configure dependencies etc.
+  :config
+  ;; lsp-ui contains high-level UI support such as flycheck support and code lenses
+  (use-package lsp-ui
+    :ensure t
+    :pin melpa
+    :after lsp-mode
+    :commands lsp-ui-mode)
+  ;; (use-package company-lsp
+  ;;   :ensure t
+  ;;   :pin melpa
+  ;;   :after (company-mode lsp-mode)
+  ;;   :commands company-lsp
+  ;;   :config
+  ;;   (push 'company-lsp company-backends))
+  (use-package helm-lsp
+    :ensure t
+    :pin melpa
+    :after (helm lsp-mode)
+    :commands helm-lsp-workspace-symbol)
+  ;;; For debugging
+  (use-package dap-mode
+    :ensure t
+    :pin melpa
+    :after (lsp-mode)
+    :config
+    (dap-mode t)
+    (dap-ui-mode t)))
+  ;;; C-family language server
+  ;; (when (let ((exec-path
+  ;;              (cons exec-path (cons (expand-file-name "~") (cons (expand-file-name "~/Scripts") nil)))))
+  ;;         (setf ccls-executable (executable-find "ccls"))))
+
+(use-package ccls
+  :ensure t
+  :defines ccls-executable
+  :after lsp-mode projectile
+  ;; Found the following at:
+  ;;   https://www.reddit.com/r/emacs/comments/n0bc58/switch_from_using_clangd_to_ccls/
+  :hook ((c++-mode c-mode) . (lambda () (require 'ccls) (lsp)))
+  :custom
+;  (ccls-args nil)
+;  (ccls-executable "/usr/local/bin/ccls");(find-ccls))
+  (projectile-project-root-files-top-down-recurring
+   (append '("compile_commands.json" ".ccls")
+           projectile-project-root-files-top-down-recurring))
+  :config
+  (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))
 
 
 (use-package toml-mode
