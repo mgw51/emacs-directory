@@ -133,10 +133,35 @@ This was changed in version 27 to conform with XDG standards.")
   :defines c-mode-base-map c++-mode-map
   :mode (("\\.\\(cpp\\|CC\\|cxx\\|tpp\\|hpp\\)\\'" . c++-mode)
          ("\\.\\(c\\|h\\)\\'" . c-mode))
+  :hook ((c++-mode . cppsettings)
+         (c-mode-common . c-common-settings)
+         (c-mode-common . lsp))
   :bind (:map c-mode-base-map
               ("C-c f" . #'mw-func-header)
+              ("C-c i" . #'imenu)
          :map c++-mode-map
-              ("C-c n" . #'mw-get-class-name))
+         ("C-c n" . #'mw-get-class-name))
+  :preface
+  (defun cppsettings ()
+      (c-set-offset 'inclass '++)
+      (c-set-offset 'access-label '-)
+      ;; Enable Doxygen comment styling
+      (setf c-doc-comment-style '((c++-mode . doxygen)))
+      (message "Run cppsettings function."))
+  (defun c-common-settings ()
+    (yas-reload-all)
+    (superword-mode -1)  ; treat underscore-separated words as a single word?
+    (subword-mode t)     ; treat camelCase words as separate words?
+    (auto-revert-mode t)
+    (c-set-offset 'case-label '+) ; indent case statements in a switch block
+    (which-function-mode)
+                                        ;  (flyspell-prog-mode)
+    (font-lock-add-keywords nil '(("\\<\\(TBD\\|TODO\\|FIXME\\|DEBUG\\)"
+                                   1
+                                   font-lock-warning-face prepend)))
+    ;;
+    ;;                                  append -------\   /------- make buffer-local
+    (add-hook 'before-save-hook #'whitespace-cleanup nil t))
   :config
   (require 'cpp-funcs)
   :functions mw-func-header mw-get-class-name)
@@ -147,6 +172,9 @@ This was changed in version 27 to conform with XDG standards.")
   :custom (gofmt-command "goimports")
   :config
   (add-hook 'before-save-hook #'gofmt-before-save)
+  ;; only load company-go in go-mode
+  (add-hook 'go-mode-hook (lambda ()
+                            (set (make-local-variable 'company-backends) '(company-go))))
   (use-package company-go
     :ensure t
     :hook go-mode
@@ -258,6 +286,7 @@ This was changed in version 27 to conform with XDG standards.")
      (emacs-lisp . t)
      (lisp . t)
      (plantuml . t)
+     (python . t)
      (perl . t)
      (lua . t)
      (shell . t)
@@ -739,8 +768,8 @@ Projectile typcially requires significant file system operations which can slow 
 ;; TODO - Since my list of hook functions is always growing, I would like to move the hooks and hook functions
 ;;        into a list and then use something like mapcar to apply the add-hook function to everything in the list.
 ;;
-(add-hook 'c-mode-common-hook #'cc-mode-customizations)
-(add-hook 'c++-mode-hook #'cpp-customizations)
+;; (add-hook 'c-mode-common-hook #'cc-mode-customizations)
+;; (add-hook 'c++-mode-hook #'cpp-customizations)
 ;; (add-hook 'python-mode-hook #'python-hook-func)
 (add-hook 'emacs-lisp-mode-hook #'lisp-settings)
 (add-hook 'lisp-mode-hook #'lisp-settings)
