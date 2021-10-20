@@ -98,6 +98,7 @@ This was changed in version 27 to conform with XDG standards.")
 ;;; ~~~~~~~~~~~~~~~~~~
 
 (use-package exec-path-from-shell
+  :demand t
   :ensure t
   :pin melpa
   :config
@@ -168,7 +169,7 @@ This was changed in version 27 to conform with XDG standards.")
 
 (use-package go-mode
   :ensure t
-  :defer t
+  :hook (go-mode . #'lsp)
   :custom (gofmt-command "goimports")
   :config
   (add-hook 'before-save-hook #'gofmt-before-save)
