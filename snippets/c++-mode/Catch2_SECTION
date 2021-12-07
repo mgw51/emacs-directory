@@ -1,0 +1,6 @@
+# key: sec
+# name: Catch2 SECTION
+# --
+SECTION("$1") {
+  $0
+}

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Catch2 Test Case
+# key: testc
+# --
+TEST_CASE("$1", "[$2]") {
+  $0
+}
