@@ -117,6 +117,16 @@ This was changed in version 27 to conform with XDG standards.")
   ;; (ispell-dictionary "en_US"))
 
 
+(use-package tree-sitter
+  :ensure t
+  :hook #'tree-sitter-hl-mode) ; automatically turn on syntax highlighting when this mode enabled
+
+
+(use-package tree-sitter-langs
+    :ensure t
+    :after tree-sitter)
+
+
 (use-package prog-mode
   :defines prog-mode-map
   :bind (:map prog-mode-map
@@ -136,7 +146,8 @@ This was changed in version 27 to conform with XDG standards.")
   :bind (:map c-mode-base-map
               ("C-c f" . #'mw-func-header)
          :map c++-mode-map
-              ("C-c n" . #'mw-get-class-name))
+         ("C-c n" . #'mw-get-class-name))
+  :hook ((c++-mode c-mode) . #'tree-sitter-mode)
   :config
   (require 'cpp-funcs)
   :functions mw-func-header mw-get-class-name)
