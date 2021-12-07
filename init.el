@@ -605,6 +605,7 @@ Projectile typcially requires significant file system operations which can slow 
   :ensure t
   :pin melpa
   :hook prog-mode
+  :bind-keymap ("C-c l" . lsp-command-map)
   :commands lsp
   :custom
   (lsp-prefer-flymake nil)
