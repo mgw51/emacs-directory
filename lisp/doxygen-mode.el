@@ -18,7 +18,8 @@ This file is typically located somewhere in a projects directory tree.  The
 configuration file is read by the doxygen application prior to compiling
 documentation for a project."
   :type '(string)
-  :group 'Doxygen)
+  :group 'Doxygen
+  :local t)
 
 ;;;###autoload
 (defun doxygen-function-template (&optional number-args)
@@ -114,7 +115,9 @@ When invoked on a region defined by START and END, wrap the
                      (concat (locate-dominating-file "." doxygen-config-file) doxygen-config-file))))
     (when (not (null file-path))
       (let ((default-directory (file-name-directory file-path)))
-        (start-process "doxygen" (get-buffer-create "*doxygen-output*") "doxygen" (expand-file-name file-path))))))
+        (start-process "doxygen" (get-buffer-create "*doxygen-output*") "doxygen" (expand-file-name file-path))
+        (let ((display-buffer-alist '((".*" display-buffer-at-bottom))))
+          (display-buffer "*doxygen-output*"))))))
 
 
 ;;; "Private" functions
@@ -306,6 +309,7 @@ Keybindings for `doxygen-mode':
     (define-key doxy-map (kbd "C-c w g") #'doxygen-create-group)
     (define-key doxy-map (kbd "C-c w n") #'doxygen-forward-block)
     (define-key doxy-map (kbd "C-c w p") #'doxygen-backward-block)
+    (define-key doxy-map (kbd "C-c w r") #'doxygen-run-doxygen)
     doxy-map)
 
   (doxygen-toggle-font-lock-keywords doxygen-mode)
