@@ -8,17 +8,27 @@
 ;;;###autoload
 (defun mw-func-header ()
   "This function prints a standard header for a c++ function.
-The header consists of: three comment lines; first line contains a line of
-stars, second line is function name, third line is empty."
+
+The header consists of three comment lines.  First line contains
+a row of stars (no wider than 100th column), second line is for
+the function name, third line is empty."
   (interactive)
-  (save-excursion
-    (set-mark (point))
-    (activate-mark)
-    (indent-according-to-mode)
-    (insert "// " (make-string 100 ?*) ?\u000a "// Name:" (make-string 12 ? ) ?\u000a "//")
-    (indent-for-tab-command))
-  (forward-line 1)
-  (end-of-line))
+  (let ((stars (make-string (- 97 (current-column)) ?\*))
+        (r-begin nil)
+        (r-end nil)
+        (exit-point nil))
+    (save-excursion
+      (setq r-begin (point))
+      (insert "// " stars "\n//")
+      (setq exit-point (point))
+      (insert "\n//\n")
+      (setq r-end (point))
+      (setq mark-active t)
+      (indent-region r-begin r-end)
+      (setq mark-active nil))
+    (goto-char exit-point)
+    (end-of-line)
+    (insert " ")))
 
 
 ;;;###autoload
