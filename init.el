@@ -265,12 +265,21 @@ This was changed in version 27 to conform with XDG standards.")
   :bind (; Bind these globally
          ("C-c o l" . 'org-store-link)
          ("C-c o a" . 'org-agenda)
-         ("C-c o c" . 'org-capture))
+         ("C-c o c" . 'org-capture)
+         ;; Bind the following to org-mode
+         (:map org-mode-map
+               ("C-c b" . 'mw-dnd/make-battle-chart-from-region)
+               ("C-c r" . 'mw-org-table-recalc)))
   :preface
   (require 'ox-confluence nil 'no-error)
   (require 'ox-md nil 'no-error)
   (require 'ox-man nil 'no-error)
+  (require 'mw-dnd nil 'no-error)
   (setq org-export-backends '(ascii html icalendar latex confluence md man))
+  (defun mw-org-table-recalc()
+    "For use in the bind section above."
+    (interactive)
+    (org-table-recalculate 'all))
   :custom ((fill-column 86 "Set `auto-fill-mode' fill column to something reasonable.")
            (org-hide-emphasis-markers t "Hiding markup characters makes for a cleaner looking buffer.")
            (org-hide-leading-stars t "Omit leading stars in subheadings.")
