@@ -13,6 +13,7 @@ The header consists of three comment lines.  First line contains
 a row of stars (no wider than 100th column), second line is for
 the function name, third line is empty."
   (interactive)
+  (indent-according-to-mode)
   (let ((stars (make-string (- 97 (current-column)) ?\*))
         (r-begin nil)
         (r-end nil)
