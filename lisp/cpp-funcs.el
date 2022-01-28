@@ -22,7 +22,7 @@ the function name, third line is empty."
       (setq r-begin (point))
       (insert "// " stars "\n//")
       (setq exit-point (point))
-      (insert "\n//\n")
+      (insert "\n//")
       (setq r-end (point))
       (setq mark-active t)
       (indent-region r-begin r-end)
