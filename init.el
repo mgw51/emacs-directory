@@ -383,7 +383,7 @@ Projectile typcially requires significant file system operations which can slow 
   (projectile-cache-file (concat (expand-file-name user-emacs-directory) "projectile/projectile.cache"))
   (projectile-enable-caching t)
   :config
-  (advice-add 'projectile-project-root :around #'mw-advice-projectile-project-root)
+;;  (advice-add 'projectile-project-root :around #'mw-advice-projectile-project-root)
   (projectile-register-project-type 'elisp '(".elisp-project")
                                                  :test-suffix "-test"
                                                  :test-dir "test/")
@@ -635,6 +635,12 @@ Projectile typcially requires significant file system operations which can slow 
   (lsp-auto-guess-root t)  ; will use projectile
   (lsp-auto-configure t)   ; auto configure dependencies etc.
   :config
+  ;; Register remote lsp servers
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "gopls")
+                    :major-modes '(go-mode)
+                    :remote? t
+                    :server-id 'gopls-remote))
   ;; lsp-ui contains high-level UI support such as flycheck support and code lenses
   (use-package lsp-ui
     :ensure t
