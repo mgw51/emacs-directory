@@ -296,6 +296,9 @@ This was changed in version 27 to conform with XDG standards.")
   (use-package ob-rust
     :ensure t
     :pin melpa)
+  (use-package ob-restclient
+    :ensure t
+    :pin melpa)
   ;; Add minimal support for generally unsupported modes.
   (add-to-list 'org-src-lang-modes '("CQL" . "cql-mode"))
 
