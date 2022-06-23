@@ -296,6 +296,9 @@ This was changed in version 27 to conform with XDG standards.")
   (use-package ob-rust
     :ensure t
     :pin melpa)
+  (use-package ob-restclient
+    :ensure t
+    :pin melpa)
   ;; Add minimal support for generally unsupported modes.
   (add-to-list 'org-src-lang-modes '("CQL" . "cql-mode"))
 
@@ -380,7 +383,7 @@ Projectile typcially requires significant file system operations which can slow 
   (projectile-cache-file (concat (expand-file-name user-emacs-directory) "projectile/projectile.cache"))
   (projectile-enable-caching t)
   :config
-  (advice-add 'projectile-project-root :around #'mw-advice-projectile-project-root)
+;;  (advice-add 'projectile-project-root :around #'mw-advice-projectile-project-root)
   (projectile-register-project-type 'elisp '(".elisp-project")
                                                  :test-suffix "-test"
                                                  :test-dir "test/")
@@ -638,6 +641,12 @@ Projectile typcially requires significant file system operations which can slow 
                     :major-modes '(c-mode c++-mode)
                     :remote? t
                     :server-id 'ccls-remote))
+  ;; Register remote lsp servers
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "gopls")
+                    :major-modes '(go-mode)
+                    :remote? t
+                    :server-id 'gopls-remote))
   ;; lsp-ui contains high-level UI support such as flycheck support and code lenses
   (use-package lsp-ui
     :ensure t
