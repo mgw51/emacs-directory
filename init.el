@@ -632,6 +632,12 @@ Projectile typcially requires significant file system operations which can slow 
   (lsp-auto-guess-root t)  ; will use projectile
   (lsp-auto-configure t)   ; auto configure dependencies etc.
   :config
+  ;; Register tramp buffers to use remote CCLS instance
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "/usr/bin/ccls")
+                    :major-modes '(c-mode c++-mode)
+                    :remote? t
+                    :server-id 'ccls-remote))
   ;; lsp-ui contains high-level UI support such as flycheck support and code lenses
   (use-package lsp-ui
     :ensure t
