@@ -383,6 +383,7 @@ Projectile typcially requires significant file system operations which can slow 
   (projectile-cache-file (concat (expand-file-name user-emacs-directory) "projectile/projectile.cache"))
   (projectile-enable-caching t)
   :config
+  (setf projectile-enable-cmake-presets t) ; Enable CMake presets
 ;;  (advice-add 'projectile-project-root :around #'mw-advice-projectile-project-root)
   (projectile-register-project-type 'elisp '(".elisp-project")
                                                  :test-suffix "-test"
@@ -393,6 +394,12 @@ Projectile typcially requires significant file system operations which can slow 
                                     :test-suffix "_test"
                                     :src-dir "%s/src/"
                                     :test-dir "%s/test/unit_tests/")
+  (projectile-register-project-type 'cmake '(".projectile-cmake")
+                                    :configure "cmake -S %s -B build"
+                                    :compile "cmake --build build -j15"
+                                    :src-dir "src/"
+                                    :test-suffix "_test"
+                                    :test-dir "test/")
   (use-package ag
     :ensure t
     :pin melpa
