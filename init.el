@@ -46,7 +46,7 @@ This was changed in version 27 to conform with XDG standards.")
   (require 'package)     ; Pull in package.el
   (setf package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                            ("melpa" . "https://melpa.org/packages/")
-                           ("org" . "https://orgmode.org/elpa/")))
+                           ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
   ;; package-initialize must be called explicitly for major versions below 27
   (when (< emacs-major-version 27)
     (package-initialize)))
