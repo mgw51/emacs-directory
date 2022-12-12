@@ -6,6 +6,22 @@
 ;;;
 ;;; Code:
 
+;;; Helper function
+(defun maybe-install-straight()
+  "Install `straight.el' if it is not already installed."
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage)))
+
 ;; Make startup faster by reducing the frequency of garbage
 ;; collection.  The default is 800 kilobytes.  Measured in bytes.
 (setq gc-cons-threshold (* 100 1024 1024))
@@ -49,7 +65,9 @@ This was changed in version 27 to conform with XDG standards.")
                            ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
   ;; package-initialize must be called explicitly for major versions below 27
   (when (< emacs-major-version 27)
-    (package-initialize)))
+    (package-initialize))
+  ;; ensure `straight' is installed
+  (maybe-install-straight))
 
 
 ;;; Setup use-package
