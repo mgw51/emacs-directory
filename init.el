@@ -259,7 +259,6 @@ This was changed in version 27 to conform with XDG standards.")
 
 (use-package org
   :ensure t
-  :pin org
   :mode ("\\.org\\'" . org-mode)
   :defines org-babel-load-languages org-export-backends
   :bind (; Bind these globally
