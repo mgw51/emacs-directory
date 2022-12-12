@@ -662,30 +662,27 @@ Projectile typcially requires significant file system operations which can slow 
     :pin melpa
     :after lsp-mode
     :commands lsp-ui-mode)
-  ;; (use-package company-lsp
-  ;;   :ensure t
-  ;;   :pin melpa
-  ;;   :after (company-mode lsp-mode)
-  ;;   :commands company-lsp
-  ;;   :config
-  ;;   (push 'company-lsp company-backends))
   (use-package helm-lsp
     :ensure t
     :pin melpa
     :after (helm lsp-mode)
-    :commands helm-lsp-workspace-symbol)
-  ;;; For debugging
-  (use-package dap-mode
-    :ensure t
-    :pin melpa
-    :after (lsp-mode)
-    :config
-    (dap-mode t)
-    (dap-ui-mode t)))
-  ;;; C-family language server
-  ;; (when (let ((exec-path
-  ;;              (cons exec-path (cons (expand-file-name "~") (cons (expand-file-name "~/Scripts") nil)))))
-  ;;         (setf ccls-executable (executable-find "ccls"))))
+    :commands helm-lsp-workspace-symbol))
+
+
+;;; For debugging
+(use-package dap-mode
+  :ensure t
+  :pin melpa
+  :after (lsp-mode)
+  :custom
+  (dap-gdb-lldb-debug-program '("/usr/bin/gdb"))
+  :config
+  (dap-mode 1)
+  (dap-auto-configure-mode 1)
+                                        ;    (dap-ui-mode t)
+  (require 'dap-gdb-lldb)
+  (dap-gdb-lldb-setup))
+
 
 (use-package ccls
   :ensure t
