@@ -176,8 +176,7 @@ This was changed in version 27 to conform with XDG standards.")
       (c-set-offset 'inclass '++)
       (c-set-offset 'access-label '-)
       ;; Enable Doxygen comment styling
-      (setf c-doc-comment-style '((c++-mode . doxygen)))
-      (message "Run cppsettings function."))
+      (setf c-doc-comment-style '((c++-mode . doxygen))))
   (defun c-common-settings ()
     (yas-reload-all)
     (superword-mode -1)  ; treat underscore-separated words as a single word?
@@ -195,6 +194,7 @@ This was changed in version 27 to conform with XDG standards.")
   :config
   (require 'cpp-funcs)
   :functions mw-func-header mw-get-class-name)
+
 
 (use-package go-mode
   :ensure t
