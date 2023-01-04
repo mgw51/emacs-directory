@@ -127,7 +127,6 @@ This was changed in version 27 to conform with XDG standards.")
     (exec-path-from-shell-initialize)))
 
 
-
 (use-package flyspell
   :commands (turn-on-flyspell turn-off-flyspell flyspell-mode)
   :hook (text-mode . flyspell-mode))
@@ -661,13 +660,15 @@ Projectile typcially requires significant file system operations which can slow 
 (use-package lsp-mode
   :ensure t
   :pin melpa
-  :hook prog-mode
   :bind-keymap ("C-c l" . lsp-command-map)
+  :bind (:map lsp-command-map
+              ("C-c l G i" . #'lsp-ui-imenu))
   :commands lsp
   :custom
   (lsp-prefer-flymake nil)
   (lsp-auto-guess-root t)  ; will use projectile
   (lsp-auto-configure t)   ; auto configure dependencies etc.
+  (lsp-enable-on-type-formatting nil) ; disable auto-formatting
   :config
   ;;; Increase `read-process-output-max' because content returned from
   ;;; lsp servers can easily exceed the default limit.
@@ -678,11 +679,6 @@ Projectile typcially requires significant file system operations which can slow 
                     :major-modes '(go-mode)
                     :remote? t
                     :server-id 'gopls-remote))
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-tramp-connection "ccls")
-                    :major-modes '(c-mode c++-mode)
-                    :remote? t
-                    :server-id 'ccls-remote))
   ;; lsp-ui contains high-level UI support such as flycheck support and code lenses
   (use-package lsp-ui
     :ensure t
@@ -693,7 +689,12 @@ Projectile typcially requires significant file system operations which can slow 
     :ensure t
     :pin melpa
     :after (helm lsp-mode)
-    :commands helm-lsp-workspace-symbol))
+    :commands helm-lsp-workspace-symbol)
+  (use-package lsp-treemacs
+    :ensure t
+    :pin melpa
+    :after lsp-mode
+    :commands lsp-treemacs-errors-list))
 
 
 ;;; For debugging
@@ -711,21 +712,21 @@ Projectile typcially requires significant file system operations which can slow 
   (dap-gdb-lldb-setup))
 
 
-(use-package ccls
-  :ensure t
-  :defines ccls-executable
-  :after lsp-mode projectile
-  ;; Found the following at:
-  ;;   https://www.reddit.com/r/emacs/comments/n0bc58/switch_from_using_clangd_to_ccls/
-  :hook ((c++-mode c-mode) . (lambda () (require 'ccls) (lsp)))
-  :custom
-;  (ccls-args nil)
-;  (ccls-executable "/usr/local/bin/ccls");(find-ccls))
-  (projectile-project-root-files-top-down-recurring
-   (append '("compile_commands.json" ".ccls")
-           projectile-project-root-files-top-down-recurring))
-  :config
-  (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))
+;; (use-package ccls
+;;   :ensure t
+;;   :defines ccls-executable
+;;   :after lsp-mode projectile
+;;   ;; Found the following at:
+;;   ;;   https://www.reddit.com/r/emacs/comments/n0bc58/switch_from_using_clangd_to_ccls/
+;;   :hook ((c++-mode c-mode) . (lambda () (require 'ccls) (lsp)))
+;;   :custom
+;; ;  (ccls-args nil)
+;; ;  (ccls-executable "/usr/local/bin/ccls");(find-ccls))
+;;   (projectile-project-root-files-top-down-recurring
+;;    (append '("compile_commands.json" ".ccls")
+;;            projectile-project-root-files-top-down-recurring))
+;;   :config
+;;   (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))
 
 
 (use-package toml-mode
