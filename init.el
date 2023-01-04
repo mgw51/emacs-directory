@@ -107,6 +107,7 @@ This was changed in version 27 to conform with XDG standards.")
 
 (use-package doxygen-mode
   :hook c-mode-common
+  :delight " Δ"
   :commands
   doxygen-function-template doxygen-struct-template doxygen-class-template
   doxygen-create-group doxygen-backward-block doxygen-forward-block)
@@ -136,8 +137,17 @@ This was changed in version 27 to conform with XDG standards.")
   ;; (ispell-dictionary "en_US"))
 
 
+(use-package which-key
+  :ensure t
+  :demand t
+  :delight ""
+  :config
+  (which-key-mode))
+
+
 (use-package tree-sitter
   :ensure t
+  :delight ""
   :hook #'tree-sitter-hl-mode) ; automatically turn on syntax highlighting when this mode enabled
 
 
