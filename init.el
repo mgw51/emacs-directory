@@ -111,12 +111,10 @@
   (projectile-cache-file (concat (expand-file-name user-emacs-directory) "projectile/projectile.cache"))
   (projectile-enable-caching t)
   (projectile-enable-cmake-presets t)  
-  :config
-  (use-package helm-projectile
-    :after projectile))
-
-(use-package ag
-  :after projectile)
+  :init (use-package ag
+          :after projectile)
+        (use-package helm-projectile
+          :after projectile))
 
 (use-package lsp-mode
   :bind-keymap ("C-c l" . lsp-command-map)
@@ -129,27 +127,25 @@
   (lsp-auto-configure t)
   (lsp-enable-on-type-formatting nil "Disable LSP's attempts to format code")
   (read-process-output-max (* 1024 1024 2) "Increase the process output max because code servers may return large amounts of data")
-  :config
-  (use-package lsp-ui
-    :commands lsp-ui-mode
-    :custom
-    (lsp-ui-sideline-show-code-actions t)
-    (lsp-ui-peek-enable t)
-    :after lsp-mode)
-  (use-package helm-lsp
-    :commands helm-lsp-workspace-symbol
-    :after (helm lsp-mode))
-  (use-package lsp-treemacs
-    :commands lsp-treemacs-error-list
-    :after lsp-mode))
+  :init (use-package lsp-ui
+          :commands lsp-ui-mode
+          :custom
+          (lsp-ui-sideline-show-code-actions t)
+          (lsp-ui-peek-enable t)
+          :after lsp-mode)
+        (use-package helm-lsp
+          :commands helm-lsp-workspace-symbol
+          :after (helm lsp-mode))
+        (use-package lsp-treemacs
+          :commands lsp-treemacs-error-list
+          :after lsp-mode))
 
 (use-package flycheck
   :commands flycheck-mode
   :hook flycheck-color-mode-line-mode
-  :config
-  (use-package flycheck-color-mode-line
-    :ensure t
-    :after flycheck))
+  :init (use-package flycheck-color-mode-line
+          :ensure t
+          :after flycheck))
 
 (use-package cc-mode
   :ensure nil
@@ -176,6 +172,18 @@
     ;    (setq c-basic-offset 2)
     ))
 
+(use-package yaml-mode)
+(use-package toml-mode)
+(use-package cql-mode)
+(use-package systemd
+  :init (use-package helm-systemd
+          :after (helm systemd)))
+
+(use-package cmake-mode
+  :hook cmake-font-lock-activate
+  :init (use-package cmake-font-lock
+          :commands cmake-font-lock-activate
+          :after cmake-mode))
 ;; ;; (use-package smartparens
 ;; ;;   :ensure t
 ;; ;;   :hook
