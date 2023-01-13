@@ -15,7 +15,7 @@
 ;;     `default-directory', and
 ;;  2. recursively add subdirectories
 ;;
-(let ((default-directory (expand-file-name "lisp/")))
+(let ((default-directory (expand-file-name "lisp/" user-emacs-directory)))
   (normal-top-level-add-to-load-path '("."))
   (normal-top-level-add-subdirs-to-load-path))
 
