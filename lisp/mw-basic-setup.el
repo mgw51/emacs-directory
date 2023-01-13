@@ -14,7 +14,7 @@ Some packages will add configuration data to the main init file,
 manual config only, and relegate all other config changes to
 `init-custom.el'"
 
-  (setf custom-file (expand-file-name "lisp/init-custom.el"))
+  (setf custom-file (expand-file-name "lisp/init-custom.el" user-emacs-directory))
   (unless (file-exists-p custom-file)
     (with-temp-file custom-file
       (insert ";;; init-custom.el --- Dedicated file into which Emacs packages may freely write configuration data.\n"
