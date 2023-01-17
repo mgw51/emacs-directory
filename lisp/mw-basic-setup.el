@@ -40,7 +40,7 @@ manual config only, and relegate all other config changes to
   "Setup `use-package'.
 
 That may mean downloading it from the package repository, if
-necessary."
+necessary.  If supplied the caller, apply SETTINGS."
   (eval-when-compile
     (when (not (package-installed-p 'use-package))
       (package-refresh-contents)
@@ -52,7 +52,8 @@ necessary."
 (defun basic/ui-setup()
   "This function provides a base-line UI configuration.
 
-It does things like turn off the tool bar and scroll bars, enable line numbers, etc."
+It does things like turn off the tool bar and scroll bars, enable
+line numbers, etc."
   ;;; off
   (tool-bar-mode -1)
   (menu-bar-mode -1)
