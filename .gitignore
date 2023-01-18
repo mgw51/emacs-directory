@@ -14,3 +14,4 @@ irony/
 lisp/config/
 projectile-bookmarks.eld
 eln-cache
+/.cache/
