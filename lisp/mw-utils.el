@@ -111,16 +111,12 @@ current `major-mode'."
 
 (defun curly--braces-at-point ()
   "Add curly braces at point by opening two braces with a blank line between."
-       (let ((start (point))
-           (end)
-           (jump-location))
-       (insert "{\n")
-       (setq jump-location (point))
-       (insert "\n}")
-       (setq end (point))
-       (goto-char jump-location)
-       (indent-region start end)
-       (funcall indent-line-function)))
+  (let ((s (point))
+        (jump-location))
+    (insert "{\n\n}")
+    (indent-region-line-by-line s (point)) ; does not indent blank lines
+    (goto-char (+ s 2))
+    (funcall indent-line-function))) ; indent (current) blank line
 
 
 (defun curly--braces-region (start end)
