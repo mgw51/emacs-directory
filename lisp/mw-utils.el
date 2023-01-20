@@ -51,15 +51,6 @@ If a region is selected, operate on text between START and END."
                (insert "--\n-- Use this buffer for SQL snippets\n--\n\n")))))
 
 
-(defun mw-load-cpp-mode ()
-    "Cause `c++-mode' to be enabled in the current buffer.
-This is a work-around because helm does not appear to like enabling
-c++-mode using the `helm-Mx' function.  The `c++-mode' option does
-not appear in helm's completion list."
-    (interactive)
-    (command-execute 'c++-mode))
-
-
 (defun mw-find-file (prefix)
     "Delegate the `find-file' request to the appropriate function.
 Call `helm-find-files' unless PREFIX arg is present, in which
