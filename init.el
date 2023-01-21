@@ -161,6 +161,7 @@
   (lsp-auto-configure t)
   (lsp-enable-on-type-formatting nil "Disable LSP's attempts to format code")
   (read-process-output-max (* 1024 1024 2) "Increase the process output max because code servers may return large amounts of data")
+  (flycheck-checker-error-threshold 600 "Increase error threshold from 400 to 600")
   :init (use-package lsp-ui
           :commands lsp-ui-mode
           :custom
