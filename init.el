@@ -26,15 +26,26 @@
   (require 'mw-basic-setup)
   (basic/set-and-load-custom-config-file)
   (basic/setup-package-el '(("gnu" . "http://elpa.gnu.org/packages/")
-			    ("melpa" . "https://melpa.org/packages/")
-			    ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+                            ("melpa" . "https://melpa.org/packages/")
+                            ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
   (basic/use-package-setup '((use-package-verbose . t)
-			     (use-package-compute-statistics . t)
-			     (use-package-always-defer . t)
+                             (use-package-compute-statistics . t)
+                             (use-package-always-defer . t)
                              (use-package-always-ensure . t)))
   (basic/ui-setup)
   (basic/quality-of-life))
 
+;;; Configure my lisp files
+(use-package mw-utils
+  :ensure nil
+  :commands (mw-insert-curly-braces))
+(use-package mw-select-comment-by-lang
+  :ensure nil)
+(use-package cpp-funcs
+  :ensure nil
+  :commands (mw-func-header mw-include-guard mw-create-basic-makefile))
+
+;;; Configure everything else
 (use-package exec-path-from-shell
   :demand t
   :config
