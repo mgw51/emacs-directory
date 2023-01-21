@@ -43,6 +43,17 @@
   (when (daemonp)
     (exec-path-from-shell-initialize)))
 
+(use-package key-chord)
+
+(use-package use-package-chords
+  :demand t
+  :config (key-chord-mode 1))
+
+(use-package ace-jump-mode
+  :chords (("jj" . ace-jump-char-mode)
+           ("jk" . ace-jump-word-mode)
+           ("jl" . ace-jump-line-mode)))
+
 (use-package zerodark-theme
   :demand t
   :config
@@ -150,6 +161,8 @@
 (use-package cc-mode
   :ensure nil
   :commands (c++-mode c-mode awk-mode java-mode)
+  :chords (:map c++-mode-map
+                ("pq" . mw-insert-curly-braces))
   :init
   (add-hook 'c-mode-common-hook #'common-settings)
   (add-hook 'c++-mode-hook #'c++-settings)
