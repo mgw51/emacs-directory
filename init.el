@@ -115,10 +115,10 @@
   :blackout " Ƕ"
   ;; We must explicitly bind these helm commands (globally)
   :bind (("M-x" . #'helm-M-x)
-	 ("C-x C-f" . #'helm-find-files)
-	 ("C-x C-b" . #'helm-buffers-list)
-	 ("M-s o" . #'helm-occur)
-	 ("C-x r b" . #'helm-filtered-bookmarks))
+         ("C-x C-f" . #'helm-find-files)
+         ("C-x C-b" . #'helm-buffers-list)
+         ("M-s o" . #'helm-occur)
+         ("C-x r b" . #'helm-filtered-bookmarks))
   :custom
   (completion-styles '(flex))
   :config
@@ -135,7 +135,7 @@
   (projectile-completion-system 'helm)
   (projectile-cache-file (concat (expand-file-name user-emacs-directory) "projectile/projectile.cache"))
   (projectile-enable-caching t)
-  (projectile-enable-cmake-presets t)  
+  (projectile-enable-cmake-presets t)
   :init (use-package ag
           :after projectile)
         (use-package helm-projectile
@@ -144,7 +144,7 @@
 (use-package lsp-mode
   :bind-keymap ("C-c l" . lsp-command-map)
   :bind (:map lsp-command-map
-	      ("g i" . #'lsp-ui-imenu))
+              ("g i" . #'lsp-ui-imenu))
   :commands lsp
   :custom
   (lsp-prefer-flymake nil "Use flycheck instead")
@@ -218,12 +218,12 @@
 ;; ;;   (use-package smartparens-config))
 
 (add-hook 'emacs-startup-hook
-	  (lambda ()
-	    (message "Emacs ready in %s with %d garbage collections."
-		     (format "%.2f seconds"
-			     (float-time
-			      (time-subtract after-init-time before-init-time)))
-		     gcs-done)))
+          (lambda ()
+            (message "Emacs ready in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))
 
 ;; Set GC to something reasonable
 ;;
