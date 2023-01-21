@@ -84,12 +84,15 @@
 (use-package company
   :demand t
   :blackout " Ç"
-  :hook (after-init-hook . #'global-company-mode))
+  :config
+  (global-company-mode))
 
 (use-package yasnippet
   :blackout (yas-minor-mode . " ꪗ")
   :commands yas-reload-all
-  :init (yas-global-mode 1))
+  :init (yas-global-mode 1)
+  :config
+  (yas-reload-all))
 
 (use-package magit
   :ensure t
@@ -170,7 +173,6 @@
   (add-hook 'c++-mode-hook #'lsp)
   :preface
   (defun common-settings()
-    (yas-minor-mode)
     (superword-mode t) ; underscores
     (subword-mode t) ; camel-case
     (auto-revert-mode t)
