@@ -194,6 +194,8 @@
   :commands (c++-mode c-mode awk-mode java-mode)
   :chords (:map c++-mode-map
                 ("pq" . mw-insert-curly-braces))
+  :bind (:map c-mode-base-map
+              ("C-c f" . #'mw-func-header))
   :init
   (add-hook 'c-mode-common-hook #'common-settings)
   (add-hook 'c++-mode-hook #'c++-settings)
@@ -215,9 +217,9 @@
     (add-hook 'before-save-hook #'whitespace-cleanup nil t))
   (defun c++-settings()
     (c-set-offset 'inclass '++)
-    (c-set-offset 'access-label '-)
+    (c-set-offset 'access-label '-)))
     ;    (setq c-basic-offset 2)
-    ))
+
 
 (use-package yaml-mode)
 (use-package toml-mode)
