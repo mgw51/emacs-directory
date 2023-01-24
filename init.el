@@ -195,8 +195,12 @@
     (superword-mode t) ; underscores
     (subword-mode t) ; camel-case
     (auto-revert-mode t)
+    (c-set-offset 'case-label '+) ; indent case statements
     (setq compilation-scroll-output 'first-error
           c-doc-comment-style 'doxygen)
+    (font-lock-add-keywords nil '(("\\<\\(TBD\\|TODO\\|FIXME\\|DEBUG\\)"
+                                   1
+                                   font-lock-warning-face)))
     ;;                                      append ---.  .--- buffer-local
     ;;                                                |  |
     (add-hook 'before-save-hook #'whitespace-cleanup nil t))
