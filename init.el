@@ -172,6 +172,14 @@
           :ensure t
           :after flycheck))
 
+;;; For all programming modes that I use
+(use-package prog-mode
+  :ensure nil
+  :bind (:map prog-mode-map
+              ("C-c c" . #'mw-insert-triplet)
+              ("C-c d d" . #'mw-debug-comment)
+              ("C-c d r" . #'mw-remove-debug)))
+
 (use-package cc-mode
   :ensure nil
   :commands (c++-mode c-mode awk-mode java-mode)
