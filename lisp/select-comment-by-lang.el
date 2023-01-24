@@ -50,10 +50,11 @@
         (save-excursion
           (set-mark (point))
           (activate-mark)
-          (insert char ?\u000a char " " ?\u000a char)
+          (insert char ?\u000a char ?\u000a char)
           (indent-for-tab-command))
         (forward-line 1)
-        (end-of-line))))
+        (end-of-line)
+        (insert " "))))
 
 
 ;;;###autoload

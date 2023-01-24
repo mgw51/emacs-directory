@@ -46,9 +46,10 @@
   (when (not (null (dbus-list-activatable-names :session)))
     (add-hook 'compilation-finish-functions #'mw-compilation-completed-notification)))
 
-(use-package mw-select-comment-by-lang
+(use-package select-comment-by-lang
   :ensure nil
   :commands (mw-insert-triplet mw-debug-comment mw-remove-debug mw-find-next-todo))
+
 (use-package cpp-funcs
   :ensure nil
   :commands (mw-func-header mw-include-guard mw-create-basic-makefile))
