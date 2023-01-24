@@ -2,5 +2,5 @@
 # name: Create org-mode code block
 # key: code
 # --
-#+begin_src ${1:code_lang} $0
+#+begin_src ${1:code_lang}$0 :results $2
 #+end_src
