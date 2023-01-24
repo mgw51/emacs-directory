@@ -1,7 +1,7 @@
 ;;;; cpp-funcs.el --- Provide some functions useful when programming in C++ and C
 ;;;; Commentary:
-;;;;   Some useful functions, mostly for cpp, although the include-guard func
-;;;;   is also great for c.
+;;;;   Some useful functions, mostly for C++, although the include-guard func
+;;;;   is also great for C.
 ;;;; Code:
 
 
@@ -36,56 +36,23 @@ the function name, third line is empty."
 (defun mw-include-guard ()
   "Generate include guards for a c or cpp header file."
   (interactive)
-  (defvar header-name)
-  (setf header-name (split-string (buffer-name) "\\."))
-  (when (string-match "^\\(h\\|hpp\\)$" (cadr header-name))
-    (defvar guard-name)
-    (setf guard-name (concat "_" (upcase (car header-name))
-			     "_" (upcase (car (last header-name)))
-			     "_" (substring (secure-hash 'sha1 (number-to-string (float-time))) 0 8)
-			     "_"))
-    (goto-char (point-min))
-    (insert "#ifndef " guard-name "\u000a#define " guard-name "\u000a")
-    (goto-char (point-max))
-    (insert "#endif  // " guard-name)))
+  (save-excursion
+    (let ((header-name (split-string (buffer-name) "\\.")))
+      (when (string-match "^\\(h\\|hpp\\)$" (cadr header-name))
+        (let ((guard-name (concat "_" (upcase (car header-name))
+			          "_" (upcase (car (last header-name)))
+			          "_" (substring (secure-hash 'sha1 (number-to-string (float-time))) 0 8)
+			          "_")))
+          (goto-char (point-min))
+          (insert "#ifndef " guard-name "\u000a#define " guard-name "\u000a\u000a")
+          (goto-char (point-max))
+          (if (looking-back "\u000a\u000a" (- 2 (point)))
+              (insert "#endif  // " guard-name)
+            (insert "\u000a\u000a#endif // " guard-name)))))))
 
 
 ;;;###autoload
-(defun mw-get-class-name ()
-  "Extract the class name from the filename.
-Takes everything before the file extension and uses that as the class name."
-  (interactive)
-  (indent-according-to-mode)
-  (insert (car (split-string (buffer-name) "\\."))))
-
-
-;;;###autoload
-(defun mw-find-proper-mode()
-  "Flycheck does not seem to be smart enough to detect when a header file
-ending in '.h' is a c++ or c header file.   This function is a workaround
-for this problem.  I found it on SO: `https://stackoverflow.com/a/1016389/1456187'."
-  (interactive)
-  ;; only run this on '.h' files
-  (require 'find-file)
-  (when (string= "h" (file-name-extension (buffer-file-name)))
-    (save-window-excursion
-      (save-excursion
-        (let* ((alist (append auto-mode-alist nil))  ;; use whatever auto-mode-alist has
-               (ff-ignore-include t)                 ;; operate on buffer name only
-               (src (ff-other-file-name))            ;; find the src file corresponding to .h
-               re mode)
-          ;; Go through the a-list and find the mode associated with
-          ;; the src file: that is the mode we want to use for the header.
-          (while (and alist
-                      (setf mode (cdar alist)
-                            re (caar alist))
-                      (not (string-match re src)))
-            (setf alist (cdr alist)))
-          (when mode (funcall mode)))))))
-
-
-;;;###autoload
-(defun create-basic-makefile (target lang)
+(defun mw-create-basic-makefile (target lang)
   "Create a basic Makefile and use the most common flags.
 TARGET is the binary output name, LANG is the programming language used,
 since the source files can be either C or C++."
