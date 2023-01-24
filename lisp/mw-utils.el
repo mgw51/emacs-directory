@@ -102,11 +102,10 @@ current `major-mode'."
 
 (defun curly--braces-at-point ()
   "Add curly braces at point by opening two braces with a blank line between."
-  (let ((s (point))
-        (jump-location))
+  (let ((s (point)))
     (insert "{\n\n}")
     (indent-region-line-by-line s (point)) ; does not indent blank lines
-    (goto-char (+ s 2))
+    (forward-line -1)
     (funcall indent-line-function))) ; indent (current) blank line
 
 
@@ -162,10 +161,9 @@ If PREFIX is negative, search backward from point."
   "If a file is over a certain size, take some precautions to make it easier to view."
   (when (> (buffer-size) (* 5 1024 1024))
     (buffer-disable-undo)
-    (linum-mode -1)
     (fundamental-mode)
     (projectile-mode -1)))
-(add-hook 'find-file-hook 'mw-large-file-precautions)
+;(add-hook 'find-file-hook 'mw-large-file-precautions)
 
 
 ;;;###autoload
