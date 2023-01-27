@@ -310,6 +310,31 @@
 ;;      (rust . t)
 ;;      (sql . t))))
 
+(use-package restclient
+  :commands restclient-mode
+  :mode (("\\.restclient\\'" . restclient-mode)
+         ("\\.rest\\'" . restclient-mode))
+  :preface
+  (defun mw-restclient-get-session ()
+    "Get a session token returned from a REST login call."
+    (interactive)
+    (message "%s"
+             (setq-local session-var
+                         (with-current-buffer "*HTTP Response*"
+                           (goto-char (point-min))
+                           (when (search-forward-regexp "\"session\": \"\\(.*\\)\"" nil t)
+                             (match-string 1))))))
+  :bind (:map restclient-mode-map
+              ("C-c r s" . #'mw-restclient-get-session))
+  :init
+  (use-package restclient-helm
+    :after restclient)
+  (use-package restclient-test
+    :after restclient)
+  (use-package company-restclient
+    :after restclient))
+
+
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message "Emacs ready in %s with %d garbage collections."
