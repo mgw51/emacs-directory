@@ -243,11 +243,6 @@
 ;; ;;   :init
 ;; ;;   (use-package smartparens-config))
 
-(defun mw-say-hello()
-  "Say hello"
-  (message "Hello from the org-mode hook"))
-;(add-hook org-mode-hook #'mw-say-hello)
-
 (use-package org
   :ensure nil
   :bind (;; Global bindings
@@ -303,61 +298,6 @@ recalculate any formulas that exist within it."
   (add-hook 'org-mode-hook #'turn-on-auto-fill)
   (add-hook 'org-mode-hook #'turn-on-auto-revert-mode))
 
-
-
-
-;; (use-package org
-;;   :ensure nil
-;;   :hook #'turn-on-auto-fill
-;;   :bind (; Bind these globally
-;;          ("C-c o l" . 'org-store-link)
-;;          ("C-c o a" . 'org-agenda)
-;;          ("C-c o c" . 'org-capture)
-;;          ;; Bind the following to org-mode
-;;          (:map org-mode-map
-;;                ("C-c b" . 'mw-dnd/make-battle-chart-from-region)
-;;                ("C-c r" . 'mw-org-table-recalc)))
-;;   :preface
-;;   (defun mw-org-table-recalc()
-;;     "For use in the bind section above."
-;;     (interactive)
-;;     (org-table-recalculate 'all))
-;;   :custom ((fill-column 86 "Set `auto-fill-mode' fill column to something reasonable.")
-;;            (org-hide-emphasis-markers t "Hiding markup characters makes for a cleaner looking buffer.")
-;;            (org-hide-leading-stars t "Omit leading stars in subheadings.")
-;;            (org-pretty-entities t "Show entities as UTF8 characters.")
-;;            (org-fontify-done-headline t "Fontify the whole headline when it is done.")
-;;            (org-startup-indented t "Enforce proper indentation of headlines.")
-;;            (org-log-done "time" "Insert timestamp when a task is marked as 'Done'"))
-;;   :init
-;;   (use-package ob-go :after org)
-;;   (use-package ob-rust :after org)
-;;   (use-package ob-restclient :after org)
-;;   :config
-;;   (require 'ox-confluence nil 'no-error)
-;;   (require 'ox-md nil 'no-error)
-;;   (require 'ox-man nil 'no-error)
-;;   (require 'mw-dnd nil 'no-error)
-;;   (require 'c2-rowing)
-;;   (setq org-export-backends '(ascii html icalendar latex confluence md man))
-;;   ;; Add minimal support for generally unsupported modes.
-;;   (add-to-list 'org-src-lang-modes '("CQL" . "cql-mode"))
-;;   ;; Enable some languages in org-babel
-;;   (org-babel-do-load-languages
-;;    'org-babel-load-languages
-;;    '((C . t) ; C, C++, and D are all handled by same ob-C.el file.
-;;      (go . t)
-;;      (emacs-lisp . t)
-;;      (lisp . t)
-;;      (plantuml . t)
-;;      (python . t)
-;;      (perl . t)
-;;      (lua . t)
-;;      (shell . t)
-;;      (latex . t)
-;;      (rust . t)
-;;      (sql . t))))
-
 (use-package restclient
   :commands restclient-mode
   :mode (("\\.restclient\\'" . restclient-mode)
@@ -375,13 +315,9 @@ recalculate any formulas that exist within it."
   :bind (:map restclient-mode-map
               ("C-c r s" . #'mw-restclient-get-session))
   :init
-  (use-package restclient-helm
-    :after restclient)
-  (use-package restclient-test
-    :after restclient)
-  (use-package company-restclient
-    :after restclient))
-
+  (use-package restclient-helm :after restclient)
+  (use-package restclient-test :after restclient)
+  (use-package company-restclient :after restclient))
 
 (add-hook 'emacs-startup-hook
           (lambda ()
