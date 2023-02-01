@@ -93,7 +93,8 @@
   ;; Miscellaneous lighter changes that don't have a use-package
   ;; stanza
   (blackout 'auto-revert-mode " ↻")
-  (blackout 'eldoc-mode " ℓ"))
+  (blackout 'eldoc-mode " ℓ")
+  (blackout 'auto-fill-mode))
 
 (use-package which-key
   :demand t
@@ -298,7 +299,9 @@ recalculate any formulas that exist within it."
      (shell . t)
      (latex . t)
      (rust . t)
-     (sql . t))))
+     (sql . t)))
+  (add-hook 'org-mode-hook #'turn-on-auto-fill)
+  (add-hook 'org-mode-hook #'turn-on-auto-revert-mode))
 
 
 
