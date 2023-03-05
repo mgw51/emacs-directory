@@ -225,6 +225,24 @@
     (c-set-offset 'access-label '-)))
     ;    (setq c-basic-offset 2)
 
+(use-package go-mode
+  :hook (('go-mode . #'lsp-deferred)
+         ('go-mode . #'mw-add-go-company-backend)
+         ('go-mode . #'lsp-go-install-save-hooks-local)
+         ('go-mode . #'flycheck-golangci-lint-setup))
+  :chords (:map go-mode-map
+                ("pq" . mw-insert-curly-braces))
+  :preface
+  (defun lsp-go-install-save-hooks-local ()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    (add-hook 'before-save-hook #'lsp-organize-imports t t))
+  (defun mw-add-go-company-backend()
+    "Add company-go to company-backends only for Go buffers."
+    (set (make-local-variable 'company-backends) '(company-go)))
+  :init
+  (use-package company-go :after company-mode)
+  (use-package flycheck-golangci-lint :after (flycheck go-mode) ))
+
 
 (use-package yaml-mode)
 (use-package toml-mode)
