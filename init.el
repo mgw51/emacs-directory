@@ -35,6 +35,10 @@
   (basic/ui-setup)
   (basic/quality-of-life))
 
+;; Bootstrap straight package manager
+(require 'straight-bootstrap)
+(straight-bootstrapper)
+
 ;;; Configure my lisp files
 (use-package mw-utils
   :ensure nil
@@ -339,6 +343,15 @@ recalculate any formulas that exist within it."
   (use-package restclient-helm :after restclient)
   (use-package restclient-test :after restclient)
   (use-package company-restclient :after restclient))
+
+(use-package scad-mode)
+
+(use-package scad-dbus
+  :commands scad-dbus-connected
+  :after scad-mode
+  :straight (:host github :repo "Lenbok/scad-dbus" :branch "master")
+  :bind (:map scad-mode-map
+              ("C-c s" . 'hydra-scad-dbus/body)))
 
 (add-hook 'emacs-startup-hook
           (lambda ()
