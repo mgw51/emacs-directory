@@ -271,7 +271,7 @@
 (use-package org
   :ensure nil
   :bind (;; Global bindings
-         ("C-c o l" . #' org-link-store)
+         ("C-c o l" . #' org-store-link)
          ("C-c o a" . #' org-agenda)
          ("C-c o c" . #' org-capture)
          :map org-mode-map
