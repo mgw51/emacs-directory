@@ -245,7 +245,16 @@
     (set (make-local-variable 'company-backends) '(company-go)))
   :init
   (use-package company-go :after company-mode)
-  (use-package flycheck-golangci-lint :after (flycheck go-mode) ))
+  (use-package flycheck-golangci-lint :after (flycheck go-mode) )
+  :config
+  ;; Configure some projectile settings:
+  ;; want to set this to a buffer-local variable instead of polluting the global variable further.
+  (setq-local projectile-project-root-files-top-down-recurring
+              (append '("go.mod" ".git") projectile-project-root-files-top-down-recurring))
+  (setq-local projectile-project-root-files
+              (append '("main.go") projectile-project-root-files))
+  (setq-local projectile-project-test-suffix "_test.go"))
+  
 
 
 (use-package yaml-mode)
