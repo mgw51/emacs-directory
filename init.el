@@ -308,7 +308,9 @@
            (org-pretty-entities t "Show entities as UTF8 characters.")
            (org-fontify-done-headline t "Fontify the whole headline when it is done.")
            (org-startup-indented t "Enforce proper indentation of headlines.")
-           (org-log-done "time" "Insert timestamp when a task is marked as 'Done'"))
+           (org-log-done "time" "Insert timestamp when a task is marked as 'Done'")
+           (org-todo-keywords
+            '((sequence "TODO(t)" "CURR(c)" "|" "DONE(d)"))))
   :preface
   (defun mw-org-table-recalc()
     "Recalculate an org table.
