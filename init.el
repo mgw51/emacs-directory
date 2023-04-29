@@ -282,7 +282,9 @@
   :hook cmake-font-lock-activate
   :init (use-package cmake-font-lock
           :commands cmake-font-lock-activate
-          :after cmake-mode))
+          :after cmake-mode)
+        (use-package eldoc-cmake
+          :hook (cmake-mode . eldoc-cmake-enable)))
 
 ;; ;; (use-package smartparens
 ;; ;;   :ensure t
