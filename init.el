@@ -147,6 +147,10 @@
   :hook (prog-mode . projectile-mode)
   :bind (:map projectile-mode-map
               ("C-c p" . projectile-command-map))
+  :preface
+  (defun mw-vlang-same-directory-src-and-test-files(dir)
+    "vlang test files reside in the same directory as the corresponding source files."
+    dir)
   :custom
   (projectile-mode-line-prefix " ¶")
   (projectile-completion-system 'helm)
@@ -156,7 +160,16 @@
   :init (use-package ag
           :after projectile)
         (use-package helm-projectile
-          :after projectile))
+          :after projectile)
+  :config
+  (projectile-register-project-type 'vlang '("v.mod" "src" ".git" ".gitignore" ".gitattributes" ".editorconfig")
+                                    :project-file "v.mod"
+                                    :compile "v ."
+                                    :test "v test ."
+                                    :run "v run ."
+                                    :src-dir #'mw-vlang-same-directory-src-and-test-files
+                                    :test-dir #'mw-vlang-same-directory-src-and-test-files
+                                    :test-suffix "_test"))
 
 (use-package lsp-mode
   :bind-keymap ("C-c l" . lsp-command-map)
