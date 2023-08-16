@@ -186,6 +186,11 @@
   :commands lsp
   :hook (lsp-mode . lsp-enable-which-key-integration)
   :custom
+  (when (string-equal-ignore-case (system-name) "sensa-ripper")
+    ;; sometimes the executable location must be set manually or you get errors because
+    ;; it defaults to the system version of clangd, which is OLD.
+    (lsp-clients-clangd-executable "/home/mwood/.emacs.d/.cache/lsp/clangd/clangd_15.0.6/bin/clangd")
+    (lsp-clients-clangd-args '("--header-insertion-decorators")))
   (lsp-prefer-flymake nil "Use flycheck instead")
   (lsp-auto-guess-root t "Uses projectile, when available")
   (lsp-auto-configure t)
