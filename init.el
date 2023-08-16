@@ -169,6 +169,12 @@
                                     :run "v run ."
                                     :src-dir #'mw-vlang-same-directory-src-and-test-files
                                     :test-dir #'mw-vlang-same-directory-src-and-test-files
+                                    :test-suffix "_test")
+  (projectile-register-project-type 'c++at '(".c++at") ; C++ autotools (work-specific)
+                                    :project-file ".c++at"
+                                    :compile "make -kj15"
+                                    :test "test/unit_tests/unit_tests"
+                                    :test-dir "test/unit_tests"
                                     :test-suffix "_test"))
 
 (use-package lsp-mode
