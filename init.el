@@ -180,8 +180,11 @@
 (use-package lsp-mode
   :bind-keymap ("C-c l" . lsp-command-map)
   :bind (:map lsp-command-map
-              ("g i" . #'lsp-ui-imenu))
+              ("g i" . #'lsp-ui-imenu)
+              ("n" . #'lsp-ui-find-next-reference)
+              ("p" . #'lsp-ui-find-prev-reference))
   :commands lsp
+  :hook (lsp-mode . lsp-enable-which-key-integration)
   :custom
   (lsp-prefer-flymake nil "Use flycheck instead")
   (lsp-auto-guess-root t "Uses projectile, when available")
