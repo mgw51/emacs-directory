@@ -96,7 +96,7 @@
   :config
   ;; Miscellaneous lighter changes that don't have a use-package
   ;; stanza
-  (blackout 'auto-revert-mode " ↻")
+  (blackout 'auto-revert-mode " A↻")
   (blackout 'eldoc-mode " ℓ")
   (blackout 'auto-fill-mode))
 
