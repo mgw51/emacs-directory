@@ -230,7 +230,10 @@
     (auto-revert-mode t)
     (c-set-offset 'case-label '+) ; indent case statements
     (setq compilation-scroll-output 'first-error
-          c-doc-comment-style 'doxygen)
+          c-doc-comment-style '((java-mode . javadoc)
+                                (pike-mode . autodoc)
+                                (c-mode . doxygen)
+                                (c++-mode . doxygen)))
     (font-lock-add-keywords nil '(("\\<\\(TBD\\|TODO\\|FIXME\\|DEBUG\\)"
                                    1
                                    font-lock-warning-face)))
