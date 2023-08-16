@@ -227,16 +227,17 @@
 
 (use-package cc-mode
   :ensure nil
+  :after lsp-mode
   :commands (c++-mode c-mode awk-mode java-mode)
   :chords (:map c++-mode-map
                 ("pq" . mw-insert-curly-braces))
   :bind (:map c-mode-base-map
               ("C-c f" . #'mw-func-header))
   :init
+  (add-hook 'c-mode-hook #'lsp-deferred)
   (add-hook 'c-mode-common-hook #'common-settings)
+  (add-hook 'c++-mode-hook #'lsp-deferred)
   (add-hook 'c++-mode-hook #'c++-settings)
-  (add-hook 'c-mode-hook #'lsp)
-  (add-hook 'c++-mode-hook #'lsp)
   :preface
   (defun common-settings()
     (superword-mode t) ; underscores
