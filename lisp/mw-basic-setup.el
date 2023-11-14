@@ -1,8 +1,8 @@
 ;;; mw-basic-setup.el --- Summary: Provide setup helper functions to be called from init.el.
 ;;;
 ;;; Commentary:
-;;; Use this file to house some functions that would
-;;; otherwise clutter up the init file which makes it harder to read.
+;;; Use this file to house some functions that would otherwise clutter
+;;; up the init file which makes it harder to read.
 
 ;;; Code:
 
@@ -54,6 +54,11 @@ necessary.  If supplied the caller, apply SETTINGS."
 
 It does things like turn off the tool bar and scroll bars, enable
 line numbers, etc."
+  (require 'tool-bar)
+  (require 'menu-bar)
+  (require 'scroll-bar)
+  (require 'tooltip)
+
   ;;; off
   (tool-bar-mode -1)
   (menu-bar-mode -1)
