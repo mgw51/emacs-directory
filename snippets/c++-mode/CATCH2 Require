@@ -1,0 +1,4 @@
+# key: req
+# name: CATCH2 Require
+# --
+REQUIRE($0);

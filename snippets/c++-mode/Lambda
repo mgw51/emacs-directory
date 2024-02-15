@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Lambda
+# key: lamb
+# --
+[$1]($2)${3:$$(when yas-moving-away-p (concat "->" yas-text))}{
+  $0$>
+};

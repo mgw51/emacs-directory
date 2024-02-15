@@ -1,0 +1,6 @@
+# key: enum
+# name: enum
+# --
+enum ${class} ${enum name} {
+$0$>
+};

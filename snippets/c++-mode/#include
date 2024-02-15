@@ -1,0 +1,4 @@
+# key: incl
+# name: #include
+# --
+#include $0
