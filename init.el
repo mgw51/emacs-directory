@@ -78,6 +78,11 @@
            ("jk" . ace-jump-word-mode)
            ("jl" . ace-jump-line-mode)))
 
+(use-package tiny
+  ; Insert numeric ranges
+  :demand t
+  :bind ("C-;" . #'tiny-expand))
+
 (use-package zerodark-theme
   :demand t
   :config
