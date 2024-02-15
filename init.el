@@ -114,6 +114,7 @@
 (use-package company
   :demand t
   :blackout " Ç"
+  :custom (company-idle-delay 0.5)
   :config
   (global-company-mode))
 
