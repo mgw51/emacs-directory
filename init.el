@@ -163,6 +163,7 @@
   (projectile-cache-file (concat (expand-file-name user-emacs-directory) "projectile/projectile.cache"))
   (projectile-enable-caching t)
   (projectile-enable-cmake-presets t)
+  (projectile-create-missing-test-files t)
   :init (use-package ag
           :after projectile)
         (use-package helm-projectile
@@ -181,6 +182,12 @@
                                     :compile "make -kj15"
                                     :test "test/unit_tests/unit_tests"
                                     :test-dir "test/unit_tests"
+                                    :test-suffix "_test")
+  (projectile-register-project-type 'reports '(".c++rep") ; C++ autotools (work-specific)
+                                    :project-file ".sensa-reports"
+                                    :compile "make -kj15"
+                                    :test "test/unit_tests"
+                                    :test-dir "test"
                                     :test-suffix "_test"))
 
 (use-package lsp-mode
