@@ -81,7 +81,7 @@
 (use-package tiny
   ; Insert numeric ranges
   :demand t
-  :bind ("C-;" . #'tiny-expand))
+  :bind ("C-c ;" . #'tiny-expand))
 
 (use-package zerodark-theme
   :demand t
