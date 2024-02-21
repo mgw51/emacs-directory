@@ -2,6 +2,6 @@
 # name: Lambda
 # key: lamb
 # --
-[$1]($2)${3:$$(when yas-moving-away-p (concat "->" yas-text))}{
-  $0$>
+[$1]($2)${3:$$(when yas-moving-away-p (if (not (string-blank-p yas-text)) (concat "->" yas-text)))}{
+$>$0
 };
