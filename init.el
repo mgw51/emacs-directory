@@ -304,6 +304,7 @@
   (setq-local projectile-project-test-suffix "_test.go"))
   
 (use-package v-mode
+  :hook lsp-deferred
   :custom (lsp-v-vls-executable "vls_linux_x64"))
 
 (use-package yaml-mode)
