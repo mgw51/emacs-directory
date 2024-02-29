@@ -193,6 +193,7 @@
                                     :test-suffix "_test"))
 
 (use-package lsp-mode
+  ;;; See: https://emacs-lsp.github.io/lsp-mode/
   :bind-keymap ("C-c l" . lsp-command-map)
   :bind (:map lsp-command-map
               ("g i" . #'lsp-ui-imenu)
