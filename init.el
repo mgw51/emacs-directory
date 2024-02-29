@@ -114,7 +114,9 @@
 (use-package company
   :demand t
   :blackout " Ç"
-  :custom (company-idle-delay 0.5)
+  :custom
+  (company-idle-delay 0.5)
+  (company-minimum-prefix-length 1)
   :config
   (global-company-mode))
 
@@ -196,8 +198,9 @@
               ("g i" . #'lsp-ui-imenu)
               ("n" . #'lsp-ui-find-next-reference)
               ("p" . #'lsp-ui-find-prev-reference))
-  :commands lsp
+  :commands (lsp lsp-deferred)
   :hook (lsp-mode . lsp-enable-which-key-integration)
+  :preface (setenv "LSP_USE_PLISTS" "true") ; Use of plists is recommended: https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization
   :custom
   (when (string-equal-ignore-case (system-name) "sensa-ripper")
     ;; sometimes the executable location must be set manually or you get errors because
@@ -324,6 +327,13 @@
 ;; ;;   :init
 ;; ;;   (use-package smartparens-config))
 
+(use-package show-paren-mode
+  :custom
+  (show-paren-style 'mixed "Highlight matching paren if it is visible in the window, the expression otherwise")
+  (show-paren-when-point-inside-paren t "Cause paren highlighting when point is inside-adjacent to one of them")
+  (show-paren-when-point-in-periphery t "Highlight parens when in periphery and otherwise adjacent to one of them")
+  (show-paren-context-when-offscreen t "Show context in echo area if matching paren is offscreen"))
+
 (use-package org
   :ensure nil
   :bind (;; Global bindings
@@ -421,6 +431,6 @@ recalculate any formulas that exist within it."
 
 ;; Set GC to something reasonable
 ;;
-(setq gc-cons-threshold (* 2 1024 1024))
+;(setq gc-cons-threshold (* 2 1024 1024))
 
 ;;; init.el ends here
