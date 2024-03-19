@@ -97,5 +97,28 @@ since the source files can be either C or C++."
                   "%.o: %" file-suff "\n"
                   "\t" compiler " " compiler-flags " $^\n"))))))
 
+;;;###autoload
+(defun mw-create-cmakelists (target lang)
+  "Create a simple CMakeLists.txt file in current directory.
+
+TARGET is used as the target name in file, and LANG indicates the
+programming language (typically C or C++).  This function handles
+C and C++."
+  (interactive "sTarget name: \nsLanguage (c, cpp): ")
+  (save-mark-and-excursion
+    (with-temp-file "CMakeLists.txt"
+      (let* ((cmake-version (caddr (split-string (shell-command-to-string "cmake --version"))))
+             (strs (string-join (list
+                                 (format "cmake_minimum_required(VERSION \"%s\")" cmake-version)
+                                 (format "set(CMAKE_EXPORT_COMPILE_COMMANDS 1)")
+                                 (format "project(%s LANGUAGES %s)" (capitalize target) (if (string-equal lang "cpp") "CXX" "C"))
+                                 (format "file(GLOB SRC_FILES CONFIGURE_DEPENDS \"*.cpp\" \"*.hpp\") # don't do this in real life!")
+                                 (format "add_executable(%s ${SRC_FILES})" target)
+                                 (format "target_compile_options(%s PRIVATE -Wall -Wextra -Wpedantic)" target target)
+                                 (format "target_compile_features(%s PRIVATE cxx_std_20)" target))                          
+                                "\n")))
+        (insert strs)))))
+
+
 (provide 'cpp-funcs)
 ;;; cpp-funcs.el ends here

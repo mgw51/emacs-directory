@@ -56,7 +56,7 @@
 
 (use-package cpp-funcs
   :ensure nil
-  :commands (mw-func-header mw-include-guard mw-create-basic-makefile))
+  :commands (mw-func-header mw-include-guard mw-create-basic-makefile mw-create-cmakelists))
 
 ;;; Configure everything else
 (use-package exec-path-from-shell
