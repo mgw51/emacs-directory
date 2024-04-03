@@ -111,6 +111,7 @@ C and C++."
              (strs (string-join (list
                                  (format "cmake_minimum_required(VERSION \"%s\")" cmake-version)
                                  (format "set(CMAKE_EXPORT_COMPILE_COMMANDS 1)")
+                                 (format "file(CREATE_LINK \"${CMAKE_BINARY_DIR}/compile_commands.json\" \"${CMAKE_SOURCE_DIR}/compile_commands.json\" SYMBOLIC)")
                                  (format "project(%s LANGUAGES %s)" (capitalize target) (if (string-equal lang "cpp") "CXX" "C"))
                                  (format "file(GLOB SRC_FILES CONFIGURE_DEPENDS \"*.cpp\" \"*.hpp\") # don't do this in real life!")
                                  (format "add_executable(%s ${SRC_FILES})" target)
