@@ -74,9 +74,9 @@
   :config (key-chord-mode 1))
 
 (use-package ace-jump-mode
-  :chords (("jj" . ace-jump-char-mode)
-           ("jk" . ace-jump-word-mode)
-           ("jl" . ace-jump-line-mode)))
+  :bind (("C-c a c" . #'ace-jump-char-mode)
+         ("C-c a w" . #'ace-jump-word-mode)
+         ("C-c a l" . #'ace-jump-line-mode)))
 
 (use-package tiny
   ; Insert numeric ranges
