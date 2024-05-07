@@ -200,7 +200,9 @@
               ("n" . #'lsp-ui-find-next-reference)
               ("p" . #'lsp-ui-find-prev-reference))
   :commands (lsp lsp-deferred)
-  :hook (lsp-mode . lsp-enable-which-key-integration)
+  :hook ((lsp-mode . lsp-enable-which-key-integration)
+         (sh-mode . lsp-deferred)
+         (python-mode . lsp-deferred))
   :preface (setenv "LSP_USE_PLISTS" "true") ; Use of plists is recommended: https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization
   :custom
   (when (string-equal-ignore-case (system-name) "sensa-ripper")
