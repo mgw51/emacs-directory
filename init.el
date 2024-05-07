@@ -332,6 +332,7 @@
 ;; ;;   (use-package smartparens-config))
 
 (use-package show-paren-mode
+  :ensure nil
   :custom
   (show-paren-style 'mixed "Highlight matching paren if it is visible in the window, the expression otherwise")
   (show-paren-when-point-inside-paren t "Cause paren highlighting when point is inside-adjacent to one of them")
