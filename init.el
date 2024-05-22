@@ -90,7 +90,7 @@
          ("C-c a l" . #'ace-jump-line-mode)))
 
 (use-package tiny
-  ; Insert numeric ranges
+  ; Insert ranges of all types (text, numbers, code, etc)
   :demand t
   :bind ("C-c ;" . #'tiny-expand))
 
