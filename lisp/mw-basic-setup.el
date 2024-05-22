@@ -86,9 +86,7 @@ line numbers, etc."
   ;; various things
   (setq make-backup-files nil
 	backup-directory-alist nil
-	inhibit-splash-screen t
-	save-abbrevs 'silent))
-;;       abbrev-file-name (expand-file-name "abbrev_defs")
+	inhibit-splash-screen t))
 
 
 (provide 'mw-basic-setup)

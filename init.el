@@ -69,6 +69,17 @@
 
 (use-package key-chord)
 
+(use-package hippie-expand
+  :ensure nil
+  :bind ([remap dabbrev-expand] . 'hippie-expand))
+
+(use-package abbrev-mode
+  :ensure nil
+  :custom
+  (save-abbrevs 'silently)
+  (abbrev-file-name (expand-file-name "abbrev_defs")))
+
+
 (use-package use-package-chords
   :demand t
   :config (key-chord-mode 1))
