@@ -82,6 +82,7 @@
     ("recieve" "receive" nil 3)
     ("teh" "the" nil 2)
     ("cancelled" "canceled" nil 4)
+    ("behaviour" "behavior" nil 3)
    ))
 
 (define-abbrev-table 'gud-mode-abbrev-table '())
