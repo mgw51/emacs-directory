@@ -92,9 +92,7 @@ current `major-mode'."
   (interactive
    (if (region-active-p)
        (list (region-beginning) (region-end))
-     (progn
-       (let ((single-point (point)))
-         (list single-point single-point)))))
+     (list (point) (point))))
    (if (region-active-p)
        (curly--braces-region start end)
      (curly--braces-at-point)))
