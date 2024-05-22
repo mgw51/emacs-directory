@@ -335,14 +335,12 @@
         (use-package eldoc-cmake
           :hook (cmake-mode . eldoc-cmake-enable)))
 
-;; ;; (use-package smartparens
-;; ;;   :ensure t
-;; ;;   :hook
-;; ;;   ((emacs-lisp-mode lisp-mode) . smartparens-mode)
-;; ;;   :init
-;; ;;   (use-package smartparens-config))
+(use-package smartparens
+  :hook ((emacs-lisp-mode lisp-mode) . smartparens-mode)
+  :custom
+  (sp-base-key-bindings sp-paredit-bindings))
 
-(use-package show-paren-mode
+(use-package paren
   :ensure nil
   :custom
   (show-paren-style 'mixed "Highlight matching paren if it is visible in the window, the expression otherwise")
