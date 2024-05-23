@@ -132,7 +132,7 @@
   (global-company-mode))
 
 (use-package yasnippet
-  :blackout (yas-minor-mode . " ꪗ")
+  :blackout (yas-minor-mode . " Ȳ")
   :commands yas-reload-all
   :init (yas-global-mode 1)
   :custom
