@@ -36,8 +36,8 @@
   (basic/quality-of-life))
 
 ;; Bootstrap straight package manager
-(require 'straight-bootstrap)
-(straight-bootstrapper)
+;; (require 'straight-bootstrap)
+;; (straight-bootstrapper)
 
 ;;; Configure my lisp files
 (use-package mw-utils
@@ -170,6 +170,9 @@
   (defun mw-vlang-same-directory-src-and-test-files(dir)
     "vlang test files reside in the same directory as the corresponding source files."
     dir)
+  (defun mw-sensacloudapi-test-dir(dir)
+    "Point to the location of test files for this project.\n\nA function takes precedence over a simple string."
+    (concat (projectile-project-root) "test/unit_tests/"))
   :custom
   (projectile-mode-line-prefix " ¶")
   (projectile-completion-system 'helm)
@@ -192,13 +195,13 @@
                                     :test-suffix "_test")
   (projectile-register-project-type 'c++at '(".c++at") ; C++ autotools (work-specific)
                                     :project-file ".c++at"
-                                    :compile "make -kj15"
+                                    :compile "make -kj20"
                                     :test "test/unit_tests/unit_tests"
-                                    :test-dir "test/unit_tests"
+                                    :test-dir #'mw-sensacloudapi-test-dir
                                     :test-suffix "_test")
   (projectile-register-project-type 'reports '(".c++rep") ; C++ autotools (work-specific)
                                     :project-file ".sensa-reports"
-                                    :compile "make -kj15"
+                                    :compile "make -kj20"
                                     :test "test/unit_tests"
                                     :test-dir "test"
                                     :test-suffix "_test"))
@@ -216,17 +219,18 @@
          (python-mode . lsp-deferred))
   :preface (setenv "LSP_USE_PLISTS" "true") ; Use of plists is recommended: https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization
   :custom
-  (when (string-equal-ignore-case (system-name) "sensa-ripper")
-    ;; sometimes the executable location must be set manually or you get errors because
-    ;; it defaults to the system version of clangd, which is OLD.
-    (lsp-clients-clangd-executable "/home/mwood/.emacs.d/.cache/lsp/clangd/clangd_15.0.6/bin/clangd")
-    (lsp-clients-clangd-args '("--header-insertion-decorators")))
   (lsp-prefer-flymake nil "Use flycheck instead")
   (lsp-auto-guess-root t "Uses projectile, when available")
   (lsp-auto-configure t)
   (lsp-enable-on-type-formatting nil "Disable LSP's attempts to format code")
   (read-process-output-max (* 1024 1024 2) "Increase the process output max because code servers may return large amounts of data")
   (flycheck-checker-error-threshold 600 "Increase error threshold from 400 to 600")
+  :config
+    (when (string-equal-ignore-case (system-name) "sensa-ripper")
+      ;; sometimes the executable location must be set manually or you get errors because
+      ;; it defaults to the system version of clangd, which is OLD.
+      (setq lsp-clients-clangd-executable "/home/mwood/.emacs.d/.cache/lsp/clangd/clangd_15.0.6/bin/clangd")
+      (setq lsp-clients-clangd-args '("--enable-config" "--header-insertion-decorators=0")))
   :init (use-package lsp-ui
           :commands lsp-ui-mode
           :custom
@@ -428,12 +432,12 @@ recalculate any formulas that exist within it."
 
 (use-package scad-mode)
 
-(use-package scad-dbus
-  :commands scad-dbus-connected
-  :after scad-mode
-  :straight (:host github :repo "Lenbok/scad-dbus" :branch "master")
-  :bind (:map scad-mode-map
-              ("C-c s" . 'hydra-scad-dbus/body)))
+;; (use-package scad-dbus
+;;   :commands scad-dbus-connected
+;;   :after scad-mode
+;;   :straight (:host github :repo "Lenbok/scad-dbus" :branch "master")
+;;   :bind (:map scad-mode-map
+;;               ("C-c s" . 'hydra-scad-dbus/body)))
 
 (add-hook 'emacs-startup-hook
           (lambda ()
