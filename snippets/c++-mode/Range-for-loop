@@ -2,6 +2,6 @@
 # name: Range-for-loop
 # --
 for (const auto& ${1:var} : ${2:container}) {
-  `(let ((delete-selection-mode -1))
-     (when (region-active-p) (yas-selected-text)))`$0
+`(let ((delete-selection-mode -1))
+   (when (region-active-p) (yas-selected-text)))`$0
 }

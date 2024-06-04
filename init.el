@@ -79,7 +79,6 @@
   (save-abbrevs 'silently)
   (abbrev-file-name (expand-file-name "abbrev_defs")))
 
-
 (use-package use-package-chords
   :demand t
   :config (key-chord-mode 1))
@@ -136,7 +135,8 @@
   :commands yas-reload-all
   :init (yas-global-mode 1)
   :custom
-  (yas-indent-line 'auto "Indent each line of the snippet with 'indent-according-to-mode'")
+  (yas-indent-line 'auto "Indent each line of the snippet with 'indent-according-to-mode'.")
+  (yas-also-indent-empty-lines t "Also indent empty lines according to mode.")
   (yas-also-auto-indent-first-line t "Indent first line according to mode.")
   :config
   (yas-reload-all))
