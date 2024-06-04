@@ -211,6 +211,7 @@
   :bind-keymap ("C-c l" . lsp-command-map)
   :bind (:map lsp-command-map
               ("g i" . #'lsp-ui-imenu)
+              ("g t" . #'lsp-treemacs-type-hierarchy)
               ("n" . #'lsp-ui-find-next-reference)
               ("p" . #'lsp-ui-find-prev-reference))
   :commands (lsp lsp-deferred)
