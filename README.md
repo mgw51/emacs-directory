@@ -4,17 +4,17 @@
 
 Clone this repository into your home directory like so:
 
-`git clone https://github.com/mgw51/emacs-directory .emacs.d`
+    git clone https://github.com/mgw51/emacs-directory .emacs.d
 
 `init.el` is located in `.emacs.d` directory.  `.emacs` files take
 precedence over 'init.el' files at startup.  Be sure your home directory
 contains no '.emacs' file by either renaming or deleting it if one exists.
 
-Emacs 27 respects the value of your `XDG_CONFIG_HOME` environment variable.
-For Emacs 27 and above, place your config and related files at that
-location.  For example:
+Beginning with version 27, Emacs respects the value of your `XDG_CONFIG_HOME` 
+environment variable.  For Emacs 27 and above, place your config and related
+files at that location.  For example:
 
-`git clone https://github.com/mgw51/emacs-directory ~/.config/emacs`
+    git clone https://github.com/mgw51/emacs-directory ~/.config/emacs
 
 ### Things To Include
 
