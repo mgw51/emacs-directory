@@ -343,9 +343,17 @@
 (use-package smartparens
   :hook ((emacs-lisp-mode lisp-mode) . smartparens-mode)
   :custom
-  (sp-base-key-bindings sp-paredit-bindings))
+  (sp-base-key-bindings sp-smartparens-bindings)
+  :config
+  ;; The following comes from the smartparens docs: https://readthedocs.org/projects/smartparens/downloads/pdf/latest/
+  (sp-with-modes 'emacs-lisp-mode
+    ;; only use the psuedo-quote inside strings where it serves as a hyperlink
+    (sp-local-pair "`" "'" :when '(sp-in-string-p sp-in-comment-p))
+    ;; disable "'", it's the quote character!
+    (sp-local-pair "'" nil :actions nil)))
 
 (use-package paren
+  ;; This is the built-in mode
   :ensure nil
   :custom
   (show-paren-style 'mixed "Highlight matching paren if it is visible in the window, the expression otherwise")
