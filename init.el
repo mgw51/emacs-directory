@@ -279,7 +279,7 @@
     (subword-mode t) ; camel-case
     (auto-revert-mode t)
     (c-set-offset 'case-label '+) ; indent case statements
-    (setq compilation-scroll-output 'first-error
+    (setq compilation-scroll-output 'just-keep-going!!!
           c-doc-comment-style '((java-mode . javadoc)
                                 (pike-mode . autodoc)
                                 (c-mode . doxygen)
