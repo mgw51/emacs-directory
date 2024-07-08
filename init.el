@@ -480,7 +480,8 @@
   :hook lsp-deferred
   :custom (lsp-v-vls-executable "vls_linux_x64"))
 
-(use-package elixir-mode)
+(use-package elixir-mode
+  :hook #'lsp-deferred)
 
 (use-package yaml-mode)
 (use-package toml-mode)
