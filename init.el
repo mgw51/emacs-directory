@@ -489,6 +489,21 @@
 (use-package elixir-mode
   :hook #'lsp-deferred)
 
+(use-package slime
+  :init
+  (progn
+    (require 'slime-autoloads)
+    (add-hook 'slime-mode-hook
+              (lambda ()
+                (unless (slime-connected-p)
+                  (save-excursion (slime))))))
+  :config
+  (progn
+    (use-package slime-company)
+    (setf inferior-lisp-program "sbcl")
+    (slime-setup '(slime-fancy slime-company))
+    (setq slime-net-coding-system 'utf-8-unix)))
+
 (use-package yaml-mode)
 (use-package toml-mode)
 (use-package cql-mode)
