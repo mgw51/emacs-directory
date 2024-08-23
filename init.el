@@ -149,6 +149,12 @@
 (use-package vertico
   :init
   (vertico-mode)
+  :hook (rfn-eshadow-update-overlay . #'vertico-directory-tidy)
+  :bind
+  (:map vertico-map
+        ("RET" . #'vertico-directory-enter)
+        ("DEL" . #'vertico-directory-delete-char)
+        ("C-l" . #'vertico-directory-delete-word))
   :custom
   (vertico-resize t))
 
