@@ -555,7 +555,9 @@
            (org-startup-indented t "Enforce proper indentation of headlines.")
            (org-log-done "time" "Insert timestamp when a task is marked as 'Done'")
            (org-todo-keywords
-            '((sequence "TODO(t)" "CURR(c)" "|" "DONE(d)"))))
+            '((sequence "TODO(t)" "CURR(c)" "|" "DONE(d)")))
+           (org-todo-keyword-faces
+            '(("CURR" . org-curr))))
   :preface
   (defun mw-org-table-recalc()
     "Recalculate an org table.
@@ -568,6 +570,14 @@ recalculate any formulas that exist within it."
   (use-package ob-go :after org)
   (use-package ob-rust :after org)
   (use-package ob-restclient :after org)
+  (defface org-curr		    ;Copied from `org-faces.el'
+    ;; Define an org-face for the Current todo keyword
+    '((((class color) (min-colors 16) (background light)) (:foreground "gold" :bold t))
+      (((class color) (min-colors 16) (background dark)) (:foreground "gold" :bold t))
+      (((class color) (min-colors 8)) (:foreground "gold"))
+      (t (:bold t)))
+    "Face used for todo keywords that indicate CURR items."
+    :group 'org-faces)
   :config
   (require 'ox-confluence nil 'no-error)
   (require 'ox-md nil 'no-error)
