@@ -490,6 +490,7 @@
   :hook #'lsp-deferred)
 
 (use-package slime
+  :if (executable-find "sbcl")
   :init
   (progn
     (require 'slime-autoloads)
