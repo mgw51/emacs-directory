@@ -1,0 +1,5 @@
+# key: reqtd
+# name: REQUIRE_THAT_DOUBLE_MATCHER
+# --
+REQUIRE_THAT($1, Catch::Matchers::WithinAbs(${target_val}, ${epsilon}));
+$0
