@@ -369,7 +369,13 @@
                                     :compile "make -kj20"
                                     :test "test/unit_tests"
                                     :test-dir "test"
-                                    :test-suffix "_test"))
+                                    :test-suffix "_test")
+  (projectile-register-project-type 'cmake '("CMakeLists.txt")
+                                    :project-file "CMakeLists.txt"
+                                    :compilation-dir "build"
+                                    :test-suffix "_test"
+                                    :test-dir "test"
+                                    :src-dir "src"))
 
 (use-package lsp-mode
   ;;; See: https://emacs-lsp.github.io/lsp-mode/
@@ -421,6 +427,17 @@
               ("C-c c" . #'mw-insert-triplet)
               ("C-c d d" . #'mw-debug-comment)
               ("C-c d r" . #'mw-remove-debug)))
+
+(use-package ansi-color
+  ;;; Should interpret ansi color codes in compilation buffer.  Found at:
+  ;;; http://disq.us/p/2gdjkr9 on the Endless Parentheses blog and adapter for use
+  ;;; here.
+  :preface
+  (defun colorize-compilation-buffer ()
+    (when (derived-mode-p 'compilation-mode)
+      (ansi-color-process-output nil)
+      (setq-local comint-last-output-start (point-marker))))
+  :hook ('compilation-filter . #'colorize-compilation-buffer))
 
 (use-package cc-mode
   :ensure nil
