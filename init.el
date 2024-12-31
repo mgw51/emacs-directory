@@ -196,9 +196,10 @@
          ("C-M-#" . consult-register)
          ;; Other custom bindings
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+         ("C-x M-c" . consult-company)
          ;; M-g bindings in `goto-map'
          ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+         ("M-g f" . consult-flycheck)              
          ("M-g g" . consult-goto-line)             ;; orig. goto-line
          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
          ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
@@ -294,6 +295,7 @@
 
 (use-package consult-lsp)
 (use-package consult-projectile)
+(use-package consult-flycheck)
 
 (use-package marginalia
   ;; add annotations to the minibuffer entries
