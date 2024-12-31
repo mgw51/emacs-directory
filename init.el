@@ -10,34 +10,40 @@
 ;; collection.  The default is 800 kilobytes.
 (setq gc-cons-threshold (* 100 1024 1024))
 
-;; Shadow `default-directory' with a temporary value so we can:
-;;  1. selectively add to our load path based on the current value of
-;;     `default-directory', and
-;;  2. recursively add subdirectories
-;;
-(let ((default-directory (expand-file-name "lisp/" user-emacs-directory)))
-  (normal-top-level-add-to-load-path '("."))
-  (normal-top-level-add-subdirs-to-load-path))
-
-(progn
-  ;;; Set and load custom config file as early as possible because we
-  ;;; want all package-generated config to go into a custom config
-  ;;; file set here -- not into our init.el file.
-  (require 'mw-basic-setup)
-  (basic/set-and-load-custom-config-file)
-  (basic/setup-package-el '(("gnu" . "http://elpa.gnu.org/packages/")
-                            ("melpa" . "https://melpa.org/packages/")
-                            ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
-  (basic/use-package-setup '((use-package-verbose . t)
-                             (use-package-compute-statistics . t)
-                             (use-package-always-defer . t)
-                             (use-package-always-ensure . t)))
-  (basic/ui-setup)
-  (basic/quality-of-life))
-
 ;; ;; Bootstrap straight package manager
 ;; (require 'straight-bootstrap)
 ;; (straight-bootstrapper)
+
+;;; General Emacs config
+(use-package emacs
+  :ensure nil
+  :demand t
+  :bind (("C-x C-b" . #'ibuffer))
+  :config
+  (progn
+    ;; Shadow `default-directory' with a temporary value so we can:
+    ;;  1. selectively add to our load path based on the current value of
+    ;;     `default-directory', and
+    ;;  2. recursively add subdirectories
+    ;;
+    (let ((default-directory (expand-file-name "lisp/" user-emacs-directory)))
+      (normal-top-level-add-to-load-path '("."))
+      (normal-top-level-add-subdirs-to-load-path))
+    ;;; Set and load custom config file as early as possible because we
+    ;;; want all package-generated config to go into a custom config
+    ;;; file set here -- not into our init.el file.
+    (require 'mw-basic-setup)
+    (basic/set-and-load-custom-config-file)
+    (basic/setup-package-el '(("gnu" . "http://elpa.gnu.org/packages/")
+                              ("melpa" . "https://melpa.org/packages/")
+                              ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+                              ("melpa-stable" . "https://stable.melpa.org/packages/")))
+    (basic/use-package-setup '((use-package-verbose . t)
+                               (use-package-compute-statistics . t)
+                               (use-package-always-defer . t)
+                               (use-package-always-ensure . t)))
+    (basic/ui-setup)
+    (basic/quality-of-life)))
 
 ;;; Configure my lisp files
 (use-package mw-utils
