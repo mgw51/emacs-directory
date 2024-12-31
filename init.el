@@ -342,7 +342,7 @@
   ;; fuzzy search in completion buffers
   :custom
   (completion-styles '(orderless basic))
-  (complete-catagory-overrides '((file (styles basic partial-completion)))))
+  (completion-catagory-overrides '((file (styles basic partial-completion)))))
 
 (use-package projectile
   :hook (prog-mode . projectile-mode)
