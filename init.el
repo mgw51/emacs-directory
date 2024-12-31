@@ -86,11 +86,16 @@
   :demand t
   :config (key-chord-mode 1))
 
-(use-package ace-jump-mode
-  :bind (("C-c a c" . #'ace-jump-char-mode)
-         ("C-c a w" . #'ace-jump-word-mode)
-         ("C-c a l" . #'ace-jump-line-mode)))
-
+(use-package avy
+  :bind-keymap ("C-c a" . avy-command-map)
+  :bind (:prefix-map avy-command-map ; define the variable 'avy-command-map' as a prefix
+           :prefix "C-a"
+           ("c 2" . #'avy-goto-char-2)
+           ("c 1" . #'avy-goto-char-1)
+           ("c t" . #'avy-goto-char-timer)
+           ("w" . #'avy-goto-word-1)
+           ("l" . #'avy-goto-line)))
+ 
 (use-package tiny
   ; Insert ranges of all types (text, numbers, code, etc)
   :demand t
