@@ -111,7 +111,7 @@
   :bind (:prefix-map avy-command-map ; define the variable 'avy-command-map' as a prefix
            :prefix "C-c a"
            ("c 2" . #'avy-goto-char-2)
-           ("c 1" . #'avy-goto-char-1)
+           ("c 1" . #'avy-goto-char)
            ("c t" . #'avy-goto-char-timer)
            ("w" . #'avy-goto-word-1)
            ("l" . #'avy-goto-line)))
