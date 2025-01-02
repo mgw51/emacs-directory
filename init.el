@@ -126,7 +126,7 @@
   ;; Miscellaneous lighter changes that don't have a use-package
   ;; stanza
   (blackout 'auto-revert-mode " A↻")
-  (blackout 'magit-auto-revert " M↻")
+  (blackout 'magit-auto-revert-mode " M↻")
   (blackout 'eldoc-mode " ℓ")
   (blackout 'auto-fill-mode))
 
