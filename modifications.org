@@ -1,4 +1,6 @@
 * Config Modification Ideas
+Use this org file to record ideas for config improvement, or list pain-points that
+require further research.
 ** TODO lsp-find-references
 Calling this function brings up the minibuffer using ~consult~ (maybe?) which does not
 make a whole lot of sense in this context.  I don't want to start typing to match
