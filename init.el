@@ -682,8 +682,6 @@ recalculate any formulas that exist within it."
 
 (use-package scad-mode)
 
-(use-package vterm)
-
 ;; (use-package scad-dbus
 ;;   :commands scad-dbus-connected
 ;;   :after scad-mode
