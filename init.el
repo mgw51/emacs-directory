@@ -109,7 +109,7 @@
 (use-package avy
   :bind-keymap ("C-c a" . avy-command-map)
   :bind (:prefix-map avy-command-map ; define the variable 'avy-command-map' as a prefix
-           :prefix "C-a"
+           :prefix "C-c a"
            ("c 2" . #'avy-goto-char-2)
            ("c 1" . #'avy-goto-char-1)
            ("c t" . #'avy-goto-char-timer)
