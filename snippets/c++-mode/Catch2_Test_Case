@@ -2,6 +2,6 @@
 # name: Catch2 Test Case
 # key: test
 # --
-TEST_CASE("$1", "[$2]") {
+TEST_CASE("$1", "[${Tag}]") {
 $0
 }

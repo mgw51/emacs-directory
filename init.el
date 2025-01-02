@@ -78,6 +78,20 @@
 
 (use-package key-chord)
 
+(use-package gptel
+  :commands (gptel-send gptel-add gptel-add-file gptel-menu gptel)
+  :bind ("C-c g" . gptel-prefix-map)
+  :init
+  (define-prefix-command 'gptel-prefix-map)
+  :bind (:map gptel-prefix-map
+              ("RET" . #'gptel-send) ; or prefix arg to enter menu
+              ("s" . #'gptel-send) ; or prefix arg to enter menu
+              ("a" . #'gptel-add) ; add context
+              ("f" . #'gptel-add-file) ; add file(s) as context
+              ("m" . #'gptel-menu) ; open transient menu
+              ("r" . #'gptel-rewrite) ; re-write or refactor region
+              ("c" . #'gptel))) ; open a dedicated chat buffer
+
 (use-package hippie-expand
   :ensure nil
   :bind ([remap dabbrev-expand] . 'hippie-expand))

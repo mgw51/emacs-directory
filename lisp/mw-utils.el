@@ -177,5 +177,13 @@ how the process finished."
        :body (concat (buffer-name) ": " status)))))
 
 
+;; (defun mw/helm-info-emacs-elisp-cl ()
+;;   "Helm for Emacs, Elisp, and CL-library info pages, found on
+;; Reddit, offered to the community by alphapapa"
+;;   (interactive)
+;;   (helm :sources '(helm-source-info-emacs
+;;                    helm-source-info-elisp
+;;                    helm-source-info-cl)))
+
 (provide 'mw-utils)
 ;;; mw-utils.el ends here

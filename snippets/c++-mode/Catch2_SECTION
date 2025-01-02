@@ -1,6 +1,6 @@
 # key: sec
 # name: Catch2 SECTION
 # --
-SECTION("$1") {
+SECTION("$1"${2:, "${Optional Description}"}) {
   $0
 }
