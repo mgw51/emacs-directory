@@ -674,6 +674,12 @@ recalculate any formulas that exist within it."
   (use-package restclient-test :after restclient)
   (use-package company-restclient :after restclient))
 
+
+(use-package auth-source
+  :demand t
+  :config
+  (add-to-list 'auth-sources "~/.config/emacs/.authinfo"))
+
 (use-package scad-mode)
 
 (use-package vterm)
