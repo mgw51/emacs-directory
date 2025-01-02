@@ -1,0 +1,6 @@
+* Config Modification Ideas
+** TODO lsp-find-references
+Calling this function brings up the minibuffer using ~consult~ (maybe?) which does not
+make a whole lot of sense in this context.  I don't want to start typing to match
+something.  I want to be able to easily jump to entries in the list.  What settings do
+I need to change to make that happen?
