@@ -62,6 +62,7 @@
 
 (use-package cpp-funcs
   :ensure nil
+  :after cc-mode
   :commands (mw-func-header mw-include-guard mw-create-basic-makefile mw-create-cmakelists))
 
 ;;; Configure everything else
