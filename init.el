@@ -43,7 +43,40 @@
                                (use-package-always-defer . t)
                                (use-package-always-ensure . t)))
     (basic/ui-setup)
-    (basic/quality-of-life)))
+    (basic/quality-of-life)
+
+    ;; Set New-Window Display Options
+    ;; This controls where new windows are placed depending upon the action functions used.
+    (setq display-buffer-alist
+          '(
+            ;; Anatomy of a 'display-buffer-alist' entry:
+            ;; (BUFFER-MATCHING-RULE
+            ;;  LIST-OF-DISPLAY-BUFFER-FUNCTIONS
+            ;;  OPTIONAL-PARAMETERS)
+
+            ;; Match a buffer whose name is "*Occur*".  Since a buffer matching rule
+            ;; may take the form of a regexp, we must escape special characters.
+            ("\\*Occur\\*"
+             ;; If a buffer with the matching major-mode exists in some window, then
+             ;; use that one.  Otherwise, display the buffer below the current
+             ;; window.
+             (display-buffer-reuse-mode-window display-buffer-below-selected)
+             ;; Then we have the parameters passed to each display action function above.
+             (dedicated . t)
+             (window-height . fit-window-to-buffer)) ; this can be improved by instead using a 'body' parameter with a function to set the min/max window height.
+            ))
+    (setq switch-to-buffer-in-dedicated-window 'pop))
+
+  (with-eval-after-load global-auto-revert-mode
+    (blackout 'auto-revert-mode " A↻"))
+  (with-eval-after-load magit-auto-revert-mode
+    (blackout 'magit-auto-revert-mode " M↻"))
+  (with-eval-after-load eldoc-mode
+    (blackout 'eldoc-mode))
+  (blackout 'auto-fill-mode)
+  (blackout 'yas-minor-mode)
+  (with-eval-after-load yas-minor-mode
+      (blackout 'yas-minor-mode)))
 
 ;;; Configure my lisp files
 (use-package mw-utils
