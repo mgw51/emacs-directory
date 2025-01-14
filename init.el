@@ -676,7 +676,8 @@ recalculate any formulas that exist within it."
      (shell . t)
      (latex . t)
      (rust . t)
-     (sql . t)))
+     (sql . t)
+     (sqlite . t)))
   (add-hook 'org-mode-hook #'turn-on-auto-fill)
   (add-hook 'org-mode-hook #'turn-on-auto-revert-mode))
 
