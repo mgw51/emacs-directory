@@ -99,7 +99,8 @@
 (use-package vterm
   :if (locate-file "libvterm" '("/usr/lib/x86_64-linux-gnu") '("a" "so")))
 
-(use-package plantuml
+(use-package plantuml-mode
+  :ensure nil
   :demand nil)
 
 (use-package key-chord)
