@@ -65,18 +65,7 @@
              (dedicated . t)
              (window-height . fit-window-to-buffer)) ; this can be improved by instead using a 'body' parameter with a function to set the min/max window height.
             ))
-    (setq switch-to-buffer-in-dedicated-window 'pop))
-
-  (with-eval-after-load global-auto-revert-mode
-    (blackout 'auto-revert-mode " A↻"))
-  (with-eval-after-load magit-auto-revert-mode
-    (blackout 'magit-auto-revert-mode " M↻"))
-  (with-eval-after-load eldoc-mode
-    (blackout 'eldoc-mode))
-  (blackout 'auto-fill-mode)
-  (blackout 'yas-minor-mode)
-  (with-eval-after-load yas-minor-mode
-      (blackout 'yas-minor-mode)))
+    (setq switch-to-buffer-in-dedicated-window 'pop)))
 
 ;;; Configure my lisp files
 (use-package mw-utils
