@@ -108,6 +108,8 @@
 (use-package gptel
   :commands (gptel-send gptel-add gptel-add-file gptel-menu gptel)
   :bind ("C-c g" . gptel-prefix-map)
+  :hook (('gptel-save-state . #'mw-gptel-mode-auto)
+         ('gptel-post-response-functions #'mw-clean-up-gptel-refactored-code))
   :init
   (define-prefix-command 'gptel-prefix-map)
   :bind (:map gptel-prefix-map
@@ -117,7 +119,39 @@
               ("f" . #'gptel-add-file) ; add file(s) as context
               ("m" . #'gptel-menu) ; open transient menu
               ("r" . #'gptel-rewrite) ; re-write or refactor region
-              ("c" . #'gptel))) ; open a dedicated chat buffer
+              ("c" . #'gptel))  ; open a dedicated chat buffer
+  :preface
+  (defun mw-gptel-mode-auto ()
+    "Ensure that this file opens with `gptel-mode' enabled."
+    (save-excursion
+      (let ((enable-local-varaibles t))
+        (if (and (save-excursion
+                   (goto-char (point-min))
+                   (looking-at ".*-\\*-"))) ; Looking for a -*- line
+            ;; First remove any existing eval, then add the new one
+            (modify-file-local-variable-prop-line 'eval nil 'delete))
+        ;; Always add our eval
+        (add-file-local-variable-prop-line
+         'eval '(and (fboundp 'gptel-mode) (gptel-mode 1))))))
+  (cl-defun mw-clean-up-gptel-refactored-code (beg end)
+    "Clean up the code responses for refactored code in the current buffer.
+
+The response is placed between BEG and END.  The current buffer is
+guaranteed to be the response buffer."
+    (when gptel-mode          ; Don't want this to happen in the dedicated buffer.
+      (cl-return-from my/clean-up-gptel-refactored-code))
+    (when (and beg end)
+      (save-excursion
+        (let ((contents
+               (replace-regexp-in-string
+                "\n*``.*\n*" ""
+                (buffer-substring-no-properties beg end))))
+          (delete-region beg end)
+          (goto-char beg)
+          (insert contents))
+        ;; Indent the code to match the buffer indentation if it's messed up.
+        (indent-region beg end)
+        (pulse-momentary-highlight-region beg end)))))
 
 (use-package hippie-expand
   :ensure nil
