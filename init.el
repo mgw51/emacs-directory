@@ -512,7 +512,7 @@ guaranteed to be the response buffer."
                                     :test-suffix "_test")
   (projectile-register-project-type 'cmake '("CMakeLists.txt")
                                     :project-file "CMakeLists.txt"
-                                    :compilation-dir "build"
+;                                    :compilation-dir "build"
                                     :test-suffix "_test"
                                     :test-dir "test"
                                     :src-dir "src"))
