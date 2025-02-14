@@ -147,6 +147,7 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
   :if (locate-file "libvterm" '("/usr/lib/x86_64-linux-gnu") '("a" "so")))
 
 (use-package plantuml-mode
+  :if (boundp 'plantuml-mode)
   :ensure nil
   :demand nil)
 
