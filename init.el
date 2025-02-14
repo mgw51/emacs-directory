@@ -76,6 +76,7 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
     (let ((default-directory (expand-file-name "lisp/" user-emacs-directory)))
       (normal-top-level-add-to-load-path '("."))
       (normal-top-level-add-subdirs-to-load-path))
+
     ;;; Set and load custom config file as early as possible because we
     ;;; want all package-generated config to go into a custom config
     ;;; file set here -- not into our init.el file.
@@ -227,7 +228,6 @@ guaranteed to be the response buffer."
  
 (use-package tiny
   ; Insert ranges of all types (text, numbers, code, etc)
-  :demand t
   :bind ("C-c ;" . #'tiny-expand))
 
 (use-package zerodark-theme
@@ -237,7 +237,7 @@ guaranteed to be the response buffer."
   (load-theme 'zerodark 'NO-CONFIRM))
 
 (use-package powerline
-  :demand t
+  :disabled
   :config
   (powerline-default-theme))
 
@@ -260,7 +260,7 @@ guaranteed to be the response buffer."
   (which-key-mode))
 
 (use-package company
-  :demand t
+  :defer t
   :blackout " Ç"
   :custom
   (company-idle-delay 0.5)
@@ -271,12 +271,12 @@ guaranteed to be the response buffer."
 (use-package yasnippet
   :blackout (yas-minor-mode . " Ȳ")
   :commands yas-reload-all
-  :init (yas-global-mode 1)
   :custom
   (yas-indent-line 'auto "Indent each line of the snippet with 'indent-according-to-mode'.")
   (yas-also-indent-empty-lines t "Also indent empty lines according to mode.")
   (yas-also-auto-indent-first-line t "Indent first line according to mode.")
   :config
+  (yas-global-mode 1)
   (yas-reload-all))
 
 (use-package magit
@@ -571,6 +571,7 @@ guaranteed to be the response buffer."
   ;;; Should interpret ansi color codes in compilation buffer.  Found at:
   ;;; http://disq.us/p/2gdjkr9 on the Endless Parentheses blog and adapter for use
   ;;; here.
+  :defer t
   :preface
   (defun colorize-compilation-buffer ()
     (when (derived-mode-p 'compilation-mode)
@@ -675,6 +676,7 @@ guaranteed to be the response buffer."
           :hook (cmake-mode . eldoc-cmake-enable)))
 
 (use-package smartparens
+  :defer t
   :hook ((emacs-lisp-mode lisp-mode) . smartparens-mode)
   :custom
   (sp-base-key-bindings sp-smartparens-bindings)
@@ -724,9 +726,6 @@ recalculate any formulas that exist within it."
     (interactive)
     (org-table-recalculate 'all))
   :init
-  (use-package ob-go :after org)
-  (use-package ob-rust :after org)
-  (use-package ob-restclient :after org)
   (defface org-curr		    ;Copied from `org-faces.el'
     ;; Define an org-face for the Current todo keyword
     '((((class color) (min-colors 16) (background light)) (:foreground "gold" :bold t))
@@ -741,6 +740,9 @@ recalculate any formulas that exist within it."
   (require 'ox-man nil 'no-error)
   (require 'mw-dnd nil 'no-error)
   (require 'c2-rowing)
+  (use-package ob-go :after org)
+  (use-package ob-rust :after org)
+  (use-package ob-restclient :after org)
   (setq org-export-backends '(ascii html icalendar latex confluence md man))
   ;; Add minimal support for generally unsupported modes.
   (add-to-list 'org-src-lang-modes '("CQL" . "cql-mode"))
@@ -785,7 +787,7 @@ recalculate any formulas that exist within it."
 
 
 (use-package auth-source
-  :demand t
+  :defer t
   :config
   (add-to-list 'auth-sources "~/.config/emacs/.authinfo"))
 
