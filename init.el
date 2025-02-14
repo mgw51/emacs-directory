@@ -14,11 +14,58 @@
 ;; (require 'straight-bootstrap)
 ;; (straight-bootstrapper)
 
+;;; The following window sizing logic has been borrowed from Protesilaos' config.
+;;; Since it has been borrowed wholesale I have left his namespacing in place.  If I
+;;; ever significantly change this I will also change the namespacing.
+(defvar prot-window-window-sizes
+  '( :max-height (lambda () (floor (frame-height) 3))
+     :min-height 10
+     :max-width (lambda () (floor (frame-width) 4))
+     :min-width 20)
+  "Property list of maximum and minimum window sizes.
+The property keys are `:max-height', `:min-height', `:max-width',
+and `:min-width'.  They all accept a value of either a
+number (integer or floating point) or a function.")
+
+(defun prot-window--get-window-size (key)
+  "Extract the value of KEY from `prot-window-window-sizes'."
+  (when-let* ((value (plist-get prot-window-window-sizes key)))
+    (cond
+     ((functionp value)
+      (funcall value))
+     ((numberp value)
+      value)
+     (t
+      (error "The value of `%s' is neither a number nor a function" key)))))
+
+(defun prot-window-select-fit-size (window)
+  "Select WINDOW and resize it.
+The resize pertains to the maximum and minimum values for height
+and width, per `prot-window-window-sizes'.
+
+Use this as the `body-function' in a `display-buffer-alist' entry."
+  (select-window window)
+  (fit-window-to-buffer
+   window
+   (prot-window--get-window-size :max-height)
+   (prot-window--get-window-size :min-height)
+   (prot-window--get-window-size :max-width)
+   (prot-window--get-window-size :min-width))
+  ;; If we did not use `display-buffer-below-selected', then we must
+  ;; be in a lateral window, which has more space.  Then we do not
+  ;; want to dedicate the window to this buffer, because we will be
+  ;; running out of space.
+  (when (or (window-in-direction 'above) (window-in-direction 'below))
+    (set-window-dedicated-p window t)))
+
+
 ;;; General Emacs config
 (use-package emacs
   :ensure nil
   :demand t
   :bind (("C-x C-b" . #'ibuffer))
+  :custom
+  (list-matching-lines-jump-to-current-line t "Show current line in *Occur* buffer between the two closest matches.")
   :config
   (progn
     ;; Shadow `default-directory' with a temporary value so we can:
@@ -63,14 +110,14 @@
              (display-buffer-reuse-mode-window display-buffer-below-selected)
              ;; Then we have the parameters passed to each display action function above.
              (dedicated . t)
-             (window-height . fit-window-to-buffer)) ; this can be improved by instead using a 'body' parameter with a function to set the min/max window height.
+             (body-function . prot-window-select-fit-size)) ; this can be improved by instead using a 'body' parameter with a function to set the min/max window height.
             ))
     (setq switch-to-buffer-in-dedicated-window 'pop)))
 
 ;;; Configure my lisp files
 (use-package mw-utils
   :ensure nil
-  :demand t
+  :defer t
   :commands (mw-insert-curly-braces mw-create-sql-buffer mw-compilation-completed-notification)
   :config
   (mw-create-sql-buffer)
