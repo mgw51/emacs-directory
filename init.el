@@ -169,6 +169,12 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
               ("m" . #'gptel-menu) ; open transient menu
               ("r" . #'gptel-rewrite) ; re-write or refactor region
               ("c" . #'gptel))  ; open a dedicated chat buffer
+  :custom
+  (gptel-org-branching-context . t)
+  :config
+  (when gptel-org-branching-context
+    (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "@user\n")
+    (setf (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n"))
   :preface
   (defun mw-gptel-mode-auto ()
     "Ensure that this file opens with `gptel-mode' enabled."
