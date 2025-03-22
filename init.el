@@ -487,7 +487,10 @@ guaranteed to be the response buffer."
     "vlang test files reside in the same directory as the corresponding source files."
     dir)
   (defun mw-sensacloudapi-test-dir(dir)
-    "Point to the location of test files for this project.\n\nA function takes precedence over a simple string."
+    "Point to the location of test files for this project.
+
+A function takes precedence over a simple string when used in a project
+registration."
     (concat (projectile-project-root) "test/unit_tests/"))
   :custom
   (projectile-mode-line-prefix " ¶")
@@ -521,7 +524,7 @@ guaranteed to be the response buffer."
                                     :test-suffix "_test")
   (projectile-register-project-type 'cmake '("CMakeLists.txt")
                                     :project-file "CMakeLists.txt"
-;                                    :compilation-dir "build"
+                                    :compile "cmake -j2 --build "
                                     :test-suffix "_test"
                                     :test-dir "test"
                                     :src-dir "src"))
