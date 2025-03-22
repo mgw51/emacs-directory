@@ -169,15 +169,18 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
               ("m" . #'gptel-menu) ; open transient menu
               ("r" . #'gptel-rewrite) ; re-write or refactor region
               ("c" . #'gptel))  ; open a dedicated chat buffer
-  :custom
-  (gptel-org-branching-context . t)
-  :config
-  (when gptel-org-branching-context
-    (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "@user\n")
-    (setf (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n"))
+  ;; :custom
+  ;; (gptel-org-branching-context . t)
+  ;; :config
+  ;; (when gptel-org-branching-context
+  ;;   (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "@user\n")
+  ;;   (setf (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n"))
   :preface
   (defun mw-gptel-mode-auto ()
-    "Ensure that this file opens with `gptel-mode' enabled."
+    "Ensure that the current file opens with `gptel-mode' enabled.
+
+Add this function to the `gptel-save-state-hook' so it is called when a
+chat buffer is saved."
     (save-excursion
       (let ((enable-local-varaibles t))
         (if (and (save-excursion
@@ -194,7 +197,7 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
 The response is placed between BEG and END.  The current buffer is
 guaranteed to be the response buffer."
     (when gptel-mode          ; Don't want this to happen in the dedicated buffer.
-      (cl-return-from my/clean-up-gptel-refactored-code))
+      (cl-return-from mw-clean-up-gptel-refactored-code))
     (when (and beg end)
       (save-excursion
         (let ((contents
