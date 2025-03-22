@@ -812,16 +812,14 @@ recalculate any formulas that exist within it."
 ;;   :bind (:map scad-mode-map
 ;;               ("C-c s" . 'hydra-scad-dbus/body)))
 
-;; (add-hook 'emacs-startup-hook
-;;           (lambda ()
-;;             (message "Emacs ready in %s with %d garbage collections."
-;;                      (format "%.2f seconds"
-;;                              (float-time
-;;                               (time-subtract after-init-time before-init-time)))
-;;                      gcs-done)))
-
-;; Set GC to something reasonable
-;;
-;(setq gc-cons-threshold (* 2 1024 1024))
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "Emacs ready in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))
+          ;; Set GC to something reasonable)
+;          (setq gc-cons-threshold (* 5 1024 1024)))
 
 ;;; init.el ends here
