@@ -573,7 +573,8 @@ registration."
                                     :test-suffix "_test")
   (projectile-register-project-type 'cmake '("CMakeLists.txt")
                                     :project-file "CMakeLists.txt"
-                                    :compile "cmake --build build -j2"
+                                    :configure "cmake -S . -B build"
+                                    :compile "cmake --build build -j4"
                                     :test-suffix "_test"
                                     :test-dir "test"
                                     :src-dir "src"))
