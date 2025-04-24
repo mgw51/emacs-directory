@@ -243,6 +243,10 @@ guaranteed to be the response buffer."
         (indent-region beg end)
         (pulse-momentary-highlight-region beg end)))))
 
+(use-package treesit-auto
+  :config
+  (global-treesit-auto-mode))
+
 (use-package hippie-expand
   :ensure nil
   :bind ([remap dabbrev-expand] . 'hippie-expand))
