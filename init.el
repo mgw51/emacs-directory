@@ -258,9 +258,9 @@ guaranteed to be the response buffer."
   :config
   ;; Miscellaneous lighter changes that don't have a use-package
   ;; stanza
-  (blackout 'auto-revert-mode " A↻")
-  (blackout 'magit-auto-revert-mode " M↻")
-  (blackout 'eldoc-mode " ℓ")
+  (blackout 'auto-revert-mode "A↻")
+  (blackout 'magit-auto-revert-mode "M↻")
+  (blackout 'eldoc-mode "ℓ")
   (blackout 'auto-fill-mode))
 
 (use-package which-key
@@ -270,8 +270,8 @@ guaranteed to be the response buffer."
   (which-key-mode))
 
 (use-package company
-  :defer t
-  :blackout " Ç"
+  :demand t
+  :blackout "Ç"
   :custom
   (company-idle-delay 0.5)
   (company-minimum-prefix-length 1)
@@ -279,7 +279,7 @@ guaranteed to be the response buffer."
   (global-company-mode))
 
 (use-package yasnippet
-  :blackout (yas-minor-mode . " Ȳ")
+  :blackout (yas-minor-mode . "Ȳ")
   :commands yas-reload-all
   :custom
   (yas-indent-line 'auto "Indent each line of the snippet with 'indent-according-to-mode'.")
