@@ -34,21 +34,20 @@ the function name, third line is empty."
 
 ;;;###autoload
 (defun mw-include-guard ()
-  "Generate include guards for a c or cpp header file."
+  "Generate include guards for a C or C++ header file."
   (interactive)
   (save-excursion
-    (let ((header-name (split-string (buffer-name) "\\.")))
-      (when (string-match "^\\(h\\|hpp\\)$" (cadr header-name))
-        (let ((guard-name (concat "_" (upcase (car header-name))
-			          "_" (upcase (car (last header-name)))
-			          "_" (substring (secure-hash 'sha1 (number-to-string (float-time))) 0 8)
-			          "_")))
-          (goto-char (point-min))
-          (insert "#ifndef " guard-name "\u000a#define " guard-name "\u000a\u000a")
-          (goto-char (point-max))
-          (if (looking-back "\u000a\u000a" (- 2 (point)))
-              (insert "#endif  // " guard-name)
-            (insert "\u000a\u000a#endif // " guard-name)))))))
+    (when-let* ((extension (file-name-extension (buffer-file-name)))
+                ((string-match "^\\(h\\|hpp\\)$" extension )) ; conditional that decides if we continue
+                (guard-name (concat (upcase (file-name-base (buffer-file-name)))
+			            "_" (upcase extension)
+			            "_" (upcase (substring (secure-hash 'sha1 (number-to-string (random))) 0 8)))))
+      (goto-char (point-min))
+      (insert "#ifndef " guard-name "\u000a#define " guard-name "\u000a\u000a")
+      (goto-char (point-max))
+      (if (looking-back "\u000a\u000a" (- 2 (point)))
+          (insert "#endif  // " guard-name)
+        (insert "\u000a\u000a#endif // " guard-name)))))
 
 
 ;;;###autoload
