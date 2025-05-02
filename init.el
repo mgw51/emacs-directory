@@ -63,7 +63,8 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
 (use-package emacs
   :ensure nil
   :demand t
-  :bind (("C-x C-b" . #'ibuffer))
+  :bind (("C-x C-b" . #'ibuffer)
+         ([remap zap-to-char] . #'zap-up-to-char))
   :custom
   (list-matching-lines-jump-to-current-line t "Show current line in *Occur* buffer between the two closest matches.")
   :config
