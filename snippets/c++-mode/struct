@@ -2,6 +2,8 @@
 # name: struct
 # key: struct
 # --
+/// @brief $2
+///
 struct $1 {
   $0
 };
