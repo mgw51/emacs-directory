@@ -2,6 +2,8 @@
 # name: class
 # key: class
 # --
+/// @brief
+///
 class $1 {
   private:
     $0
