@@ -16,25 +16,29 @@
 ;;;
 ;;; Code:
 
+(defvar *lang-list* '((('sh-mode 'python-mode 'awk-mode 'perl-mode) . "#")
+                      (('c++-mode 'c-mode 'go-mode 'v-mode) . "//")
+                      (('sql-mode 'elm-mode) . "--")
+                      (('emacs-lisp-mode 'lisp-mode) . ";"))
+  "This is a list of assoc lists.  Each assoc list is a list of one or more
+symbols associated with a string representing the comment character(s)
+of the given language.")
+
 ;; Declare and fill the hash table.
-(and (defvar *lang-suffixes* (make-hash-table :test 'equal)
+(and (defvar *lang-comments* (make-hash-table :test 'equal)
        "This hash table maps common programming language file extensions with that language's associated comment character(s).")
-     (puthash "py" "#" *lang-suffixes*)
-     (puthash "sh" "#" *lang-suffixes*)
-     (puthash "bash" "#" *lang-suffixes*)
-     (puthash "pl" "#" *lang-suffixes*)
-     (puthash "perl" "#" *lang-suffixes*)
-     (puthash "cpp" "//" *lang-suffixes*)
-     (puthash "hpp" "//" *lang-suffixes*)
-     (puthash "c" "//" *lang-suffixes*)
-     (puthash "h" "//" *lang-suffixes*)
-     (puthash "lisp" ";" *lang-suffixes*)
-     (puthash "el" ";" *lang-suffixes*)
-     (puthash "elisp" ";" *lang-suffixes*)
-     (puthash "emacs" ";" *lang-suffixes*)
-     (puthash "sql" "--" *lang-suffixes*)
-     (puthash "go" "//" *lang-suffixes*)
-     (puthash "awk" "#" *lang-suffixes*))
+     (puthash 'python-mode "#" *lang-comments*)
+     (puthash 'sh-mode "#" *lang-comments*)
+     (puthash 'perl-mode "#" *lang-comments*)
+     (puthash 'c++-mode "//" *lang-comments*)
+     (puthash 'c-mode "//" *lang-comments*)
+     (puthash 'lisp-mode ";" *lang-comments*)
+     (puthash 'emacs-lisp-mode ";" *lang-comments*)
+     (puthash 'sql-mode "--" *lang-comments*)
+     (puthash 'go-mode "//" *lang-comments*)
+     (puthash 'awk-mode "#" *lang-comments*)
+     (puthash 'v-mode "//" *lang-comments*)
+     (puthash 'elm-mode "--" *lang-comments*))
 
 
 (defun get--buffer-suffix ()
@@ -46,12 +50,12 @@
 (defun mw-insert-triplet ()
   "Insert comment-triplet appropriate to language in which we are writing."
   (interactive)
-  (let ((char (gethash (get--buffer-suffix) *lang-suffixes* "//")))
-      (when (char-or-string-p char) ; do we have a character to use?
+  (let ((comment-str (gethash major-mode *lang-comments* "//")))
+      (when (char-or-string-p comment-str) ; do we have a character to use?
         (save-excursion
           (set-mark (point))
           (activate-mark)
-          (insert char ?\u000a char ?\u000a char)
+          (insert comment-str ?\u000a comment-str ?\u000a comment-str)
           (indent-for-tab-command))
         (forward-line 1)
         (end-of-line)
@@ -67,13 +71,13 @@ only works if the entire line is part of the region.  If no
 region is active, insert a single debug comment at the end of the
 current line."
   (interactive "r")
-  (let ((char (gethash (get--buffer-suffix) *lang-suffixes*)))
+  (let ((char (gethash major-mode *lang-comments*)))
       (if (use-region-p)
           (save-mark-and-excursion
             ;; Use the active region
             (let ((blob (buffer-substring begin end))
-                  (db-string (concat "\\1  " char " [DEBUG]\\2")))
-              (setf blob (replace-regexp-in-string "\\(^.*[[:graph:]].*\\)\\(\n\\)" db-string blob))
+                  (db-string (concat "\\1  " char " [DEBUG]\\n")))
+              (setf blob (replace-regexp-in-string (concat "\\(^.*[[:graph:]].*\\)\\( " char " \\[DEBUG\\]\\)?\\(\n\\)") db-string blob))
               (delete-region begin end)
               (goto-char begin)
               (insert blob)))
