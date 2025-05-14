@@ -804,6 +804,11 @@ recalculate any formulas that exist within it."
   :config
   (add-to-list 'auth-sources "~/.config/emacs/.authinfo"))
 
+(use-package elm-mode
+  :hook #'elm-format-on-save-mode
+  :custom
+  (elm-sort-imports-on-save t "Sort import list on save"))
+
 (use-package scad-mode)
 
 ;; (use-package scad-dbus
