@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;; select-comment-by-lang.el --- Guess which comment character to use based on programming language.
 ;;;
 ;;; Commentary:
@@ -25,10 +26,11 @@ symbols associated with a string representing the comment character(s)
 of the given language.")
 
 ;; Declare and fill the hash table.
-(and (defvar *lang-comments* (make-hash-table :test 'equal)
+(and (defvar *lang-comments* (make-hash-table :test 'eq) ; use 'eq because we are comparing symbols
        "This hash table maps common programming language file extensions with that language's associated comment character(s).")
      (puthash 'python-mode "#" *lang-comments*)
      (puthash 'sh-mode "#" *lang-comments*)
+     (puthash 'bash-ts-mode "#" *lang-comments*)
      (puthash 'perl-mode "#" *lang-comments*)
      (puthash 'c++-mode "//" *lang-comments*)
      (puthash 'c-mode "//" *lang-comments*)
