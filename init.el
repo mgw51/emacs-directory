@@ -543,18 +543,13 @@ registration."
          (python-mode . lsp-deferred))
   :preface (setenv "LSP_USE_PLISTS" "true") ; Use of plists is recommended: https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization
   :custom
+  (lsp-clangd-version "20.1.0" "Keep this up-to-date with current stable release because the default version is quite old.")
   (lsp-prefer-flymake nil "Use flycheck instead")
   (lsp-auto-guess-root t "Uses projectile, when available")
   (lsp-auto-configure t)
   (lsp-enable-on-type-formatting nil "Disable LSP's attempts to format code")
   (read-process-output-max (* 1024 1024 2) "Increase the process output max because code servers may return large amounts of data")
   (flycheck-checker-error-threshold 600 "Increase error threshold from 400 to 600")
-  :config
-    (when (string-equal-ignore-case (system-name) "sensa-ripper")
-      ;; sometimes the executable location must be set manually or you get errors because
-      ;; it defaults to the system version of clangd, which is OLD.
-      (setq lsp-clients-clangd-executable "/home/mwood/.emacs.d/.cache/lsp/clangd/clangd_15.0.6/bin/clangd")
-      (setq lsp-clients-clangd-args '("--enable-config" "--header-insertion-decorators=0")))
   :init (use-package lsp-ui
           :commands lsp-ui-mode
           :custom
