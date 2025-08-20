@@ -511,7 +511,7 @@ registration."
                                     :src-dir #'mw-vlang-same-directory-src-and-test-files
                                     :test-dir #'mw-vlang-same-directory-src-and-test-files
                                     :test-suffix "_test")
-  (projectile-register-project-type 'c++at '(".c++at") ; C++ autotools (work-specific)
+  (projectile-register-project-type 'c++at '("Daaaaaaaanm.png") ; C++ autotools (work-specific)
                                     :project-file ".c++at"
                                     :compile "make -kj20"
                                     :test "test/unit_tests/unit_tests"
