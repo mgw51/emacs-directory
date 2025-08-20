@@ -539,17 +539,24 @@ registration."
               ("n" . #'lsp-ui-find-next-reference)
               ("p" . #'lsp-ui-find-prev-reference))
   :commands (lsp lsp-deferred)
-  :hook ((lsp-mode . lsp-enable-which-key-integration)
+  :hook ((lsp-mode . (lambda ()
+                       lsp-enable-which-key-integration
+                       (when (or (derived-mode-p 'c++-mode)
+                                 (derived-mode-p 'c-mode))
+                         ;; disable live formatting of code when in c-mode or c++-mode
+                         (setq lsp-enable-on-type-formatting nil))))
          (python-mode . lsp-deferred))
   :preface (setenv "LSP_USE_PLISTS" "true") ; Use of plists is recommended: https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization
   :custom
+  ;; C++
   (lsp-clangd-version "20.1.0" "Keep this up-to-date with current stable release because the default version is quite old.")
+
   (lsp-prefer-flymake nil "Use flycheck instead")
   (lsp-auto-guess-root t "Uses projectile, when available")
   (lsp-auto-configure t)
   (lsp-enable-on-type-formatting nil "Disable LSP's attempts to format code")
   (read-process-output-max (* 1024 1024 2) "Increase the process output max because code servers may return large amounts of data")
-  (flycheck-checker-error-threshold 600 "Increase error threshold from 400 to 600")
+  (flycheck-checker-error-threshold 800 "Increase error threshold from default 400")
   :init (use-package lsp-ui
           :commands lsp-ui-mode
           :custom
@@ -598,7 +605,6 @@ registration."
   (add-hook 'c-mode-common-hook #'common-settings)
   (add-hook 'c-mode-hook #'lsp-deferred)
   (add-hook 'c++-mode-hook #'c++-settings)
-  (add-hook 'c++-mode-hook #'lsp-deferred)
   :preface
   (defun common-settings()
     (superword-mode t) ; underscores
@@ -618,7 +624,9 @@ registration."
     (add-hook 'before-save-hook #'whitespace-cleanup nil t))
   (defun c++-settings()
     (c-set-offset 'inclass '++)
-    (c-set-offset 'access-label '-)))
+    (c-set-offset 'access-label '-)
+    (lsp-deferred)))
+
     ;    (setq c-basic-offset 2)
 
 (use-package go-mode
