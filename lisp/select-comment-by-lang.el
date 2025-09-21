@@ -76,8 +76,10 @@ current line."
           (save-mark-and-excursion
             ;; Use the active region
             (let ((blob (buffer-substring begin end))
-                  (db-string (concat "\\1  " char " [DEBUG]\\n")))
-              (setf blob (replace-regexp-in-string (concat "\\(^.*[[:graph:]].*\\)\\( " char " \\[DEBUG\\]\\)?\\(\n\\)") db-string blob))
+                  (db-string (concat "\\1  " char " [DEBUG]\n")))
+              (setf blob
+                    (replace-regexp-in-string
+                     (format "\\(^.*[[:graph:]]\\)\\( +%s \\[DEBUG]\\)?\\(\n\\)" char) db-string blob))
               (delete-region begin end)
               (goto-char begin)
               (insert blob)))
