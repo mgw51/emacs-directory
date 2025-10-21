@@ -483,7 +483,10 @@ guaranteed to be the response buffer."
   ;; fuzzy search in completion buffers
   :custom
   (completion-styles '(orderless basic))
-  (completion-catagory-overrides '((file (styles basic partial-completion)))))
+  (completion-catagory-overrides '((file (styles partial-completion))))
+  (completion-category-defaults nil) ; disable defaults; use Vertico settings
+                                        ; (completion-pcm-leading-wildcard t) ; Emacs 31: partial-completion behaves like substring
+  )
 
 (use-package projectile
   :hook (prog-mode . projectile-mode)
