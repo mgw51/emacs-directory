@@ -145,6 +145,13 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
   (when (daemonp)
     (exec-path-from-shell-initialize)))
 
+(use-package jinx
+  ;; Jinx is a JIT spellchecker for emacs, using libenchant.
+  ;; See: https://github.com/minad/jinx
+  :hook (emacs-startup . global-jinx-mode)
+  :bind (("M-$" . jinx-correct)
+         ("C-M-$" . jinx-languages)))
+
 (use-package vterm
   :if (locate-file "libvterm" '("/usr/lib/x86_64-linux-gnu") '("a" "so")))
 
