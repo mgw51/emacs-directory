@@ -301,6 +301,16 @@ guaranteed to be the response buffer."
   :commands magit-status
   :bind ("C-c C-g" . #'magit-status))
 
+(use-package forge
+  :after magit)
+
+(use-package company-forge
+  :config
+  (company-forge-icons-mode)
+  (advice-add #'forge--pull ; Reset cache after forge pull
+              :filter-args #'company-forge-reset-cache-after-pull)
+  (add-to-list 'company-backends 'company-forge))
+
 (use-package vertico
   :init
   (vertico-mode)
