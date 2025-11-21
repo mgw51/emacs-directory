@@ -532,7 +532,7 @@ registration."
                                     :test-dir #'mw-vlang-same-directory-src-and-test-files
                                     :test-suffix "_test")
   (projectile-register-project-type 'c++at '("Daaaaaaaanm.png") ; C++ autotools (work-specific)
-                                    :project-file ".c++at"
+                                    :project-file "configure.ac"
                                     :compile "make -kj20"
                                     :test "test/unit_tests/unit_tests"
                                     :test-dir #'mw-sensacloudapi-test-dir
