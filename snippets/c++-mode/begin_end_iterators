@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: begin_end_iterators
+# name: Insert member calls to begin and end
 # key: beginend
 # --
-std::begin(${1:obj}), std::end(${1:obj})$0
+$1.begin(), $1.end()$0
