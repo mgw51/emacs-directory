@@ -588,6 +588,8 @@ registration."
 (use-package flycheck
   :commands flycheck-mode
   :hook flycheck-color-mode-line-mode
+  :custom
+  (flycheck-checker-error-thrshold 1200 "Bump this up from the original value of 400")
   :init (use-package flycheck-color-mode-line
           :ensure t
           :after flycheck))
