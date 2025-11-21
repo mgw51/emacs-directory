@@ -566,11 +566,9 @@ registration."
                          ;; disable live formatting of code when in c-mode or c++-mode
                          (setq lsp-enable-on-type-formatting nil))))
          (python-mode . lsp-deferred))
-  :preface (setenv "LSP_USE_PLISTS" "true") ; Use of plists is recommended: https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization
   :custom
   ;; C++
-  (lsp-clangd-version "21.1.0" "Keep this up-to-date with current stable release because the default version is quite old.")
-
+  (lsp-clangd-version "snapshot_20251116" "Keep this up-to-date with current stable release because the default version is quite old.")
   (lsp-prefer-flymake nil "Use flycheck instead")
   (lsp-auto-guess-root t "Uses projectile, when available")
   (lsp-auto-configure t)
