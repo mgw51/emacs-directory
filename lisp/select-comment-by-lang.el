@@ -65,7 +65,7 @@ of the given language.")
 ;;;###autoload
 (defun mw-debug-comment (&optional begin end)
   "Insert a debug comment at end of the current line of code.
-If a region is selected, insert a virtically aligned debug comment at
+If a region is selected, insert a vertically aligned debug comment at
 the end of every line within the region defined by BEGIN through END.
 This only works if the entire line is part of the region.  If no region
 is active, insert a single debug comment at the end of the current line."
