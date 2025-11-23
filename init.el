@@ -148,9 +148,15 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
 (use-package jinx
   ;; Jinx is a JIT spellchecker for emacs, using libenchant.
   ;; See: https://github.com/minad/jinx
+  :after vertico
   :hook (emacs-startup . global-jinx-mode)
   :bind (("M-$" . jinx-correct)
-         ("C-M-$" . jinx-languages)))
+         ("C-M-$" . jinx-languages))
+  :config
+  (when (bound-and-true-p vertico-multiform-mode)
+    (add-to-list 'vertico-multiform-categories
+                 '(jinx grid (vertico-grid-annotate . 20) (vertico-count . 4)))
+    (vertico-multiform-mode)))
 
 (use-package vterm
   :if (locate-file "libvterm" '("/usr/lib/x86_64-linux-gnu") '("a" "so")))
