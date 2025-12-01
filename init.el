@@ -158,6 +158,24 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
                  '(jinx grid (vertico-grid-annotate . 20) (vertico-count . 4)))
     (vertico-multiform-mode)))
 
+(use-package ligature
+  :custom
+  (global-ligature-mode 't)
+  :config
+  ;; Enable the www ligature in every possible major mode
+  (ligature-set-ligatures 't '("www"))
+  ;; Enable ligatures in programming modes
+  (ligature-set-ligatures 'prog-mode '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
+                                       ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
+                                       "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
+                                       "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*" "/**"
+                                       "/=" "/==" "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
+                                       "++" "+++" "+>" "=:=" "==" "===" "==>" "=>" "=>>" "<="
+                                       "=<<" "=/=" ">-" ">=" ">=>" ">>" ">>-" ">>=" ">>>" "<*"
+                                       "<*>" "<|" "<|>" "<$" "<$>" "<!--" "<-" "<--" "<->" "<+"
+                                       "<+>" "<=" "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<"
+                                       "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%")))
+
 (use-package vterm
   :if (locate-file "libvterm" '("/usr/lib/x86_64-linux-gnu") '("a" "so")))
 
