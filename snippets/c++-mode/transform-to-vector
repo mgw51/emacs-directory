@@ -1,0 +1,7 @@
+# key: transvec
+# name: transform-to-vector
+# --
+std::transform($1.begin(), $1.end(), std::back_inserter($2),
+[]($3){
+$0
+});
