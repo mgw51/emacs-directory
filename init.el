@@ -183,6 +183,8 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
   ;; (when gptel-org-branching-context
   ;;   (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "@user\n")
   ;;   (setf (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n"))
+  :config
+  (gptel-make-gemini "Gemini" :key (gptel-api-key-from-auth-source "https://generativelanguage.googleapis.com" "apikey") :stream t) ; read key from .authinfo
   :preface
   (defun mw-gptel-mode-auto ()
     "Ensure that the current file opens with `gptel-mode' enabled.
