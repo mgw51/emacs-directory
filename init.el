@@ -148,9 +148,33 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
 (use-package jinx
   ;; Jinx is a JIT spellchecker for emacs, using libenchant.
   ;; See: https://github.com/minad/jinx
+  :after vertico
   :hook (emacs-startup . global-jinx-mode)
   :bind (("M-$" . jinx-correct)
-         ("C-M-$" . jinx-languages)))
+         ("C-M-$" . jinx-languages))
+  :config
+  (when (bound-and-true-p vertico-multiform-mode)
+    (add-to-list 'vertico-multiform-categories
+                 '(jinx grid (vertico-grid-annotate . 20) (vertico-count . 4)))
+    (vertico-multiform-mode)))
+
+(use-package ligature
+  :custom
+  (global-ligature-mode 't)
+  :config
+  ;; Enable the www ligature in every possible major mode
+  (ligature-set-ligatures 't '("www"))
+  ;; Enable ligatures in programming modes
+  (ligature-set-ligatures 'prog-mode '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
+                                       ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
+                                       "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
+                                       "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*" "/**"
+                                       "/=" "/==" "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
+                                       "++" "+++" "+>" "=:=" "==" "===" "==>" "=>" "=>>" "<="
+                                       "=<<" "=/=" ">-" ">=" ">=>" ">>" ">>-" ">>=" ">>>" "<*"
+                                       "<*>" "<|" "<|>" "<$" "<$>" "<!--" "<-" "<--" "<->" "<+"
+                                       "<+>" "<=" "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<"
+                                       "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%")))
 
 (use-package vterm
   :if (locate-file "libvterm" '("/usr/lib/x86_64-linux-gnu") '("a" "so")))
@@ -220,6 +244,10 @@ guaranteed to be the response buffer."
         ;; Indent the code to match the buffer indentation if it's messed up.
         (indent-region beg end)
         (pulse-momentary-highlight-region beg end)))))
+
+(use-package treesit-auto
+  :config
+  (global-treesit-auto-mode))
 
 (use-package hippie-expand
   :ensure nil
@@ -534,7 +562,7 @@ registration."
                                     :test-dir #'mw-vlang-same-directory-src-and-test-files
                                     :test-suffix "_test")
   (projectile-register-project-type 'c++at '("Daaaaaaaanm.png") ; C++ autotools (work-specific)
-                                    :project-file ".c++at"
+                                    :project-file "configure.ac"
                                     :compile "make -kj20"
                                     :test "test/unit_tests/unit_tests"
                                     :test-dir #'mw-sensacloudapi-test-dir
@@ -547,7 +575,8 @@ registration."
                                     :test-suffix "_test")
   (projectile-register-project-type 'cmake '("CMakeLists.txt")
                                     :project-file "CMakeLists.txt"
-                                    :compile "cmake -j2 --build "
+                                    :configure "cmake -S . -B build"
+                                    :compile "cmake --build build -j4"
                                     :test-suffix "_test"
                                     :test-dir "test"
                                     :src-dir "src"))
@@ -568,17 +597,15 @@ registration."
                          ;; disable live formatting of code when in c-mode or c++-mode
                          (setq lsp-enable-on-type-formatting nil))))
          (python-mode . lsp-deferred))
-  :preface (setenv "LSP_USE_PLISTS" "true") ; Use of plists is recommended: https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization
   :custom
   ;; C++
-  (lsp-clangd-version "21.1.0" "Keep this up-to-date with current stable release because the default version is quite old.")
-
+  (lsp-clangd-version "snapshot_20251116" "Keep this up-to-date with current stable release because the default version is quite old.")
   (lsp-prefer-flymake nil "Use flycheck instead")
   (lsp-auto-guess-root t "Uses projectile, when available")
   (lsp-auto-configure t)
   (lsp-enable-on-type-formatting nil "Disable LSP's attempts to format code")
   (read-process-output-max (* 1024 1024 2) "Increase the process output max because code servers may return large amounts of data")
-  (flycheck-checker-error-threshold 800 "Increase error threshold from default 400")
+  (flycheck-checker-error-threshold 1200 "Increase error threshold from 400 to something greater")
   :init (use-package lsp-ui
           :commands lsp-ui-mode
           :custom
@@ -592,6 +619,8 @@ registration."
 (use-package flycheck
   :commands flycheck-mode
   :hook flycheck-color-mode-line-mode
+  :custom
+  (flycheck-checker-error-thrshold 1200 "Bump this up from the original value of 400")
   :init (use-package flycheck-color-mode-line
           :ensure t
           :after flycheck))

@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;; select-comment-by-lang.el --- Guess which comment character to use based on programming language.
 ;;;
 ;;; Commentary:
@@ -25,10 +26,11 @@ symbols associated with a string representing the comment character(s)
 of the given language.")
 
 ;; Declare and fill the hash table.
-(and (defvar *lang-comments* (make-hash-table :test 'equal)
+(and (defvar *lang-comments* (make-hash-table :test 'eq) ; use 'eq because we are comparing symbols
        "This hash table maps common programming language file extensions with that language's associated comment character(s).")
      (puthash 'python-mode "#" *lang-comments*)
      (puthash 'sh-mode "#" *lang-comments*)
+     (puthash 'bash-ts-mode "#" *lang-comments*)
      (puthash 'perl-mode "#" *lang-comments*)
      (puthash 'c++-mode "//" *lang-comments*)
      (puthash 'c-mode "//" *lang-comments*)
@@ -64,33 +66,32 @@ of the given language.")
 
 ;;;###autoload
 (defun mw-debug-comment (&optional begin end)
-  "Insert debug comment at end of line.
-If a region is selected, insert a debug comment at the end of
-every line within the region defined by BEGIN through END.  This
-only works if the entire line is part of the region.  If no
-region is active, insert a single debug comment at the end of the
-current line."
+  "Insert a debug comment at end of the current line of code.
+If a region is selected, insert a vertically aligned debug comment at
+the end of every line within the region defined by BEGIN through END.
+This only works if the entire line is part of the region.  If no region
+is active, insert a single debug comment at the end of the current line."
   (interactive "r")
-  (let ((char (gethash major-mode *lang-comments*)))
-      (if (use-region-p)
-          (save-mark-and-excursion
+  (let ((comment (gethash major-mode *lang-comments*)))
+    (if (use-region-p)
+        (save-mark-and-excursion
+          (save-restriction
             ;; Use the active region
-            (let ((blob (buffer-substring begin end))
-                  (db-string (concat "\\1  " char " [DEBUG]\n")))
-              (setf blob
-                    (replace-regexp-in-string
-                     (format "\\(^.*[[:graph:]]\\)\\( +%s \\[DEBUG]\\)?\\(\n\\)" char) db-string blob))
-              (delete-region begin end)
+            (let ((db-string (format "\\&  %s [DEBUG]" comment)))
+              (narrow-to-region begin end)
               (goto-char begin)
-              (insert blob)))
-        ;; Use the current line
-        (progn
-          (save-mark-and-excursion
-            (set-mark (point)) ; in case no mark has yet been set
-            (end-of-line)
-            (insert "  " char " [DEBUG]"))
-          (forward-line 1)
-          (back-to-indentation)))))
+              (while (re-search-forward "^.*[[:graph:]]+.*$" nil t)
+                (replace-match db-string))
+              (align-regexp (point-min) (point-max)
+                            (format "\\(\\s-*\\)%s \\[DEBUG\\]$" comment))))) ; see `align-regexp' for regexp requirements
+      ;; Use the current line
+      (progn
+        (save-mark-and-excursion
+          (set-mark (point)) ; in case no mark has yet been set
+          (end-of-line)
+          (insert (format "  %s [DEBUG]" comment)))
+        (forward-line 1)
+        (back-to-indentation)))))
 
 
 ;;;###autoload
