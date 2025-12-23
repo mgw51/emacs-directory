@@ -86,7 +86,13 @@ line numbers, etc."
   ;; various things
   (setq make-backup-files nil
 	backup-directory-alist nil
-	inhibit-splash-screen t))
+	inhibit-splash-screen t)
+
+  ;; Use fira-code font
+  (set-face-attribute 'default nil
+                      :font "Fira Code"
+                      :height 90 ; 100 = 10pt
+                      :weight 'normal))
 
 
 (provide 'mw-basic-setup)
