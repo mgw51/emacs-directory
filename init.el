@@ -159,6 +159,7 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
     (vertico-multiform-mode)))
 
 (use-package ligature
+  :ensure t
   :custom
   (global-ligature-mode 't)
   :config
