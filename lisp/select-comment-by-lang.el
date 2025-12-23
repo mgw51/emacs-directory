@@ -95,22 +95,47 @@ is active, insert a single debug comment at the end of the current line."
 
 
 ;;;###autoload
-(defun mw-remove-debug (&optional start end)
-  "Remove debug comments from region START to END.
+(defun mw-remove-debug (&optional start end arg)
+  "Remove debug comments from the selected region or the entire buffer.
 
-If region is not active (or 'use-empty-active-region' is nil)
-then operate on the whole file."
+This function searches for debug comments associated with the
+current major mode within the specified region or the entire
+buffer if no region is selected. It uses the comment style
+defined in the `*lang-comments*` hash table for the current mode.
+
+When called interactively:
+- If a region is selected, it operates on that region.
+- If no region is selected, it processes the entire buffer.
+
+The optional prefix argument (ARG) modifies the behavior:
+- If ARG is 4 or greater, it removes the debug portion but
+  retains the preceding code lines.
+- Otherwise, it removes both the code lines and the debug
+  comments.
+
+Usage:
+- Use this function to clean up your code by eliminating debug 
+  comments in a convenient manner."
   (interactive
-   (if (use-region-p)
-       (list (region-beginning) (region-end))
-     (list (point-min) (point-max))))
+   (let ((prefix (if current-prefix-arg
+                     (prefix-numeric-value current-prefix-arg)
+                   1)))
+     (if (use-region-p)
+         (list (region-beginning) (region-end) prefix)
+       (list (point-min) (point-max) prefix))))
   (save-excursion
     (push-mark)
     (save-restriction
       (goto-char start)
       (narrow-to-region start end)
-      (while (re-search-forward "^.*// \\[DEBUG\\].*\n" end t)
-        (replace-match "")))))
+      (let* ((comment (gethash major-mode *lang-comments*))
+             ;; non-greedy match up to the beginning of the comment portion
+             (regexp (format "\\(^.*?\\) *%s \\[DEBUG\\] *\\(\n?\\)" comment))
+             (fn (if (>= arg 4)
+                     (lambda() (replace-match "\\1\\2"))
+                   (lambda() (replace-match "")))))
+        (while (re-search-forward regexp end t)
+          (funcall fn))))))
 
 
 (provide 'select-comment-by-lang)
