@@ -149,7 +149,8 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
   ;; Jinx is a JIT spellchecker for emacs, using libenchant.
   ;; See: https://github.com/minad/jinx
   :after vertico
-  :hook (emacs-startup . global-jinx-mode)
+  :hook ((emacs-startup . global-jinx-mode)
+         (prog-mode . (lambda() (when jinx-mode (jinx-mode -1)))))
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages))
   :config
