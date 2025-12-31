@@ -149,8 +149,10 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
   ;; Jinx is a JIT spellchecker for emacs, using libenchant.
   ;; See: https://github.com/minad/jinx
   :after vertico
-  :hook ((emacs-startup . global-jinx-mode)
-         (prog-mode . (lambda() (when jinx-mode (jinx-mode -1)))))
+  ;; Only enable Jinx in non-programming buffers.
+  :hook ((hack-local-variables . (lambda()
+                                   (when (not (derived-mode-p 'prog-mode))
+                                     (jinx-mode t)))))
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages))
   :config
@@ -884,5 +886,9 @@ recalculate any formulas that exist within it."
                      gcs-done)))
           ;; Set GC to something reasonable)
 ;          (setq gc-cons-threshold (* 5 1024 1024)))
+
+;;; Points of interest:
+;;  * `hack-local-variables-hook' - This hook is guaranteed to run after the major-mode hook
+;;    functions.  Typically used to act on a file's local variables once they have been parsed.
 
 ;;; init.el ends here
