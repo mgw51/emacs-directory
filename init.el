@@ -212,7 +212,8 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
   ;;   (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "@user\n")
   ;;   (setf (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n"))
   :config
-  (gptel-make-gemini "Gemini" :key (gptel-api-key-from-auth-source "https://generativelanguage.googleapis.com" "apikey") :stream t) ; read key from .authinfo
+  (gptel-make-gemini "Gemini" :key (gptel-api-key-from-auth-source "generativelanguage.googleapis.com" "apikey") :stream t) ; read key from .authinfo
+  (gptel-make-anthropic "Claude" :key (gptel-api-key-from-auth-source "api.anthropic.com") :stream t)
   :preface
   (defun mw-gptel-mode-auto ()
     "Ensure that the current file opens with `gptel-mode' enabled.
