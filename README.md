@@ -14,7 +14,7 @@ Beginning with version 27, Emacs respects the value of your `XDG_CONFIG_HOME`
 environment variable.  For Emacs 27 and above, place your config and related
 files at that location.  For example:
 
-    git clone https://github.com/mgw51/emacs-directory ~/.config/emacs
+    git clone https://github.com/mgw51/emacs-directory $XDG_CONFIG_HOME/emacs
 
 ### Things To Include
 
