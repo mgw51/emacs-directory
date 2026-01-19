@@ -716,7 +716,9 @@ registration."
   
 (use-package v-mode
   :hook lsp-deferred
-  :custom (lsp-v-vls-executable "vls_linux_x64"))
+  :chords (:map v-mode
+                ("pq" . mw-insert-curly-braces)))
+;  :custom (lsp-v-vls-executable "vls_linux_x64"))
 
 (use-package elixir-mode
   :hook #'lsp-deferred)
