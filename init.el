@@ -146,6 +146,7 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
     (exec-path-from-shell-initialize)))
 
 (use-package jinx
+  :disabled
   ;; Jinx is a JIT spellchecker for emacs, using libenchant.
   ;; See: https://github.com/minad/jinx
   :after vertico
