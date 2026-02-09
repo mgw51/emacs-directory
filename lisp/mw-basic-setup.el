@@ -90,7 +90,7 @@ line numbers, etc."
 
   ;; Use fira-code font
   (set-face-attribute 'default nil
-                      :font "Fira Code-12"
+                      :font "Fira Code-10"
                       :height 90 ; 100 = 10pt
                       :weight 'normal))
 
