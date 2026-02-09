@@ -170,10 +170,10 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
   ;; Enable the www ligature in every possible major mode
   (ligature-set-ligatures 't '("www"))
   ;; Enable ligatures in programming modes
-  (ligature-set-ligatures 'prog-mode '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
+  (ligature-set-ligatures '(prog-mode org-mode) '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
                                        ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
                                        "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
-                                       "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*" "/**"
+                                       "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" "/*" "/**"
                                        "/=" "/==" "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
                                        "++" "+++" "+>" "=:=" "==" "===" "==>" "=>" "=>>" "<="
                                        "=<<" "=/=" ">-" ">=" ">=>" ">>" ">>-" ">>=" ">>>" "<*"
