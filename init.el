@@ -214,7 +214,7 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
   ;;   (setf (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n"))
   :config
   ;; Add personal system directives
-  (add-to-list 'gptel-directives '(codeguru . "You are a careful programmer.  When I ask you questions reply with precise, accurate answers.  If you do not know, say so; do not guess.  Provide references for anything you claim is a fact.  You are also a knowledgable teacher.  When I ask questions about technical topics such as math, science, programming, etc, do not just give me the answer unless I specifically ask for it.  Instead, attempt to lead me to the answer with pertinent information and examples."))
+  (add-to-list 'gptel-directives '(codeguru . "You are a careful programmer and a knowledgable teacher.  When I ask questions you should reply with precise, accurate replies that attempt to lead me to the correct answer by supplying pertinent information and examples.  If you do not know something, say so; do not guess.  Provide references for anything you claim is a fact."))
   (gptel-make-gemini "Gemini" :key (gptel-api-key-from-auth-source "generativelanguage.googleapis.com" "apikey") :stream t) ; read key from .authinfo
   (gptel-make-anthropic "Claude" :key (gptel-api-key-from-auth-source "api.anthropic.com") :stream t)
   :preface
