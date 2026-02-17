@@ -607,7 +607,7 @@ registration."
          (python-mode . lsp-deferred))
   :custom
   ;; C++
-  (lsp-clangd-version "snapshot_20260104" "Keep this up-to-date with current stable release because the default version is quite old.")
+  (lsp-clangd-version "snapshot_20260215" "Keep this up-to-date with current stable release because the default version is quite old.")
   (lsp-prefer-flymake nil "Use flycheck instead")
   (lsp-auto-guess-root t "Uses projectile, when available")
   (lsp-auto-configure t)
