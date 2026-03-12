@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: Lambda
-# key: lamb
+# key: lam
 # --
 [$1]($2)${3:$$(when yas-moving-away-p (if (not (string-blank-p yas-text)) (concat "->" yas-text)))}{
 $>$0
