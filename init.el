@@ -604,7 +604,8 @@ registration."
                                  (derived-mode-p 'c-mode))
                          ;; disable live formatting of code when in c-mode or c++-mode
                          (setq lsp-enable-on-type-formatting nil))))
-         (python-mode . lsp-deferred))
+         (python-mode . lsp-deferred)
+         (v-mode . lsp-deferred))
   :custom
   ;; C++
   (lsp-clangd-version "snapshot_20260215" "Keep this up-to-date with current stable release because the default version is quite old.")
