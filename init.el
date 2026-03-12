@@ -589,6 +589,19 @@ registration."
                                     :test-dir "test"
                                     :src-dir "src"))
 
+(with-eval-after-load 'lsp-mode
+  ;; Tell lsp-mode that v-mode buffers are the "v" language
+  (add-to-list 'lsp-language-id-configuration '(v-mode . "v"))
+  ;; Now register the client
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-stdio-connection
+                     (lambda () (list (expand-file-name "~/.local/bin/vls"))))
+    :activation-fn (lsp-activate-on "v")
+    :major-modes '(v-mode)
+    :language-id "v"
+    :server-id 'vls)))
+
 (use-package lsp-mode
   ;;; See: https://emacs-lsp.github.io/lsp-mode/
   :bind-keymap ("C-c l" . lsp-command-map)
