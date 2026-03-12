@@ -615,15 +615,20 @@ registration."
   (lsp-enable-on-type-formatting nil "Disable LSP's attempts to format code")
   (read-process-output-max (* 1024 1024 2) "Increase the process output max because code servers may return large amounts of data")
   (flycheck-checker-error-threshold 1200 "Increase error threshold from 400 to something greater")
-  :init (use-package lsp-ui
-          :commands lsp-ui-mode
-          :custom
-          (lsp-ui-sideline-show-code-actions t)
-          (lsp-ui-peek-enable t)
-          :after lsp-mode)
-        (use-package lsp-treemacs
-          :commands lsp-treemacs-error-list
-          :after lsp-mode))
+  :init
+  (setq lsp-disabled-clients '(v-analyzer)))
+
+(use-package lsp-ui
+  :after lsp-mode
+  :commands lsp-ui-mode
+  :custom
+  (lsp-ui-sideline-show-code-actions t)
+  (lsp-ui-peek-enable t)
+  :after lsp-mode)
+(use-package lsp-treemacs
+  :after lsp-mode
+  :commands lsp-treemacs-error-list
+  :after lsp-mode)
 
 (use-package flycheck
   :commands flycheck-mode
