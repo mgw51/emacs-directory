@@ -59,6 +59,25 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
     (set-window-dedicated-p window t)))
 
 
+(defcustom mw-spell-program-list
+  '("hunspell" "aspell" "ispell")
+  "Ordered list of dictionary programs to search for.  Programs are tried
+in order; the frist one found is used."
+  :type '(repeat string)
+  :group 'ispell)
+
+(defun mw-spell-set-program()
+  "Set `spell-program-name' to the first available dictionary program.
+Runs once on the first ispell invocation, then removes itself.  Some
+machines I use have different applications installed, and this feature
+smooths the rough edges encountered when switching between some systems."
+  (setq ispell-program-name
+        (or (cl-find-if #'executable-find mw-spell-program-list)
+            (user-error "No spell-check program found; install hunspell, aspell, or ispell")))
+  (advice-remove 'ispell-set-spellchecker-params #'mw-spell-set-program))
+
+(advice-add 'ispell-set-spellchecker-params :before #'mw-spell-set-program)
+
 ;;; General Emacs config
 (use-package emacs
   :ensure nil
