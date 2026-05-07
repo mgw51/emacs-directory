@@ -164,23 +164,6 @@ smooths the rough edges encountered when switching between some systems."
   (when (daemonp)
     (exec-path-from-shell-initialize)))
 
-(use-package jinx
-  :disabled
-  ;; Jinx is a JIT spellchecker for emacs, using libenchant.
-  ;; See: https://github.com/minad/jinx
-  :after vertico
-  ;; Only enable Jinx in non-programming buffers.
-  :hook ((hack-local-variables . (lambda()
-                                   (when (not (derived-mode-p 'prog-mode))
-                                     (jinx-mode t)))))
-  :bind (("M-$" . jinx-correct)
-         ("C-M-$" . jinx-languages))
-  :config
-  (when (bound-and-true-p vertico-multiform-mode)
-    (add-to-list 'vertico-multiform-categories
-                 '(jinx grid (vertico-grid-annotate . 20) (vertico-count . 4)))
-    (vertico-multiform-mode)))
-
 (use-package ligature
   :ensure t
   :custom
