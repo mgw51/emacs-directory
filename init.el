@@ -662,6 +662,11 @@ registration."
               ("C-c d d" . #'mw-debug-comment)
               ("C-c d r" . #'mw-remove-debug)))
 
+(use-package compilation-mode
+  :ensure nil
+  :custom
+  (compilation-scroll-output t "Scroll compilation output automatically"))
+
 (use-package ansi-color
   ;;; Should interpret ansi color codes in compilation buffer.  Found at:
   ;;; http://disq.us/p/2gdjkr9 on the Endless Parentheses blog and adapter for use
