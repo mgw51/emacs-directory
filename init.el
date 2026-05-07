@@ -226,7 +226,7 @@ smooths the rough edges encountered when switching between some systems."
 Add this function to the `gptel-save-state-hook' so it is called when a
 chat buffer is saved."
     (save-excursion
-      (let ((enable-local-varaibles t))
+      (let ((enable-local-variables t))
         (if (and (save-excursion
                    (goto-char (point-min))
                    (looking-at ".*-\\*-"))) ; Looking for a -*- line
