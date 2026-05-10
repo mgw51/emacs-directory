@@ -771,6 +771,7 @@ registration."
 (use-package toml-mode)
 (use-package cql-mode)
 (use-package systemd)
+(use-package dockerfile-mode)
 
 (use-package cmake-mode
   :hook cmake-font-lock-activate
