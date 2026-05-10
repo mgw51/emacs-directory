@@ -656,19 +656,6 @@ registration."
           :ensure t
           :after flycheck))
 
-;;; For all programming modes that I use
-(use-package prog-mode
-  :ensure nil
-  :bind (:map prog-mode-map
-              ("C-c c" . #'mw-insert-triplet)
-              ("C-c d d" . #'mw-debug-comment)
-              ("C-c d r" . #'mw-remove-debug)))
-
-(use-package compilation-mode
-  :ensure nil
-  :custom
-  (compilation-scroll-output t "Scroll compilation output automatically"))
-
 (use-package ansi-color
   ;;; Should interpret ansi color codes in compilation buffer.  Found at:
   ;;; http://disq.us/p/2gdjkr9 on the Endless Parentheses blog and adapter for use
@@ -680,6 +667,19 @@ registration."
       (ansi-color-process-output nil)
       (setq-local comint-last-output-start (point-marker))))
   :hook ('compilation-filter . #'colorize-compilation-buffer))
+
+;;; For all programming modes that I use
+(use-package compilation-mode
+  :ensure nil
+  :custom
+  (compilation-scroll-output t "Scroll compilation output automatically"))
+
+(use-package prog-mode
+  :ensure nil
+  :bind (:map prog-mode-map
+              ("C-c c" . #'mw-insert-triplet)
+              ("C-c d d" . #'mw-debug-comment)
+              ("C-c d r" . #'mw-remove-debug)))
 
 (use-package cc-mode
   :ensure nil
