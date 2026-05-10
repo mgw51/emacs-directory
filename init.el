@@ -327,6 +327,7 @@ guaranteed to be the response buffer."
   (global-company-mode))
 
 (use-package yasnippet
+  :demand t
   :blackout (yas-minor-mode . "Ȳ")
   :commands yas-reload-all
   :custom
