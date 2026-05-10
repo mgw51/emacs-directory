@@ -161,6 +161,7 @@ smooths the rough edges encountered when switching between some systems."
   :config
   ;; Copy important environment variables into emacs session
   ;; Mainly needed because OSX and systemd do not pass user env to emacs
+  (push "SSH_AUTH_SOCK" exec-path-from-shell-variables)
   (when (daemonp)
     (exec-path-from-shell-initialize)))
 
