@@ -593,18 +593,18 @@ registration."
                                     :test-dir "test"
                                     :src-dir "src"))
 
-(with-eval-after-load 'lsp-mode
-  ;; Tell lsp-mode that v-mode buffers are the "v" language
-  (add-to-list 'lsp-language-id-configuration '(v-mode . "v"))
-  ;; Now register the client
-  (lsp-register-client
-   (make-lsp-client
-    :new-connection (lsp-stdio-connection
-                     (lambda () (list (expand-file-name "~/.local/bin/vls"))))
-    :activation-fn (lsp-activate-on "v")
-    :major-modes '(v-mode)
-    :language-id "v"
-    :server-id 'vls)))
+;; (with-eval-after-load 'lsp-mode
+;;   ;; Tell lsp-mode that v-mode buffers are the "v" language
+;;   (add-to-list 'lsp-language-id-configuration '(v-mode . "v"))
+;;   ;; Now register the client
+;;   (lsp-register-client
+;;    (make-lsp-client
+;;     :new-connection (lsp-stdio-connection
+;;                      (lambda () (list (expand-file-name "~/.local/bin/vls"))))
+;;     :activation-fn (lsp-activate-on "v")
+;;     :major-modes '(v-mode)
+;;     :language-id "v"
+;;     :server-id 'vls)))
 
 (use-package lsp-mode
   ;;; See: https://emacs-lsp.github.io/lsp-mode/
@@ -621,8 +621,7 @@ registration."
                                  (derived-mode-p 'c-mode))
                          ;; disable live formatting of code when in c-mode or c++-mode
                          (setq lsp-enable-on-type-formatting nil))))
-         (python-mode . lsp-deferred)
-         (v-mode . lsp-deferred))
+         (python-mode . lsp-deferred))
   :custom
   ;; C++
   (lsp-clangd-version "snapshot_20260215" "Keep this up-to-date with current stable release because the default version is quite old.")
