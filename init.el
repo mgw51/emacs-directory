@@ -742,10 +742,11 @@ registration."
   (setq-local projectile-project-test-suffix "_test.go"))
   
 (use-package v-mode
-  :hook lsp-deferred
+  :ensure t
   :chords (:map v-mode
-                ("pq" . mw-insert-curly-braces)))
-;  :custom (lsp-v-vls-executable "vls_linux_x64"))
+                ("pq" . mw-insert-curly-braces))
+  :config
+  (push '(v-mode "*.v") semantic-symref-filepattern-alist))
 
 (use-package elixir-mode
   :hook #'lsp-deferred)
