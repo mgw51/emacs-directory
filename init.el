@@ -321,7 +321,7 @@ guaranteed to be the response buffer."
   :demand t
   :blackout "Ç"
   :custom
-  (company-idle-delay 0.5)
+  (company-idle-delay 0.75)
   (company-minimum-prefix-length 1)
   :config
   (global-company-mode))
@@ -630,9 +630,7 @@ registration."
   (lsp-auto-configure t)
   (lsp-enable-on-type-formatting nil "Disable LSP's attempts to format code")
   (read-process-output-max (* 1024 1024 2) "Increase the process output max because code servers may return large amounts of data")
-  (flycheck-checker-error-threshold 1200 "Increase error threshold from 400 to something greater")
-  :init
-  (setq lsp-disabled-clients '(v-analyzer)))
+  (flycheck-checker-error-threshold 1200 "Increase error threshold from 400 to something greater"))
 
 (use-package lsp-ui
   :after lsp-mode
