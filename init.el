@@ -616,7 +616,6 @@ registration."
               ("p" . #'lsp-ui-find-prev-reference))
   :commands (lsp lsp-deferred)
   :hook ((lsp-mode . (lambda ()
-                       lsp-enable-which-key-integration
                        (when (or (derived-mode-p 'c++-mode)
                                  (derived-mode-p 'c-mode))
                          ;; disable live formatting of code when in c-mode or c++-mode
