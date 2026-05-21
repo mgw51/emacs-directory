@@ -623,13 +623,12 @@ registration."
          (python-mode . lsp-deferred))
   :custom
   ;; C++
-  (lsp-clangd-version "snapshot_20260215" "Keep this up-to-date with current stable release because the default version is quite old.")
+  (lsp-clangd-version "snapshot_20260517" "Keep this up-to-date with current stable release because the default version is quite old.")
   (lsp-prefer-flymake nil "Use flycheck instead")
   (lsp-auto-guess-root t "Uses projectile, when available")
   (lsp-auto-configure t)
   (lsp-enable-on-type-formatting nil "Disable LSP's attempts to format code")
-  (read-process-output-max (* 1024 1024 2) "Increase the process output max because code servers may return large amounts of data")
-  (flycheck-checker-error-threshold 1200 "Increase error threshold from 400 to something greater"))
+  (read-process-output-max (* 1024 1024 10) "Increase the process output max because code servers may return large amounts of data"))
 
 (use-package lsp-ui
   :after lsp-mode
@@ -647,7 +646,7 @@ registration."
   :commands flycheck-mode
   :hook flycheck-color-mode-line-mode
   :custom
-  (flycheck-checker-error-thrshold 1200 "Bump this up from the original value of 400")
+  (flycheck-checker-error-threshold nil "Bump this up from the original value of 400")
   :init (use-package flycheck-color-mode-line
           :ensure t
           :after flycheck))
