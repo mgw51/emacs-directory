@@ -683,6 +683,12 @@ registration."
                 ("pq" . mw-insert-curly-braces))
   :bind (:map c-mode-base-map
               ("C-c f" . #'mw-func-header))
+  :custom
+  (lsp-clients-clangd-args '("--query-driver=/usr/bin/gcc,/usr/bin/g++,/usr/bin/clang,/usr/bin/clang++")
+                           "Tell clangd how to query the compiler for include paths.  For example,
+when ccache's compiler link directory is prepended to your path this may
+throw off clangd's out-of-the-box ability to locate standard library
+headers.")
   :init
   (add-hook 'c-mode-common-hook #'common-settings)
   (add-hook 'c-mode-hook #'lsp-deferred)
