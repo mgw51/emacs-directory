@@ -62,7 +62,7 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
 (defcustom mw-spell-program-list
   '("hunspell" "aspell" "ispell")
   "Ordered list of dictionary programs to search for.  Programs are tried
-in order; the frist one found is used."
+in order; the first one found is used."
   :type '(repeat string)
   :group 'ispell)
 
