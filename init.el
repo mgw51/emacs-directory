@@ -740,7 +740,7 @@ registration."
   
 (use-package v-mode
   :ensure t
-  :chords (:map v-mode
+  :chords (:map v-mode-map
                 ("pq" . mw-insert-curly-braces))
   :config
   (push '(v-mode "*.v") semantic-symref-filepattern-alist))
