@@ -256,6 +256,13 @@ guaranteed to be the response buffer."
         (indent-region beg end)
         (pulse-momentary-highlight-region beg end)))))
 
+(use-package claude-code-ide
+  :if (executable-find "claude")
+  :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
+  :bind ("C-c q" . claude-code-ide-menu) ; Set your favorite keybinding
+  :config
+  (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
+
 (use-package treesit-auto
   :config
   (global-treesit-auto-mode))
