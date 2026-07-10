@@ -764,6 +764,13 @@ registration."
     (slime-setup '(slime-fancy slime-company))
     (setq slime-net-coding-system 'utf-8-unix)))
 
+;; cmark-gfm and cmark are concrete, the others are hand-wavey suggestions.  Don't
+;; rely on them being the package names.
+(when-let ((markdown-renderer (cl-some #'executable-find '("cmark-gfm" "cmark" "commonmark" "multimarkdown" "pandoc"))))
+  (message (format "markdown-mode: '%s' markdown renderer chosen" markdown-renderer))
+  (use-package markdown-mode
+    :mode ("README\\.md\\'" . gfm-mode)
+    :init (setq markdown-command markdown-renderer)))
 (use-package yaml-mode)
 (use-package toml-mode)
 (use-package cql-mode)
