@@ -641,10 +641,14 @@ registration."
 (use-package lsp-ui
   :after lsp-mode
   :commands lsp-ui-mode
+  :bind (:map lsp-ui-imenu-mode-map
+              ("n" . #'lsp-ui-imenu--next-kind)
+              ("p" . #'lsp-ui-imenu--prev-kind))
   :custom
   (lsp-ui-sideline-show-code-actions t)
   (lsp-ui-peek-enable t)
   :after lsp-mode)
+
 (use-package lsp-treemacs
   :after lsp-mode
   :commands lsp-treemacs-error-list
