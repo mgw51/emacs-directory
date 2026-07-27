@@ -584,7 +584,7 @@ registration."
                                     :project-file "configure.ac"
                                     :compile "make -kj20"
                                     :test "test/unit_tests/unit_tests"
-                                    :test-dir #'mw-sensacloudapi-test-dir
+                                    :test-dir "test/unit_tests"
                                     :test-suffix "_test")
   (projectile-register-project-type 'reports '(".c++rep") ; C++ autotools (work-specific)
                                     :project-file ".sensa-reports"
