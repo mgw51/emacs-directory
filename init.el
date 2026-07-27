@@ -626,7 +626,10 @@ registration."
                        (when (or (derived-mode-p 'c++-mode)
                                  (derived-mode-p 'c-mode))
                          ;; disable live formatting of code when in c-mode or c++-mode
-                         (setq lsp-enable-on-type-formatting nil))))
+                         (setq lsp-enable-on-type-formatting nil)
+                         (setq-local lsp-command-map (copy-keymap lsp-command-map)) ; make a "local" copy of the keymap
+                         (define-key lsp-command-map
+                                     (kbd "o") #'lsp-clangd-find-other-file)))) ; assign the binding on the copy
          (python-mode . lsp-deferred))
   :custom
   ;; C++
