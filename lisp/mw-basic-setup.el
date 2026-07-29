@@ -68,6 +68,7 @@ line numbers, etc."
 
   ;;; on
   (global-display-line-numbers-mode 1)
+  (column-number-mode 1)
   (winner-mode 1)
   (setq visible-bell t))
 
