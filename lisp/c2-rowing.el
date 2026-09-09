@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;;; c2-rowing.el --- Record rowing session data into an org-mode table.
 ;;;
 ;;; Commentary:

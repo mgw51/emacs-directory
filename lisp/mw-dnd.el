@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;;; mw-dnd.el --- Provide some Dungeons and Dragons helper functions.
 ;;;
 ;;; Commentary:

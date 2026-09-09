@@ -1,4 +1,4 @@
-;;; mw-basic-setup.el --- Summary: Provide setup helper functions to be called from init.el.
+;;; mw-basic-setup.el --- Summary: Provide setup helper functions to be called from init.el.  -*- lexical-binding: t; -*-
 ;;;
 ;;; Commentary:
 ;;; Use this file to house some functions that would otherwise clutter
