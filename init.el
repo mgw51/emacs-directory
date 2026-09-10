@@ -923,6 +923,11 @@ recalculate any formulas that exist within it."
 
 (use-package scad-mode)
 
+(use-package mediawiki
+  :defer t
+  :config
+  (cons '("Sensaphone Wiki" "https://wiki.sensaphone.net/index.php/FAQ" "" "" "" :first-page "Main Page") mediawiki-site-alist))
+
 ;; (use-package scad-dbus
 ;;   :commands scad-dbus-connected
 ;;   :after scad-mode
