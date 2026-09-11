@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;;; perl-related.el --- Elisp functions related to perl buffers.
 
 ;;; Commentary:

@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;;;; mw-utils.el  --- Useful functions
 ;;; Commentary:
 ;;;    Contains some utility and helper functions useful at work and elsewhere.

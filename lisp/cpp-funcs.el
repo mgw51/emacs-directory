@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;;;; cpp-funcs.el --- Provide some functions useful when programming in C++ and C
 ;;;; Commentary:
 ;;;;   Some useful functions, mostly for C++, although the include-guard func

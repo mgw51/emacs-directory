@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;;; mw-statistics --- Provide some basic statistics functions to operate on sequences.
 ;;; Commentary:
 
