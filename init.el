@@ -854,16 +854,18 @@ registration."
 
 (use-package smartparens
   :defer t
-  :hook ((emacs-lisp-mode lisp-mode) . smartparens-mode)
+  :hook ((emacs-lisp-mode lisp-mode clojure-mode) . smartparens-mode)
   :custom
   (sp-base-key-bindings sp-smartparens-bindings)
   :config
   ;; The following comes from the smartparens docs: https://readthedocs.org/projects/smartparens/downloads/pdf/latest/
-  (sp-with-modes 'emacs-lisp-mode
+  (sp-with-modes '(emacs-lisp-mode clojure-mode) 
     ;; only use the psuedo-quote inside strings where it serves as a hyperlink
     (sp-local-pair "`" "'" :when '(sp-in-string-p sp-in-comment-p))
     ;; disable "'", it's the quote character!
-    (sp-local-pair "'" nil :actions nil)))
+    (sp-local-pair "'" nil :actions nil))
+  (sp--set-base-key-bindings 'sp-base-key-bindings 'sp))
+
 
 (use-package paren
   ;; This is the built-in mode
