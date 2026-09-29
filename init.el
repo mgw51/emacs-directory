@@ -778,6 +778,59 @@ registration."
     (slime-setup '(slime-fancy slime-company))
     (setq slime-net-coding-system 'utf-8-unix)))
 
+;;; Clojure
+;; clojure-lsp will be downloaded and installed automatically by lsp-mode
+;; the first time you open a Clojure file (M-x lsp-install-server RET clojure-lsp
+;; if it does not trigger automatically).
+(use-package clojure-mode
+  :hook ((clojure-mode
+          clojurec-mode
+          clojurescript-mode) . (lambda ()
+                                  (lsp-deferred)
+                                  (smartparens-mode 1)
+                                  (subword-mode 1)))
+  :custom
+  (clojure-indent-style 'align-arguments
+   "Align function arguments for idiomatic formatting."))
+
+(use-package cider
+  ;; CIDER: Clojure Interactive Development Environment that Rocks.
+  ;; Key bindings quick reference:
+  ;;   C-c C-j (or M-x cider-jack-in) -- start a REPL for the current project
+  ;;   C-c C-e  -- eval expression before point, show result inline
+  ;;   C-c C-k  -- load (compile) current buffer
+  ;;   C-c C-d d -- show docs for symbol at point
+  ;;   C-c M-j  -- cider-jack-in-cljs (ClojureScript)
+  ;;   ,        -- (in REPL) open command menu
+  :hook ((clojure-mode
+          clojurec-mode
+          clojurescript-mode) . cider-mode)
+  :custom
+  (cider-test-fail-fast nil "For learning purposes, run all tests.")
+  (cider-repl-display-help-banner t "Skip the help banner in new REPLs.")
+  (cider-repl-pop-to-buffer-on-connect 'display-only
+   "Show REPL buffer without switching focus to it.")
+  (cider-save-file-on-load t "Auto-save buffer before loading into REPL.")
+  (cider-repl-history-file (expand-file-name "cider-repl-history" user-emacs-directory)
+   "Persist REPL history across sessions.")
+  (cider-repl-use-pretty-printing t "Pretty-print REPL output.")
+  (cider-show-error-buffer 'only-in-repl
+   "Show error buffer only when using the REPL, not on every eval.")
+  (nrepl-log-messages nil "Disable nREPL message logging (enable for debugging)."))
+
+(use-package clj-refactor
+  ;; Refactoring support for Clojure.  All commands are under the prefix "C-c C-m".
+  ;; Run `cljr-slash' when typing `/` after a namespace alias to auto-require it.
+  :hook (clojure-mode . (lambda ()
+                          (clj-refactor-mode 1)
+                          (cljr-add-keybindings-with-prefix "C-c C-m")))
+  :custom
+  (cljr-warn-on-eval nil "Don't warn before evaluating during refactoring."))
+
+;; Extend smartparens to clojure modes (pairs are already known via smartparens-clojure)
+(with-eval-after-load 'smartparens
+  (require 'smartparens-clojure))
+
 ;; cmark-gfm and cmark are concrete, the others are hand-wavey suggestions.  Don't
 ;; rely on them being the package names.
 (when-let ((markdown-renderer (cl-some #'executable-find '("cmark-gfm" "cmark" "commonmark" "multimarkdown" "pandoc"))))
